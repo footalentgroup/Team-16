@@ -7,9 +7,10 @@
 .env
 
 #appsettings
-/BackEnd/appsettings.Development.json
-/BackEnd/appsettings.Production.json
+/API/appsettings.Development.json
+/API/appsettings.Production.json
 
+.vs
 # User-specific files
 *.rsuser
 *.suo

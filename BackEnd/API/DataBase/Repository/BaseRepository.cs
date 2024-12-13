@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using BackEnd.Shared.Context;
+﻿using API.DataBase.Context;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace BackEnd.Shared.Repository
+namespace API.DataBase.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {

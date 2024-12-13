@@ -1,6 +1,6 @@
-﻿namespace BackEnd.Modules.UserModule.Dto
+﻿namespace API.Modules.AuthModule.Dtos
 {
-    public class GetUserDto
+    public class AuthAdminResponseDto
     {
         public string Name { get; set; }
 
@@ -8,6 +8,6 @@
 
         public string Email { get; set; }
 
-        public string Role { get; set; }
+        public string Token { get; set; }
     }
 }

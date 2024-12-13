@@ -1,8 +1,7 @@
-﻿namespace BackEnd.Modules.UserModule.Dto
+﻿namespace API.Modules.AuthModule.Dtos
 {
-    public class AuthRequestDto
+    public class AuthAdminRequestDto
     {
-
         public string Email { get; set; }
 
         public string Password { get; set; }

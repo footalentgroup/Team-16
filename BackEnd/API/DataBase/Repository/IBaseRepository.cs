@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace BackEnd.Shared.Repository
+namespace API.DataBase.Repository
 {
     public interface IBaseRepository<T>
     {
