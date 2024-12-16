@@ -10,5 +10,6 @@ namespace API.DataBase.Context
 
 
         public DbSet<Admin> Users  => Set<Admin>();
+        public DbSet<Patient> Patients => Set<Patient>();
     }
 }
