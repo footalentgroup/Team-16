@@ -9,7 +9,7 @@ namespace API.DataBase.Context
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 
-        public DbSet<Admin> Users  => Set<Admin>();
+        public DbSet<Admin> Admins  => Set<Admin>();
         public DbSet<Patient> Patients => Set<Patient>();
     }
 }

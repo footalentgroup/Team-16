@@ -47,7 +47,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("API.DataBase.Entities.Patient", b =>

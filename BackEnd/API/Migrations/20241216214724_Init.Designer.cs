@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241216190739_Init")]
+    [Migration("20241216214724_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -50,7 +50,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("API.DataBase.Entities.Patient", b =>
