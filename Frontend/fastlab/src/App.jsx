@@ -1,12 +1,18 @@
-// src/App.jsx
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Login from "./pages/Login";
+import LoginPaciente from "./pages/LoginPaciente";
 
 
 function App() {
   return (
     <>
-      <Login />
+      <Router>
+      <Routes>
+        {/* Definir rutas simples */}
+        <Route path="/loginpaciente" element={<LoginPaciente />} />
+      </Routes>
+    </Router>
+        
     </>
   );
 }

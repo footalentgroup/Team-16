@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import imgLogin from "../../public/login.png";
+import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 
-const Login = () => {
+const LoginPaciente = () => {
   const {
     register,
     handleSubmit,
@@ -183,4 +183,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPaciente;
