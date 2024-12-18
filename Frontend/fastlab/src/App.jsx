@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import LoginPaciente from "./pages/LoginPaciente";
+import LoginAdmin from './pages/LoginAdmin';
 
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
       <Router>
       <Routes>
         {/* Definir rutas simples */}
-        <Route path="/loginpaciente" element={<LoginPaciente />} />
+        <Route path="/login/paciente" element={<LoginPaciente />} />
+        <Route path="/login/admin" element={<LoginAdmin />} />
       </Routes>
     </Router>
         
