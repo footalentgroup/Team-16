@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 
@@ -13,9 +14,12 @@ const LoginAdmin = () => {
   } = useForm();
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const onSubmit = async (data) => {
     setIsFormSubmitted(true); // Deshabilita el formulario mientras se envían los datos
+    let text = ""; // Declara la variable text
+
     try {
       const response = await fetch(`${BACKEND_URL}/auth/admin-login`, {
         method: "POST",
@@ -23,26 +27,29 @@ const LoginAdmin = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          Email: data.Email, // Se asegura de enviar "Email" con mayúscula
-          Password: data.password, // Se asegura de enviar "Password" con mayúscula si el backend lo requiere
+          email: data.email, // Correcto
+          password: data.password, // Correcto
         }),
       });
 
       let result;
+
       try {
-        result = await response.json();
+        text = await response.text(); // Captura la respuesta como texto
+        result = JSON.parse(text); // Intenta convertirlo a JSON
       } catch (error) {
-        console.error("Error al parsear JSON, probablemente texto simple", error);
-        result = { message: "No se pudo leer la respuesta del servidor." };
+        console.error("Respuesta no es JSON, manejando como texto");
+        result = { message: text }; // Usa el texto como mensaje si no es JSON
       }
 
       if (response.ok) {
         console.log("Login exitoso:", result);
-        localStorage.setItem('token', result.token); // Guarda el token en localStorage si está disponible
+        localStorage.setItem("token", result.token); // Guarda el token si existe
         alert("¡Login exitoso!");
+        navigate("/dashboard"); // Redirige a la página deseada (ejemplo: /dashboard)
       } else {
         console.error("Error de autenticación:", result);
-        alert(`Error de autenticación: ${result.message || JSON.stringify(result)}`);
+        alert(result.message || "Error al iniciar sesión");
       }
     } catch (error) {
       console.error("Error de conexión:", error);
@@ -63,8 +70,8 @@ const LoginAdmin = () => {
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <LoginInput
               label="Correo electrónico"
-              id="Email"
-              name="Email" // Ahora es "Email" con la E mayúscula
+              id="email"
+              name="email"
               type="email"
               placeholder="Ejemplo: fastlab@gmail.com"
               register={register}
@@ -76,7 +83,7 @@ const LoginAdmin = () => {
                 },
               }}
               disabled={isFormSubmitted}
-              error={errors.Email}
+              error={errors.email}
               errorClass="placeholder-red-500 border-red-500"
             />
 
