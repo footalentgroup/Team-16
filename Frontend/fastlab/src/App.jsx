@@ -10,7 +10,7 @@ function App() {
       <Router>
       <Routes>
         {/* Definir rutas simples */}
-        <Route path="/login/paciente" element={<LoginPaciente />} />
+        <Route path="/" element={<LoginPaciente />} />
         <Route path="/login/admin" element={<LoginAdmin />} />
       </Routes>
     </Router>
