@@ -12,11 +12,9 @@ namespace API.Modules.PatientModule
     public class PatientService : BaseRepository<Patient>, IPatientService
     {
         private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
 
         public PatientService(AppDbContext context, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
             _mapper = mapper;
         }
 
