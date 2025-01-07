@@ -72,23 +72,9 @@ namespace API.Modules.AuthModule
         }
 
 
-        public async Task<bool> CreatePatient(Patient patient)
+        private bool ValidatePassword(string plainPassword, string hashPassword)
         {
-
-            try
-            {
-                patient.Password = BCrypt.Net.BCrypt.HashPassword(patient.Password);
-
-                var response = await _context.Patients.AddAsync(patient);
-
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return BCrypt.Net.BCrypt.Verify(plainPassword, hashPassword);
         }
 
         private bool ValidatePassword(string plainPassword, string hashPassword)
