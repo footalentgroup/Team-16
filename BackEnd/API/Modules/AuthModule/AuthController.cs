@@ -1,5 +1,7 @@
 ﻿using API.DataBase.Entities;
 using API.Modules.AuthModule.Dtos;
+using API.Shared.Extensions;
+using API.Shared.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Modules.AuthModule
@@ -10,20 +12,21 @@ namespace API.Modules.AuthModule
     {
         private readonly AuthService _authService;
 
-        public AuthController(AuthService authService) {
+        public AuthController(AuthService authService)
+        {
             _authService = authService;
         }
 
         [HttpPost("admin-login")]
-        public async  Task<ActionResult<AuthAdminResponseDto>> Login(AuthAdminRequestDto authAdminRequestDto)
+        public async Task<IActionResult> Login(AuthAdminRequestDto authAdminRequestDto)
         {
             try
             {
+                ServiceResult<AuthAdminResponseDto> response = await _authService.LoginAdmin(authAdminRequestDto);
 
-            var response =  await _authService.LoginAdmin(authAdminRequestDto);
-
-            return Ok(response);
-            }catch (UnauthorizedAccessException ex)
+                return response.ToActionResult();
+            }
+            catch (UnauthorizedAccessException ex)
             {
                 return new UnauthorizedObjectResult(ex.Message);
             }
@@ -36,10 +39,34 @@ namespace API.Modules.AuthModule
         [HttpPost("create-admin")]
         public async Task<ActionResult<AuthAdminResponseDto>> Create(Admin admin)
         {
-           await  _authService.CreateAdmin(admin);
+            try
+            {
+                await _authService.CreateAdmin(admin);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.InnerException + ":::" + ex.Message);
+            }
         }
+
+        [HttpPost("patient-login")]
+        public async Task<IActionResult> Login(AuthPatientRequestDto authPatientRequestDto)
+        {
+            try
+            {
+
+                ServiceResult<AuthPatientResponseDto> response = await _authService.LoginPatient(authPatientRequestDto);
+
+                return response.ToActionResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.InnerException + ":::" + ex.Message);
+            }
+        }
+
 
     }
 }

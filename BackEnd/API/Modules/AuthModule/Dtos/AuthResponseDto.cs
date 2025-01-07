@@ -2,12 +2,21 @@
 {
     public class AuthAdminResponseDto
     {
-        public string Name { get; set; }
+        public required string FirstName { get; set; }
 
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
-        public string Token { get; set; }
+        public required string Token { get; set; }
+    }
+
+    public class AuthPatientResponseDto
+    {
+        public required string FirstName { get; set; }
+
+        public required string LastName { get; set; }
+
+        public required string Token { get; set; }
     }
 }

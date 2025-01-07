@@ -1,0 +1,18 @@
+
+.sidebar{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.container-menu{
+    background: radial-gradient(57.4% 100% at 6.64% -4950%, #DEFFFE 0%, #EDF4FF 42.5%, #F6F9FD 100%);
+    height: calc(100% - 24px);
+    width: calc(100% - 24px);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
