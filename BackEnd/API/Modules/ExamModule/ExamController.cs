@@ -15,6 +15,17 @@ namespace API.Modules.ExamModule
             _examService = examService;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<ExamSummaryDto>>> GetAllExams()
+        {
+            var examIndex = await _examService.GetAllExamsAsync();
+            if (examIndex == null || examIndex.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(examIndex);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamDto>> GetExamById(int id)
         {

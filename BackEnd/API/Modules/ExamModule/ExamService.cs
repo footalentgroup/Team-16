@@ -15,6 +15,21 @@ namespace API.Modules.ExamModule
             _context = context;
         }
 
+        public async Task<List<ExamSummaryDto>> GetAllExamsAsync()
+        {
+            var exams = await _context.Exams.ToListAsync();
+
+            var examIndex = exams.Select(e => new ExamSummaryDto
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Sample = e.Sample,
+                Description = e.Description,
+            }).ToList();
+
+            return examIndex;
+        }
+
         public async Task<ExamDto?> GetExamByIdAsync(int id)
         {
             var exam = await _context.Exams

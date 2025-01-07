@@ -9,6 +9,14 @@ namespace API.Modules.ExamModule.Dtos
     public required List<ParameterDto> Parameters { get; set; }
   }
 
+ public class ExamSummaryDto
+{
+    public int Id { get; set; }
+    public required string Name { get; set; }
+    public required string Sample { get; set; }
+    public string? Description { get; set; }
+}
+
   public class CreateExamDto
   {
     public required string Name { get; set; }
