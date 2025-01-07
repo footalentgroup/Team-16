@@ -77,9 +77,5 @@ namespace API.Modules.AuthModule
             return BCrypt.Net.BCrypt.Verify(plainPassword, hashPassword);
         }
 
-        private bool ValidatePassword(string plainPassword, string hashPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(plainPassword, hashPassword);
-        }
     }
 }
