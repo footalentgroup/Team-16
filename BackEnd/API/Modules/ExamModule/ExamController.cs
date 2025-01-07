@@ -25,5 +25,18 @@ namespace API.Modules.ExamModule
             }
             return Ok(exam);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ExamDto>> CreateExam([FromBody] CreateExamDto createExamDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var createdExam = await _examService.CreateExamAsync(createExamDto);
+
+            return CreatedAtAction(nameof(GetExamById), new { id = createdExam.Id }, createdExam);
+        }
     }
 }
