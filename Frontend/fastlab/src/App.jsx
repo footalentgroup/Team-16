@@ -6,6 +6,7 @@ import PacienteInicio from './pages/PacienteInicio';
 import PacienteHistorial from './pages/PacienteHistorial';
 import PacienteMisDatos from './pages/PacienteMisDatos';
 
+
 function App() {
   return (
     <>
