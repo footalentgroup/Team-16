@@ -3,6 +3,7 @@ using System;
 using API.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250107201902_UniqueConstraints")]
+    partial class UniqueConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,24 +55,6 @@ namespace API.Migrations
                         .IsUnique();
 
                     b.ToTable("Admins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@gmail.com",
-                            LastName = "admin1",
-                            Name = "admin1",
-                            Password = "12345678"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "admin2@gmail.com",
-                            LastName = "admin2",
-                            Name = "admin2",
-                            Password = "12345678"
-                        });
                 });
 
             modelBuilder.Entity("API.DataBase.Entities.Patient", b =>
@@ -114,44 +99,6 @@ namespace API.Migrations
                         .IsUnique();
 
                     b.ToTable("Patients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Birth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Marcos@gmail.com",
-                            FirstName = "Marcos",
-                            LastName = "Rodriguez",
-                            Password = "$2a$11$noQ8s1RjbkQZwJrNqMQwHOiZ.pkaBFX1LAqOwh8x4JpEFFnO.0uEy",
-                            PersonalID = "34098349",
-                            PersonalIDType = 0,
-                            Phone = "+54934245673748"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Birth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Marcos@gmail.com",
-                            FirstName = "Marcos",
-                            LastName = "Rodriguez",
-                            Password = "$2a$11$JzvfksetW830zaqg163A9OtL2A9Qir93GhQMIay7qNyhFIMJ.Wl5u",
-                            PersonalID = "49298349",
-                            PersonalIDType = 0,
-                            Phone = "+54934245673748"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Birth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Marcos@gmail.com",
-                            FirstName = "Marcos",
-                            LastName = "Rodriguez",
-                            Password = "$2a$11$H/Sg5axHJm57BOraho9jVOX3kZkVt2ENbV2krhDM7uDPIsWEzCFh.",
-                            PersonalID = "AA34098349",
-                            PersonalIDType = 1,
-                            Phone = "+54934245673748"
-                        });
                 });
 #pragma warning restore 612, 618
         }
