@@ -15,7 +15,7 @@ const Historial = () => {
     return (
         <div className='flex min-h-screen bg-gray-50'>
             <main className='flex-1 p-8'>
-                <Breadcrumb />
+                <Breadcrumb first={'Paciente'} second={'Historial'} />
 
                 <h1 className='text-2xl font-semibold text-gray-900 mb-6'>Mi historial de resultados</h1>
 
