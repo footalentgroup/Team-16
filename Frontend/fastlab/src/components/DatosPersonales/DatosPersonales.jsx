@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Calendario from "./Calendario";
 import LoginInput from "../LoginInput/LoginInput";
 
@@ -11,16 +13,33 @@ const DatosPersonales = () => {
     formState: { errors },
   } = useForm();
 
+  const [formData, setFormData] = useState({}); 
   const onSubmit = (data) => {
+    setFormData(data); 
+    toast.success("Se actualizaron los datos correctamente", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     console.log("Formulario enviado:", data);
   };
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 w-6/12 mt-8 min-w-96 flex justify-center">Mis datos</h1>
+      
+      <ToastContainer />
+
+      <h1 className="text-2xl font-bold text-gray-800  w-1/4  flex justify-center mt-14">
+        Mis datos
+      </h1>
+
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-lg bg-white p-8">
-          <h1 className="text-lg font-bold text-gray-800 mb-4">Datos Personales</h1>
+          <h1 className="text-lg font-bold text-gray-800 mb-4 ">Datos Personales</h1>
           <p className="text-gray-500 mb-4">
             Puedes ver tus datos y modificar los que creas necesarios
           </p>
@@ -32,6 +51,7 @@ const DatosPersonales = () => {
               id="nombres"
               name="nombres"
               placeholder="Ejemplo: Juan José"
+              defaultValue={formData.nombres || ""}
               register={register}
               rules={{
                 required: "Este campo es obligatorio.",
@@ -49,6 +69,7 @@ const DatosPersonales = () => {
               id="apellidos"
               name="apellidos"
               placeholder="Ejemplo: Campos Estrada"
+              defaultValue={formData.apellidos || ""}
               register={register}
               rules={{
                 required: "Este campo es obligatorio.",
@@ -66,6 +87,7 @@ const DatosPersonales = () => {
               id="telefono"
               name="telefono"
               placeholder="Ejemplo: +54 999 999 999"
+              defaultValue={formData.telefono || ""}
               register={register}
               rules={{
                 required: "Formato incorrecto.",
@@ -90,6 +112,7 @@ const DatosPersonales = () => {
               id="email"
               name="email"
               placeholder="Ejemplo: email@email.com"
+              defaultValue={formData.email || ""}
               register={register}
               rules={{
                 required: "Ingrese tu correo electrónico.",
