@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Calendario from "./Calendario";
 import LoginInput from "../LoginInput/LoginInput";
-
+import Breadcrumb from "../navigation/breadcrumb";
 const DatosPersonales = () => {
   const {
     control,
@@ -13,9 +13,9 @@ const DatosPersonales = () => {
     formState: { errors },
   } = useForm();
 
-  const [formData, setFormData] = useState({}); 
+  const [formData, setFormData] = useState({});
   const onSubmit = (data) => {
-    setFormData(data); 
+    setFormData(data);
     toast.success("Se actualizaron los datos correctamente", {
       position: "top-right",
       autoClose: 3000,
@@ -30,8 +30,10 @@ const DatosPersonales = () => {
 
   return (
     <>
-      
+    <section className="flex min-h-screen bg-gray-50">
+    <div className="flex-1 p-8">
       <ToastContainer />
+      <Breadcrumb first={"Paciente"} second={"Mis Datos"} />
 
       <h1 className="text-2xl font-bold text-gray-800  w-1/4  flex justify-center mt-14">
         Mis datos
@@ -39,7 +41,9 @@ const DatosPersonales = () => {
 
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-lg bg-white p-8">
-          <h1 className="text-lg font-bold text-gray-800 mb-4 ">Datos Personales</h1>
+          <h1 className="text-lg font-bold text-gray-800 mb-4 ">
+            Datos Personales
+          </h1>
           <p className="text-gray-500 mb-4">
             Puedes ver tus datos y modificar los que creas necesarios
           </p>
@@ -118,11 +122,13 @@ const DatosPersonales = () => {
                 required: "Ingrese tu correo electrónico.",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "No parece una dirección de correo electrónico válida.",
+                  message:
+                    "No parece una dirección de correo electrónico válida.",
                 },
                 maxLength: {
                   value: 100,
-                  message: "Utiliza una dirección de correo electrónico más corta (máximo 100 caracteres).",
+                  message:
+                    "Utiliza una dirección de correo electrónico más corta (máximo 100 caracteres).",
                 },
               }}
               error={errors.email}
@@ -139,6 +145,8 @@ const DatosPersonales = () => {
           </form>
         </div>
       </div>
+      </div>
+      </section>
     </>
   );
 };
