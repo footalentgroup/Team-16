@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Modules.ExamModule
 {
-    [Route("exam")]
+    [Route("exams")]
     [ApiController]
     public class ExamsController : ControllerBase
     {

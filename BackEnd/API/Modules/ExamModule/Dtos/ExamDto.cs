@@ -27,7 +27,6 @@ namespace API.Modules.ExamModule.Dtos
 
   public abstract class ParameterDto
   {
-    public int Id { get; set; }
     public required string Name { get; set; }
     public required string Type { get; set; }
   }

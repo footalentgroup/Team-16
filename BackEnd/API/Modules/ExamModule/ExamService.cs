@@ -53,7 +53,6 @@ namespace API.Modules.ExamModule
                     {
                         return new QualitativeParameterDto
                         {
-                            Id = qualitativeParam.Id,
                             Name = qualitativeParam.Name,
                             Type = qualitativeParam.Type,
                             Reference = qualitativeParam.Reference,
@@ -63,7 +62,6 @@ namespace API.Modules.ExamModule
                     {
                         return new QuantitativeParameterDto
                         {
-                            Id = quantitativeParam.Id,
                             Name = quantitativeParam.Name,
                             Type = quantitativeParam.Type,
                             MinValue = quantitativeParam.MinValue,
@@ -143,7 +141,6 @@ namespace API.Modules.ExamModule
                     {
                         return new QualitativeParameterDto
                         {
-                            Id = qualitativeParam.Id,
                             Name = qualitativeParam.Name,
                             Type = qualitativeParam.Type,
                             Reference = qualitativeParam.Reference,
@@ -153,7 +150,6 @@ namespace API.Modules.ExamModule
                     {
                         return new QuantitativeParameterDto
                         {
-                            Id = quantitativeParam.Id,
                             Name = quantitativeParam.Name,
                             Type = quantitativeParam.Type,
                             MinValue = quantitativeParam.MinValue,
