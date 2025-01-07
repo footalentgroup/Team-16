@@ -67,13 +67,6 @@ namespace API.Modules.AuthModule
             }
         }
 
-        [HttpPost("create-patient")]
-        public async Task<ActionResult<AuthPatientResponseDto>> Create(Patient patient)
-        {
-            await _authService.CreatePatient(patient);
-
-            return Ok();
-        }
 
     }
 }
