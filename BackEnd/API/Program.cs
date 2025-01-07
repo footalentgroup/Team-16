@@ -46,7 +46,6 @@ builder.Services.AddSwaggerGen(c =>
         Type = "object",
         Properties =
         {
-            ["id"] = new OpenApiSchema { Type = "integer" },
             ["name"] = new OpenApiSchema { Type = "string" },
             ["type"] = new OpenApiSchema { Type = "string" },
             ["reference"] = new OpenApiSchema { Type = "string" },
