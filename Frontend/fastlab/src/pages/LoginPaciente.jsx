@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
-
+import { useNavigate } from "react-router-dom";
 const LoginPaciente = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,15 +27,16 @@ const LoginPaciente = () => {
     }
   }, [tipoDocumento]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = /*async */(data) => {
     setIsFormSubmitted(true); 
-    try {
+    navigate('/paciente/inicio');
+   /* try {
       
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Form Submitted Successfully:", data);
     } catch (error) {
       console.error("Submission Error:", error);
-    }
+    } */
   };
 
   return (
@@ -138,8 +141,8 @@ const LoginPaciente = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-[#02807D] hover:bg-teal-600 focus:ring-2 focus:ring-teal-500"
               }`}
-            >
-              {isFormSubmitted ? (
+            > Ingresar
+              {/*isFormSubmitted ? (
                 <div className="flex justify-center items-center">
                   <svg
                     className="animate-spin h-5 w-5 mr-2 text-white"
@@ -165,7 +168,7 @@ const LoginPaciente = () => {
                 </div>
               ) : (
                 "Ingresar"
-              )}
+              )*/}
             </button>
           </form>
         </div>
