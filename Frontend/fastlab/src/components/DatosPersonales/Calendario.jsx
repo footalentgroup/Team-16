@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import { useController } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './calendario.css';
+import "./DatosPersonales/Calendario.css"
 
 // Componente  para input de react-datepicker
 const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref) => (
