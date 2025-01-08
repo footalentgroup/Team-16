@@ -96,7 +96,7 @@ namespace API.Modules.PatientModule
             }
         }
 
-        [HttpPut, Authorize(Roles = Roles.Admin)]
+        [HttpPut, Authorize(Roles = Roles.Admin + "," + Roles.Patient)]
         public async Task<IActionResult> Update([FromBody] PatientUpdateDto patientDto)
         {
             try
