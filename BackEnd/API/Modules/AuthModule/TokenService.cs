@@ -5,7 +5,14 @@ using System.Security.Claims;
 
 namespace API.Modules.AuthModule
 {
-    public class TokenService:ITokenService
+
+    public static class Roles
+    {
+        public const string Admin = "Admin";
+        public const string Patient = "Patient";
+    }
+
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
 
@@ -15,12 +22,13 @@ namespace API.Modules.AuthModule
         }
 
 
-        public string CreateAdminToken(string userId,string userEmail)
+        public string CreateAdminToken(string userId, string userEmail)
         {
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Email, userEmail),
                 new Claim(ClaimTypes.Uri, userId),
+                new Claim(ClaimTypes.Role, Roles.Admin),
             };
 
             return CreateToken(claims);
@@ -32,6 +40,7 @@ namespace API.Modules.AuthModule
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Uri, patientId),
+                new Claim(ClaimTypes.Role, Roles.Patient),
             };
             return CreateToken(claims);
         }
@@ -41,7 +50,12 @@ namespace API.Modules.AuthModule
             var userIdToken = UserClaim.FindFirst(ClaimTypes.Uri)?.Value;
 
             return UserId != Convert.ToInt32(userIdToken);
+        }
 
+        public bool IsPatientToken(int PatientId, ClaimsPrincipal PatientClaim)
+        {
+            var userIdToken = PatientClaim.FindFirst(ClaimTypes.Uri)?.Value;
+            return PatientId != Convert.ToInt32(userIdToken);
         }
 
         private string CreateToken(List<Claim> claims)
@@ -52,7 +66,7 @@ namespace API.Modules.AuthModule
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials: cred
                 );
 

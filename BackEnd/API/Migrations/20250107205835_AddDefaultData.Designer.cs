@@ -3,6 +3,7 @@ using System;
 using API.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250107205835_AddDefaultData")]
+    partial class AddDefaultData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace API.Migrations
                             Email = "admin@gmail.com",
                             LastName = "admin1",
                             Name = "admin1",
-                            Password = "$2a$11$7K2jj5UO0QHUDa1dfagVJuH1JHvqjRAHoe1/M3Flr/oDlkrWxp88O"
+                            Password = "12345678"
                         },
                         new
                         {
@@ -68,63 +71,8 @@ namespace API.Migrations
                             Email = "admin2@gmail.com",
                             LastName = "admin2",
                             Name = "admin2",
-                            Password = "$2a$11$9cBvl7/4CNZJEfYPxloey.lIPdlKiFSt180X8QSc1sJlsS/PMRyy6"
+                            Password = "12345678"
                         });
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.Exam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sample")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exams");
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.ParameterBase", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.ToTable("Parameters");
-
-                    b.HasDiscriminator<string>("Type").HasValue("ParameterBase");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("API.DataBase.Entities.Patient", b =>
@@ -178,7 +126,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$JTk4hTrNFyKOGca/F1OCJOJl5sWVsOAm2p9hjW4S0aCbDlwWHG7Ee",
+                            Password = "$2a$11$noQ8s1RjbkQZwJrNqMQwHOiZ.pkaBFX1LAqOwh8x4JpEFFnO.0uEy",
                             PersonalID = "34098349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -190,7 +138,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$SBru0NyV3wZAQudjKAZm2.B0MYvFAHctkuV/B/3gJdCVcVpDXb/J2",
+                            Password = "$2a$11$JzvfksetW830zaqg163A9OtL2A9Qir93GhQMIay7qNyhFIMJ.Wl5u",
                             PersonalID = "49298349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -202,58 +150,11 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$30.xde363/zzWbr2AILh2ORNZbDqwkkXfXkWRcAVpxbFHgP5gQUuW",
+                            Password = "$2a$11$H/Sg5axHJm57BOraho9jVOX3kZkVt2ENbV2krhDM7uDPIsWEzCFh.",
                             PersonalID = "AA34098349",
                             PersonalIDType = 1,
                             Phone = "+54934245673748"
                         });
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.QualitativeParameter", b =>
-                {
-                    b.HasBaseType("API.DataBase.Entities.ParameterBase");
-
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("qualitative");
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.QuantitativeParameter", b =>
-                {
-                    b.HasBaseType("API.DataBase.Entities.ParameterBase");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
-
-                    b.Property<double>("MaxValue")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("MinValue")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("quantitative");
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.ParameterBase", b =>
-                {
-                    b.HasOne("API.DataBase.Entities.Exam", "Exam")
-                        .WithMany("Parameters")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-                });
-
-            modelBuilder.Entity("API.DataBase.Entities.Exam", b =>
-                {
-                    b.Navigation("Parameters");
                 });
 #pragma warning restore 612, 618
         }
