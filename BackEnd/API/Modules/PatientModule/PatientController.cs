@@ -1,9 +1,11 @@
 using API.DataBase.Context;
 using API.DataBase.Entities;
+using API.Modules.AuthModule;
 using API.Modules.PatientModule.Dtos;
 using API.Modules.PatientModule.Interfaces;
 using API.Shared.Extensions;
 using API.Shared.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +24,7 @@ namespace API.Modules.PatientModule
             _context = context;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -37,7 +39,7 @@ namespace API.Modules.PatientModule
             }
         }
 
-        [HttpGet("search")]
+        [HttpGet("search"), Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Search([FromQuery] string? fullname, [FromQuery] string? personalId)
         {
 
@@ -59,7 +61,7 @@ namespace API.Modules.PatientModule
         }
 
 
-        [HttpGet("get-all")]
+        [HttpGet("get-all"), Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> GetAll()
         {
 
@@ -68,7 +70,7 @@ namespace API.Modules.PatientModule
             return new OkObjectResult(response);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Create(PatientCreateDto patient)
         {
             try
@@ -94,7 +96,7 @@ namespace API.Modules.PatientModule
             }
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Update([FromBody] PatientUpdateDto patientDto)
         {
             try

@@ -34,7 +34,7 @@ namespace API.DataBase.Context
                     Id = 1,
                     Name = "admin1",
                     LastName = "admin1",
-                    Password = "12345678"
+                    Password = BCrypt.Net.BCrypt.HashPassword("12345678")
                 },
                 new Admin()
                 {
@@ -42,7 +42,7 @@ namespace API.DataBase.Context
                     Id = 2,
                     Name = "admin2",
                     LastName = "admin2",
-                    Password = "12345678"
+                    Password = BCrypt.Net.BCrypt.HashPassword("12345678")
                 }
             );
 
