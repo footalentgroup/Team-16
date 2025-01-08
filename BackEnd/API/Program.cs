@@ -10,7 +10,6 @@ using API.Modules.ExamModule.Dtos;
 using API.Modules.PatientModule.Interfaces;
 using API.Modules.PatientModule;
 using System.Reflection;
-using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Swashbuckle.AspNetCore.Filters;

@@ -68,16 +68,17 @@ namespace API.Modules.PatientModule
             return new OkObjectResult(response);
         }
 
-        /// <summary>
-        // endpoint para crear paciente.
-        // en el 
-        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Create(PatientCreateDto patient)
         {
             try
             {
                 var patienResponse = await _patientService.CreatePatient(patient);
+
+                if (patienResponse.Data == null)
+                {
+                    return new BadRequestObjectResult("Algun error inesperado ah ocurrido");
+                };
 
                 return new OkObjectResult(
                             ApiResponse<PatientCredentialsDto>.Ok(

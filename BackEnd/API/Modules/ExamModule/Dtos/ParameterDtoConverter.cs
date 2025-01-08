@@ -23,12 +23,12 @@ public class ParameterDtoConverter : JsonConverter<ParameterDto>
       }
       else
       {
-        throw new JsonException($"Tipo de parametro desconocido: {type}");
+        throw new JsonException($"Tipo de parametro desconocido, acepta 'qualitative' y 'quantitative': {type}");
       }
     }
     else
     {
-      throw new JsonException("Parametro no posee tipo");
+      throw new JsonException("Parametro no posee tipo, debe contener, type: quantitative | qualitative");
     }
   }
 
