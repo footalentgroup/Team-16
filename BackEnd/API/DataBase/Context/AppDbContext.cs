@@ -21,6 +21,11 @@ namespace API.DataBase.Context
             .HasIndex(x => x.PersonalID)
             .IsUnique();
 
+            modelBuilder.Entity<ParameterBase>()
+            .HasDiscriminator<string>("Type")
+            .HasValue<QualitativeParameter>("qualitative")
+            .HasValue<QuantitativeParameter>("quantitative");
+
             modelBuilder.Entity<Admin>()
             .HasData(
                 new Admin()
@@ -84,5 +89,9 @@ namespace API.DataBase.Context
 
         public DbSet<Admin> Admins => Set<Admin>();
         public DbSet<Patient> Patients => Set<Patient>();
+
+        public DbSet<Exam> Exams => Set<Exam>();
+        public DbSet<ParameterBase> Parameters => Set<ParameterBase>();
+
     }
 }

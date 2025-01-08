@@ -26,9 +26,9 @@ const LoginPaciente = () => {
   }, [tipoDocumento]);
 
   const onSubmit = async (data) => {
-    setIsFormSubmitted(true); // Deshabilita el formulario al cargar todo los datos
+    setIsFormSubmitted(true); 
     try {
-      // Simular petición al backend
+      
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Form Submitted Successfully:", data);
     } catch (error) {
@@ -44,6 +44,7 @@ const LoginPaciente = () => {
           <p className="text-gray-500 mb-6">Estás por ingresar como paciente</p>
           <div className="w-full h-[2px] bg-gray-300 mb-6"></div>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            
             {/* Tipo de documento */}
             <div className="mb-4">
               <label htmlFor="tipoDocumento" className="block text-gray-700 text-sm mb-1">
@@ -128,7 +129,7 @@ const LoginPaciente = () => {
               </label>
             </div>
 
-            {/* Botón de enviar */}
+         
             <button
               type="submit"
               disabled={isFormSubmitted}
@@ -170,7 +171,7 @@ const LoginPaciente = () => {
         </div>
       </div>
 
-      {/* Imagen */}
+      
       <div className=" relative h-[95vh] my-4 mr-8">
         <div className="absolute inset-0 bg-[#002739] opacity-60 rounded-xl"></div>
         <img
