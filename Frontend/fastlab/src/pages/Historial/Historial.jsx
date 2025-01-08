@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Breadcrumb from '../../components/navigation/breadcrumb'
-import SearchBar from '../../components/navigation/searchbar'
+import SearchBar from '../../components/navigation/searchBar.jsx'
 import SearchResults from '../../components/navigation/searchResults'
 
 const Historial = () => {
