@@ -1,7 +1,7 @@
 import { LogOut } from 'lucide-react';
 
 
-const OverlayInfoSesion = ({ overlayRef, nameUser, email, imgProfile }) => {
+const OverlayInfoSesion = ({ overlayRef, nameUser,lastName, email, imgProfile }) => {
     const onLogout=()=>{
 
     }
@@ -23,7 +23,8 @@ const OverlayInfoSesion = ({ overlayRef, nameUser, email, imgProfile }) => {
             />
           </div>
           <div className="flex flex-col items-start ">
-              <h2 className="text-[#0E1B27] font-medium text-[1rem]">{nameUser}</h2>
+              <h2 className="text-[#0E1B27] font-medium text-[1rem]">{nameUser} {lastName}</h2>
+           
               <p className="text-[#737373] text-[12px] font-normal">{email}</p>
           </div>
           </div>

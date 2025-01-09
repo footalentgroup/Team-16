@@ -1,7 +1,7 @@
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import OverlayInfoSesion from "./OverlayInfoSesion";
-const InfoSesion = ({ nameUser, email, imgProfile }) => {
+const InfoSesion = ({ nameUser, email, imgProfile ,lastName}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleButtonRef = useRef(null); // Referencia al botón de alternar
 
@@ -54,6 +54,7 @@ const InfoSesion = ({ nameUser, email, imgProfile }) => {
       </article>
       {isOpen && <OverlayInfoSesion 
       nameUser={nameUser}
+      lastName={lastName}
       email={email}
       overlayRef={overlayRef} 
         imgProfile={imgProfile}

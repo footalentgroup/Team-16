@@ -46,10 +46,14 @@ const LoginPaciente = () => {
           login({
             id: result.data.id,
             name: result.data.firstName,
+            lastName: result.data.lastName,
             email: result.data.email,
+            phone: result.data.phone,
+            birth: result.data.birth, // Incluye fecha de nacimiento
             token: result.data.token,
           })
         );
+        
         navigate("/paciente/inicio");
       } else {
         dispatch(setError(result.message || "Error al iniciar sesión"));
