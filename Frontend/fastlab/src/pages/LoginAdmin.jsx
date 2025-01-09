@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom"; 
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // URL del backend
+const BACKEND_URL = import.meta.env.VITE_API_URL; 
 
 const LoginAdmin = () => {
   const {
@@ -14,11 +14,11 @@ const LoginAdmin = () => {
   } = useForm();
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const navigate = useNavigate(); 
 
   const onSubmit = async (data) => {
-    setIsFormSubmitted(true); // Deshabilita el formulario mientras se envían los datos
-    let text = ""; // Declara la variable text
+    setIsFormSubmitted(true); 
+    let text = "";
 
     try {
       const response = await fetch(`${BACKEND_URL}/auth/admin-login`, {

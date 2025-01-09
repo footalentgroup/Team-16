@@ -1,21 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // Importar useSelector
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Calendario from "./Calendario";
 import LoginInput from "../LoginInput/LoginInput";
 import Breadcrumb from "../navigation/breadcrumb";
+
 const DatosPersonales = () => {
   const {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const [formData, setFormData] = useState({});
+  // Obtén los datos del usuario desde el store
+  const user = useSelector((state) => state.user);
+  console.log("Datos del usuario desde Redux:", user);
+  useEffect(() => {
+    // Rellenar el formulario con los datos del usuario desde Redux
+    if (user) {
+      setValue("nombres", user.name || "");
+      setValue("apellidos", user.lastName || "");
+      setValue("telefono", user.phone || "");
+      setValue("fechaNacimiento", user.birth ? new Date(user.birth) : null); 
+      setValue("email", user.email || "");
+    }
+  }, [user, setValue]);
+
   const onSubmit = (data) => {
-    setFormData(data);
     toast.success("Se actualizaron los datos correctamente", {
       position: "top-right",
       autoClose: 3000,
@@ -26,126 +41,126 @@ const DatosPersonales = () => {
       progress: undefined,
     });
     console.log("Formulario enviado:", data);
+
   };
 
   return (
     <>
-    <section className="flex min-h-screen bg-gray-50">
-    <div className="flex-1 p-8">
-      <ToastContainer />
-      <Breadcrumb first={"Paciente"} second={"Mis Datos"} />
+      <section className="flex min-h-screen bg-gray-50">
+        <div className="flex-1 p-8">
+          <ToastContainer />
+          <Breadcrumb first={"Paciente"} second={"Mis Datos"} />
 
-      <h1 className="text-2xl font-bold text-gray-800  w-1/4  flex justify-center mt-14">
-        Mis datos
-      </h1>
-
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="w-full max-w-lg bg-white p-8">
-          <h1 className="text-lg font-bold text-gray-800 mb-4 ">
-            Datos Personales
+          <h1 className="text-2xl font-bold text-gray-800 w-1/4 flex justify-center mt-14">
+            Mis datos
           </h1>
-          <p className="text-gray-500 mb-4">
-            Puedes ver tus datos y modificar los que creas necesarios
-          </p>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Nombres */}
-            <LoginInput
-              label="Nombres"
-              id="nombres"
-              name="nombres"
-              placeholder="Ejemplo: Juan José"
-              defaultValue={formData.nombres || ""}
-              register={register}
-              rules={{
-                required: "Este campo es obligatorio.",
-                minLength: {
-                  value: 2,
-                  message: "El nombre debe tener al menos 2 caracteres.",
-                },
-              }}
-              error={errors.nombres}
-            />
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="w-full max-w-lg bg-gray-50 p-8">
+              <h1 className="text-lg font-bold text-gray-800 mb-4">
+                Datos Personales
+              </h1>
+              <p className="text-gray-500 mb-4">
+                Puedes ver tus datos y modificar los que creas necesarios
+              </p>
 
-            {/* Apellidos */}
-            <LoginInput
-              label="Apellidos"
-              id="apellidos"
-              name="apellidos"
-              placeholder="Ejemplo: Campos Estrada"
-              defaultValue={formData.apellidos || ""}
-              register={register}
-              rules={{
-                required: "Este campo es obligatorio.",
-                minLength: {
-                  value: 2,
-                  message: "El apellido debe tener al menos 2 caracteres.",
-                },
-              }}
-              error={errors.apellidos}
-            />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {/* Nombres */}
+                <LoginInput
+                  label="Nombres"
+                  id="nombres"
+                  name="nombres"
+                  placeholder="Ejemplo: Juan José"
+                  register={register}
+                  defaultValue={user.name} // Agregar defaultValue por seguridad
+                  rules={{
+                    required: "Este campo es obligatorio.",
+                    minLength: {
+                      value: 2,
+                      message: "El nombre debe tener al menos 2 caracteres.",
+                    },
+                  }}
+                  error={errors.nombres}
+                />
 
-            {/* Teléfono */}
-            <LoginInput
-              label="Teléfono"
-              id="telefono"
-              name="telefono"
-              placeholder="Ejemplo: +54 999 999 999"
-              defaultValue={formData.telefono || ""}
-              register={register}
-              rules={{
-                required: "Formato incorrecto.",
-                pattern: {
-                  value: /^\+?\d{9,15}$/,
-                  message: "El formato debe ser válido, ej: +54 999 999 999",
-                },
-              }}
-              error={errors.telefono}
-            />
+                <LoginInput
+                  label="Apellidos"
+                  id="apellidos"
+                  name="apellidos"
+                  placeholder="Ejemplo: Campos Estrada"
+                  register={register}
+                  defaultValue={user.lastName} // Agregar defaultValue por seguridad
+                  rules={{
+                    required: "Este campo es obligatorio.",
+                    minLength: {
+                      value: 2,
+                      message: "El apellido debe tener al menos 2 caracteres.",
+                    },
+                  }}
+                  error={errors.apellidos}
+                />
 
-            {/* Fecha de nacimiento */}
-            <Calendario
-              control={control}
-              name="fechaNacimiento"
-              placeholder="Selecciona la fecha de nacimiento"
-            />
 
-            {/* Correo electrónico */}
-            <LoginInput
-              label="Correo electrónico"
-              id="email"
-              name="email"
-              placeholder="Ejemplo: email@email.com"
-              defaultValue={formData.email || ""}
-              register={register}
-              rules={{
-                required: "Ingrese tu correo electrónico.",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message:
-                    "No parece una dirección de correo electrónico válida.",
-                },
-                maxLength: {
-                  value: 100,
-                  message:
-                    "Utiliza una dirección de correo electrónico más corta (máximo 100 caracteres).",
-                },
-              }}
-              error={errors.email}
-            />
 
-            <div className="flex w-full justify-end mt-8">
-              <button
-                type="submit"
-                className="w-2/5 bg-[#02807D] text-white font-semibold py-2 px-4 rounded-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
-              >
-                Guardar
-              </button>
+
+                {/* Fecha de nacimiento */}
+                <Calendario
+                  control={control}
+                  name="fechaNacimiento"
+                  placeholder="Selecciona la fecha de nacimiento"
+                />
+
+                <LoginInput
+                  label="Teléfono"
+                  id="telefono"
+                  name="telefono"
+                  placeholder="Ejemplo: +54 999 999 999"
+                  register={register}
+                  defaultValue={user.phone || ""} // Asignar el valor desde Redux
+                  rules={{
+                    required: "Formato incorrecto.",
+                    pattern: {
+                      value: /^\+?\d{9,15}$/,
+                      message: "El formato debe ser válido, ej: +54 999 999 999",
+                    },
+                  }}
+                  error={errors.telefono}
+                />
+
+                <LoginInput
+                  label="Correo electrónico"
+                  id="email"
+                  name="email"
+                  placeholder="Ejemplo: email@email.com"
+                  register={register}
+                  defaultValue={user.email || ""} // Asignar el valor desde Redux
+                  rules={{
+                    required: "Ingrese tu correo electrónico.",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "No parece una dirección de correo electrónico válida.",
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: "Máximo 100 caracteres.",
+                    },
+                  }}
+                  error={errors.email}
+                />
+
+
+                <div className="flex w-full justify-end mt-8">
+                  <button
+                    type="submit"
+                    className="w-2/5 bg-[#02807D] text-white font-semibold py-2 px-4 rounded-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+                  >
+                    Guardar
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-      </div>
       </section>
     </>
   );

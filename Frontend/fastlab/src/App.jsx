@@ -5,6 +5,9 @@ import LoginAdmin from './pages/LoginAdmin';
 import PacienteInicio from './pages/PacienteInicio';
 import PacienteHistorial from './pages/PacienteHistorial';
 import PacienteMisDatos from './pages/PacienteMisDatos';
+import AdminPedidos from './pages/AdminPedidos/AdminPedidos';
+import AdminResultados from './pages/AdminResultados/AdminResultados';
+import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion';
 
 
 function App() {
@@ -20,6 +23,10 @@ function App() {
         <Route path='/paciente/historial' element={<PacienteHistorial />} />
         <Route path='/paciente/misdatos' element={<PacienteMisDatos />} />
 
+        {/* rutas para el admin */}
+        <Route path='/admin/pedidos' element={<AdminPedidos/>} />
+        <Route path='/admin/resultados' element={<AdminResultados/>} />
+        <Route path='/admin/configuracion' element={<AdminConfiguracion/>} />
 
       </Routes>
     </Router>

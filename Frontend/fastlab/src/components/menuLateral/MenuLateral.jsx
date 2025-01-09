@@ -3,11 +3,15 @@ import InfoSesion from "./InfoSesion";
 import "./menu-lateral.css";
 import MenuItem from "./MenuItem";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux"; // Importa el hook useSelector
 
 const MenuLateral = ({ items }) => {
   const location = useLocation(); // Hook para obtener la ruta actual.
 
-  console.log(items);
+  // Obtén el estado del usuario desde el store
+  const user = useSelector((state) => state.user);
+  console.log("Estado actual del usuario:", user);
+
   return (
     <nav className="sidebar">
       <div className="container-menu">
@@ -27,8 +31,9 @@ const MenuLateral = ({ items }) => {
                 <MenuItem
                   key={`menu-item-${i}`}
                   name={item.name}
+                
                   icon={item.componentIcon}
-                  isSelected={item.route == location.pathname}
+                  isSelected={location.pathname.startsWith(item.route)}
                   route={item.route}
                 />
               ))}
@@ -37,13 +42,15 @@ const MenuLateral = ({ items }) => {
         </div>
         <div className="w-full p-5 flex justify-center items-center">
           <InfoSesion
-            nameUser={'José Estrada'}
-            email={"joseestrada@gmail.com"}
-            imgProfile={"/src/assets/perfil.png"}
+            nameUser={user.name + " " + user.lastName} 
+             // Usa el nombre del usuario o un valor por defecto
+            email={user.email || "Sin correo"} // Usa el correo del usuario o un valor por defecto
+            imgProfile={"/src/assets/perfil.png"} // Puedes reemplazarlo con una imagen dinámica si lo deseas
           />
         </div>
       </div>
     </nav>
   );
 };
+
 export default MenuLateral;
