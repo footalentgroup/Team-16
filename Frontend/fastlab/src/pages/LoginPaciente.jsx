@@ -4,9 +4,13 @@ import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 import { useNavigate } from "react-router-dom";
 
+
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
+
 const LoginPaciente = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -61,18 +65,11 @@ const LoginPaciente = () => {
       if (response.ok) {
         console.log("Login exitoso:", result);
         localStorage.setItem("token", result.data.token); // Guarda el token para futuras solicitudes
-      
-        navigate("/paciente/inicio"); // Redirige al dashboard
-      } else {
-        console.error("Error de autenticación:", result);
-        alert(result.message || "Error al iniciar sesión");
-      }
-    } catch (error) {
-      console.error("Error de conexión:", error);
-      alert("Error de conexión con el servidor.");
-    } finally {
-      setIsFormSubmitted(false);
-    }
+
+  const onSubmit = /*async */(data) => {
+    setIsFormSubmitted(true); 
+    navigate('/paciente/inicio');
+
   };
   
   return (
@@ -175,8 +172,8 @@ const LoginPaciente = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-[#02807D] hover:bg-teal-600 focus:ring-2 focus:ring-teal-500"
               }`}
-            >
-              {isFormSubmitted ? (
+            > Ingresar
+              {/*isFormSubmitted ? (
                 <div className="flex justify-center items-center">
                   <svg
                     className="animate-spin h-5 w-5 mr-2 text-white"
@@ -202,7 +199,7 @@ const LoginPaciente = () => {
                 </div>
               ) : (
                 "Ingresar"
-              )}
+              )*/}
             </button>
           </form>
         </div>
