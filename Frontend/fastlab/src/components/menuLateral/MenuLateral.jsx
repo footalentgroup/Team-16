@@ -28,7 +28,7 @@ const MenuLateral = ({ items }) => {
                   key={`menu-item-${i}`}
                   name={item.name}
                   icon={item.componentIcon}
-                  isSelected={item.route == location.pathname}
+                  isSelected={location.pathname.startsWith(item.route)}
                   route={item.route}
                 />
               ))}
