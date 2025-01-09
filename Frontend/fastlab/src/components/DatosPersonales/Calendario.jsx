@@ -12,9 +12,8 @@ const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref
       onClick={onClick}
       value={value}
       placeholder={placeholder}
-      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-        hasError ? "border-red-500 placeholder-red-500 focus:ring-red-500" : "focus:ring-teal-500 border-gray-300"
-      }`}
+      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${hasError ? "border-red-500 placeholder-red-500 focus:ring-red-500" : "focus:ring-teal-500 border-gray-300"
+        }`}
     />
   </div>
 ));
@@ -35,9 +34,9 @@ const Calendario = ({ control, name, placeholder }) => {
         Fecha de nacimiento
       </label>
       <DatePicker
-        selected={value}
-        onChange={(date) => onChange(date)} 
-        onBlur={onBlur} 
+        selected={value ? new Date(value) : null} // Convierte el valor a Date si existe
+        onChange={(date) => onChange(date)}
+        onBlur={onBlur}
         dateFormat="dd/MM/yyyy"
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
@@ -47,6 +46,7 @@ const Calendario = ({ control, name, placeholder }) => {
           />
         }
       />
+
       {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
     </div>
   );

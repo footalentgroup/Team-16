@@ -10,6 +10,7 @@ const MenuLateral = ({ items }) => {
 
   // Obtén el estado del usuario desde el store
   const user = useSelector((state) => state.user);
+  console.log("Estado actual del usuario:", user);
 
   return (
     <nav className="sidebar">
@@ -30,6 +31,7 @@ const MenuLateral = ({ items }) => {
                 <MenuItem
                   key={`menu-item-${i}`}
                   name={item.name}
+                
                   icon={item.componentIcon}
                   isSelected={location.pathname.startsWith(item.route)}
                   route={item.route}
@@ -40,7 +42,8 @@ const MenuLateral = ({ items }) => {
         </div>
         <div className="w-full p-5 flex justify-center items-center">
           <InfoSesion
-            nameUser={user.name || "Usuario Anónimo"} // Usa el nombre del usuario o un valor por defecto
+            nameUser={user.name + " " + user.lastName} 
+             // Usa el nombre del usuario o un valor por defecto
             email={user.email || "Sin correo"} // Usa el correo del usuario o un valor por defecto
             imgProfile={"/src/assets/perfil.png"} // Puedes reemplazarlo con una imagen dinámica si lo deseas
           />
