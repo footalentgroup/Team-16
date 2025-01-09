@@ -3,6 +3,11 @@ import { useForm } from "react-hook-form";
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 import { useNavigate } from "react-router-dom";
+
+
+const BACKEND_URL = import.meta.env.VITE_API_URL;
+
+
 const LoginPaciente = () => {
   const navigate = useNavigate();
 
@@ -11,14 +16,15 @@ const LoginPaciente = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-    setValue,
   } = useForm();
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [placeholder, setPlaceholder] = useState("Ejemplo: 12345678");
+  const navigate = useNavigate();
 
   const tipoDocumento = watch("tipoDocumento", "");
 
+  // Cambiar placeholder basado en tipo de documento
   React.useEffect(() => {
     if (tipoDocumento === "Pasaporte") {
       setPlaceholder("Ejemplo: AAF532592");
@@ -27,18 +33,45 @@ const LoginPaciente = () => {
     }
   }, [tipoDocumento]);
 
+  // Manejo del envío del formulario
+  const onSubmit = async (data) => {
+    setIsFormSubmitted(true);
+  
+    try {
+      const response = await fetch(`${BACKEND_URL}/auth/patient-login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          personalID: data.documento, // Número de documento
+          personalIDType: data.tipoDocumento, // Tipo de documento
+          password: data.password, // Contraseña
+        }),
+      });
+  
+      const status = response.status;
+      console.log("Response Status:", status);
+  
+      let result;
+      try {
+        result = await response.json(); // Directamente como JSON
+        console.log("Response Body:", result);
+      } catch (error) {
+        console.error("Error al parsear la respuesta:", error);
+        result = { message: "Respuesta no válida del servidor" };
+      }
+  
+      if (response.ok) {
+        console.log("Login exitoso:", result);
+        localStorage.setItem("token", result.data.token); // Guarda el token para futuras solicitudes
+
   const onSubmit = /*async */(data) => {
     setIsFormSubmitted(true); 
     navigate('/paciente/inicio');
-   /* try {
-      
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Form Submitted Successfully:", data);
-    } catch (error) {
-      console.error("Submission Error:", error);
-    } */
-  };
 
+  };
+  
   return (
     <div className="flex justify-around items-center min-h-screen">
       <div className="w-[60%] p-14 ml-14">
@@ -47,7 +80,6 @@ const LoginPaciente = () => {
           <p className="text-gray-500 mb-6">Estás por ingresar como paciente</p>
           <div className="w-full h-[2px] bg-gray-300 mb-6"></div>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            
             {/* Tipo de documento */}
             <div className="mb-4">
               <label htmlFor="tipoDocumento" className="block text-gray-700 text-sm mb-1">
@@ -132,7 +164,6 @@ const LoginPaciente = () => {
               </label>
             </div>
 
-         
             <button
               type="submit"
               disabled={isFormSubmitted}
@@ -174,9 +205,7 @@ const LoginPaciente = () => {
         </div>
       </div>
 
-      
-      <div className=" relative h-[95vh] my-4 mr-8">
-        <div className="absolute inset-0 bg-[#002739] opacity-60 rounded-xl"></div>
+      <div className="relative h-[95vh] my-4 mr-8">
         <img
           src={imgLogin}
           alt="Fastlab"
