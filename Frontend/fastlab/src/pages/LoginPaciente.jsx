@@ -29,6 +29,7 @@ const LoginPaciente = () => {
     }
   }, [tipoDocumento]);
 
+  // Manejo del envío del formulario
   const onSubmit = async (data) => {
     setIsFormSubmitted(true);
   
@@ -39,39 +40,32 @@ const LoginPaciente = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          authPatientRequestDto: {
-            personalID: data.documento, // Equivalente a personalID
-            personalIDType: data.tipoDocumento, // Equivalente a personalIDType
-          },
-          password: data.password, // La contraseña enviada directamente
+          personalID: data.documento, // Número de documento
+          personalIDType: data.tipoDocumento, // Tipo de documento
+          password: data.password, // Contraseña
         }),
       });
   
       const status = response.status;
-      const contentType = response.headers.get("Content-Type");
       console.log("Response Status:", status);
-      console.log("Content-Type:", contentType);
   
       let result;
-      let text;
-  
       try {
-        text = await response.text();
-        console.log("Raw Response Text:", text);
-        result = JSON.parse(text);
+        result = await response.json(); // Directamente como JSON
+        console.log("Response Body:", result);
       } catch (error) {
-        console.error("Respuesta no es JSON, manejando como texto");
-        result = { message: text };
+        console.error("Error al parsear la respuesta:", error);
+        result = { message: "Respuesta no válida del servidor" };
       }
   
       if (response.ok) {
         console.log("Login exitoso:", result);
-        localStorage.setItem("token", result.token);
-        alert("¡Login exitoso!");
-        navigate("/dashboard");
+        localStorage.setItem("token", result.data.token); // Guarda el token para futuras solicitudes
+        
+        navigate("/paciente/inicio"); 
       } else {
         console.error("Error de autenticación:", result);
-        alert(result.title || "Error al iniciar sesión");
+        alert(result.message || "Error al iniciar sesión");
       }
     } catch (error) {
       console.error("Error de conexión:", error);
@@ -81,7 +75,6 @@ const LoginPaciente = () => {
     }
   };
   
-
   return (
     <div className="flex justify-around items-center min-h-screen">
       <div className="w-[60%] p-14 ml-14">
