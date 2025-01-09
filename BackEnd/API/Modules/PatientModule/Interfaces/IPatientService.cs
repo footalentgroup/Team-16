@@ -11,8 +11,10 @@ namespace API.Modules.PatientModule.Interfaces
 
         Task<ServiceResult<PatientUpdateDto>> UpdatePatient(PatientUpdateDto patientUpdate);
 
-        Task<ServiceResult<Patient>> FindById(int id);
-        Task<ServiceResult<List<Patient>>> Search(string? fullname, string? personalId);
+        Task<ServiceResult<PatientResponseDto>> FindById(int id);
+        Task<ServiceResult<List<PatientResponseDto>>> Search(string? fullname, string? personalId);
+
+        Task<ServiceResult<List<PatientResponseDto>>> GetAll();
 
     }
 }

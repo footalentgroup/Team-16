@@ -16,12 +16,10 @@ namespace API.Modules.PatientModule
     public class PatientController
     {
         private readonly IPatientService _patientService;
-        private readonly AppDbContext _context;
 
         public PatientController(IPatientService patientService, AppDbContext context)
         {
-            _patientService = patientService;
-            _context = context;
+            _patientService = patientService; ;
         }
 
         [HttpGet("{id}"), Authorize(Roles = Roles.Admin)]
@@ -65,7 +63,7 @@ namespace API.Modules.PatientModule
         public async Task<IActionResult> GetAll()
         {
 
-            var response = await _context.Patients.ToListAsync();
+            var response = await _patientService.GetAll();
 
             return new OkObjectResult(response);
         }
