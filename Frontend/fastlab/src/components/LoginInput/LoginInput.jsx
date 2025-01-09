@@ -1,10 +1,11 @@
-const LoginInput = ({ label, id, name, placeholder, register, rules, error }) => {
+const LoginInput = ({ label, id, name, placeholder, register, rules, error, type }) => {
   return (
     <div className="mb-4">
       <label htmlFor={id} className="block text-sm text-gray-700 mb-1">
         {label}
       </label>
       <input
+        type={type}
         id={id}
         name={name}
         placeholder={placeholder}

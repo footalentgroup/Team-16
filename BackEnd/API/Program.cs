@@ -2,15 +2,27 @@ using API.DataBase.Context;
 using API.Modules.AuthModule.Interfaces;
 using API.Modules.AuthModule;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using API.Modules.ExamModule.Interfaces;
+using API.Modules.ExamModule;
+using API.Modules.ExamModule.Dtos;
 using API.Modules.PatientModule.Interfaces;
 using API.Modules.PatientModule;
 using System.Reflection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new ParameterDtoConverter());
+    });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -30,15 +42,52 @@ builder.Services.AddDbContext<AppDbContext>(p => p.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Settings:Token").Value!)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.MapType<ParameterDto>(() => new OpenApiSchema
+    {
+        Type = "object",
+        Properties =
+        {
+            ["name"] = new OpenApiSchema { Type = "string" },
+            ["type"] = new OpenApiSchema { Type = "string" },
+            ["reference"] = new OpenApiSchema { Type = "string" },
+            ["minValue"] = new OpenApiSchema { Type = "number", Format = "float" },
+            ["maxValue"] = new OpenApiSchema { Type = "number", Format = "float" },
+            ["unit"] = new OpenApiSchema { Type = "string" },
+            ["gender"] = new OpenApiSchema { Type = "string" },
+        }
+    });
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
+
+
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
 

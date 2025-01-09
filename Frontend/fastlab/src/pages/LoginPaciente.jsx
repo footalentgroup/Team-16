@@ -4,9 +4,13 @@ import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 import { useNavigate } from "react-router-dom";
 
+
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
+
 const LoginPaciente = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -16,7 +20,7 @@ const LoginPaciente = () => {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [placeholder, setPlaceholder] = useState("Ejemplo: 12345678");
-  const navigate = useNavigate();
+
 
   const tipoDocumento = watch("tipoDocumento", "");
 
@@ -175,34 +179,7 @@ const LoginPaciente = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-[#02807D] hover:bg-teal-600 focus:ring-2 focus:ring-teal-500"
               }`}
-            >
-              {isFormSubmitted ? (
-                <div className="flex justify-center items-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-2 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    ></path>
-                  </svg>
-                  Cargando...
-                </div>
-              ) : (
-                "Ingresar"
-              )}
+            > Ingresar
             </button>
           </form>
         </div>
