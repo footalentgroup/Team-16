@@ -13,6 +13,9 @@ using System.Reflection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Swashbuckle.AspNetCore.Filters;
+using API.Modules.ResultModule.Interfaces;
+using API.Modules.ResultModule;
+using API.Shared.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +47,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IResultService, ResultService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

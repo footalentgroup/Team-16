@@ -26,6 +26,11 @@ namespace API.DataBase.Context
             .HasValue<QualitativeParameter>("qualitative")
             .HasValue<QuantitativeParameter>("quantitative");
 
+            modelBuilder.Entity<Result>()
+            .HasDiscriminator<string>("Type")
+            .HasValue<QualitativeResult>("qualitative")
+            .HasValue<QuantitativeResult>("quantitative");
+
             modelBuilder.Entity<Admin>()
             .HasData(
                 new Admin()
@@ -92,6 +97,8 @@ namespace API.DataBase.Context
 
         public DbSet<Exam> Exams => Set<Exam>();
         public DbSet<ParameterBase> Parameters => Set<ParameterBase>();
+
+        public DbSet<Result> Results => Set<Result>();
 
     }
 }
