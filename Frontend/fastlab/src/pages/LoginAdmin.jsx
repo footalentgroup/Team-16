@@ -46,7 +46,7 @@ const LoginAdmin = () => {
         console.log("Login exitoso:", result);
         localStorage.setItem("token", result.token); // Guarda el token si existe
         alert("¡Login exitoso!");
-        navigate("/dashboard"); // Redirige a la página deseada (ejemplo: /dashboard)
+        navigate("/admin/pedidos"); // Redirige a la página deseada (ejemplo: /dashboard)
       } else {
         console.error("Error de autenticación:", result);
         alert(result.message || "Error al iniciar sesión");
