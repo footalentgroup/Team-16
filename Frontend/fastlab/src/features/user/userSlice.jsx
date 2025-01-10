@@ -16,12 +16,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      const { id, name, lastName, email, phone, token } = action.payload;
+      const { id, name, lastName, email, phone,birth, token } = action.payload;
       state.id = id;
       state.name = name;
       state.lastName = lastName; // Guarda el apellido
       state.email = email;
       state.phone = phone; // Guarda el teléfono
+      state.birth = birth;
       state.token = token;
       state.isAuthenticated = true;
     },
@@ -31,6 +32,7 @@ const userSlice = createSlice({
       state.lastName = '';
       state.email = '';
       state.phone = '';
+      state.birth = birth;
       state.token = null;
       state.isAuthenticated = false;
     },
