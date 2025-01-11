@@ -6,19 +6,20 @@ namespace API.DataBase.Entities
 
         public required string Type { get; set; }
 
-        public required Exam Exam { get; set; }
+        public Exam Exam { get; set; }
 
         public int ExamId { get; set; }
 
-        public required Patient Patient { get; set; }
+        public Report Report { get; set; }
 
-        public int PatientId { get; set; }
+        public int ReportId { get; set; }
 
-        public required ParameterBase Parameter { get; set; }
+        public ParameterBase Parameter { get; set; }
 
         public int ParameterId { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime? DateResult { get; set; }
+
     }
 
     public class QualitativeResult : Result
