@@ -11,8 +11,6 @@
     {
         public required string PersonalID { get; set; }
 
-        public required string PersonalIDType { get; set; }
-
         public required string Password { get; set; }
     }
 }

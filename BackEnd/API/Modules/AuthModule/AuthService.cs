@@ -55,20 +55,33 @@ namespace API.Modules.AuthModule
 
         public async Task<ServiceResult<AuthPatientResponseDto>> LoginPatient(AuthPatientRequestDto authPatientRequestDto)
         {
-
-            var patient = await _context.Patients.FirstOrDefaultAsync(patient => patient.PersonalID == authPatientRequestDto.PersonalID);
-
-            if (patient == null || !ValidatePassword(authPatientRequestDto.Password, patient.Password))
+            try
             {
-                return ServiceResult<AuthPatientResponseDto>.FailedResult(StatusCodes.Status401Unauthorized, "Email o Contraseña incorrectos");
+
+                var patient = await _context.Patients.FirstOrDefaultAsync(patient => patient.PersonalID == authPatientRequestDto.PersonalID);
+
+                if (patient == null || !ValidatePassword(authPatientRequestDto.Password, patient.Password))
+                {
+                    return ServiceResult<AuthPatientResponseDto>.FailedResult(StatusCodes.Status401Unauthorized, "Email o Contraseña incorrectos");
+                }
+
+                return ServiceResult<AuthPatientResponseDto>.SuccessResult(new AuthPatientResponseDto()
+                {
+                    LastName = patient.LastName,
+                    FirstName = patient.FirstName,
+                    Token = _tokenService.CreatePatientToken(patient.Id.ToString()),
+                    Id = patient.Id,
+                    Email = patient.Email,
+                    Birth = patient.Birth,
+                    Phone = patient.Phone
+                });
             }
-
-            return ServiceResult<AuthPatientResponseDto>.SuccessResult(new AuthPatientResponseDto()
+            catch (Exception ex)
             {
-                LastName = patient.LastName,
-                FirstName = patient.FirstName,
-                Token = _tokenService.CreatePatientToken(patient.Id.ToString())
-            });
+
+                Console.WriteLine(ex.Message + ex.InnerException);
+                throw new Exception(ex.Message);
+            }
         }
 
 

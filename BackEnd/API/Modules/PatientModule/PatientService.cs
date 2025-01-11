@@ -65,7 +65,7 @@ namespace API.Modules.PatientModule
             }
         }
 
-        public async Task<ServiceResult<Patient>> FindById(int id)
+        public async Task<ServiceResult<PatientResponseDto>> FindById(int id)
         {
             try
             {
@@ -74,22 +74,23 @@ namespace API.Modules.PatientModule
 
                 if (patient == null)
                 {
-                    return ServiceResult<Patient>.FailedResult(StatusCodes.Status404NotFound, "Patient not found");
+                    return ServiceResult<PatientResponseDto>.FailedResult(StatusCodes.Status404NotFound, "Patient not found");
 
                 }
 
-                return ServiceResult<Patient>.SuccessResult(patient);
+                var patientDto = _mapper.Map<PatientResponseDto>(patient);
+                return ServiceResult<PatientResponseDto>.SuccessResult(patientDto);
             }
             catch (Exception ex)
             {
-                return ServiceResult<Patient>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message);
+                return ServiceResult<PatientResponseDto>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message);
 
             }
 
 
         }
 
-        public async Task<ServiceResult<List<Patient>>> Search(string? fullname, string? personalId)
+        public async Task<ServiceResult<List<PatientResponseDto>>> Search(string? fullname, string? personalId)
         {
             try
             {
@@ -113,13 +114,22 @@ namespace API.Modules.PatientModule
 
                 List<Patient> patients = await query.ToListAsync();
 
-                return ServiceResult<List<Patient>>.SuccessResult(patients);
+                var patienDto = _mapper.Map<List<PatientResponseDto>>(patients);
+                return ServiceResult<List<PatientResponseDto>>.SuccessResult(patienDto);
             }
             catch (Exception ex)
             {
-                return ServiceResult<List<Patient>>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message);
+                return ServiceResult<List<PatientResponseDto>>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message);
 
             }
+        }
+
+        public async Task<ServiceResult<List<PatientResponseDto>>> GetAll()
+        {
+
+            var response = await _dbSet.ToListAsync();
+
+            return ServiceResult<List<PatientResponseDto>>.SuccessResult(_mapper.Map<List<PatientResponseDto>>(response));
         }
         private string CreatePassword()
         {
