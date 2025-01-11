@@ -49,8 +49,9 @@ const LoginPaciente = () => {
             lastName: result.data.lastName,
             email: result.data.email,
             phone: result.data.phone,
-            birth: result.data.birth, // Incluye fecha de nacimiento
+            birth: result.data.birth, 
             token: result.data.token,
+            role: 'Patient',
           })
         );
         
