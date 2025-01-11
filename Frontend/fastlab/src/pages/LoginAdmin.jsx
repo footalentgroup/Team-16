@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux"; // Importar useDispatch para manejar el estado global
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../features/admin/adminSlice"; // Importar la acción de login para el administrador
+import { login } from "../features/admin/adminSlice"; 
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const LoginAdmin = () => {
-  const dispatch = useDispatch(); // Inicializar el dispatch de Redux
+  const dispatch = useDispatch(); 
   const navigate = useNavigate();
 
   const {
@@ -21,7 +21,7 @@ const LoginAdmin = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const onSubmit = async (data) => {
-    setIsFormSubmitted(true); // Bloquea el formulario mientras se envía
+    setIsFormSubmitted(true); 
 
     try {
       const response = await fetch(`${BACKEND_URL}/auth/admin-login`, {
@@ -39,7 +39,7 @@ const LoginAdmin = () => {
         const result = await response.json();
         console.log("Login exitoso:", result);
 
-        // Despacha el estado del administrador al Redux store
+        
         dispatch(
           login({
             id: result.data.id,
@@ -50,7 +50,7 @@ const LoginAdmin = () => {
           })
         );
 
-        // Redirige al administrador a su panel de control
+        
         navigate("/admin/pedidos");
       } else {
         const errorResult = await response.json();
@@ -60,7 +60,7 @@ const LoginAdmin = () => {
       console.error("Error de conexión:", error);
       alert("Error de conexión con el servidor.");
     } finally {
-      setIsFormSubmitted(false); // Habilita el formulario
+      setIsFormSubmitted(false); 
     }
   };
 

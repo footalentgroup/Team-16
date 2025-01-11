@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 const SearchBar = ({ onSearch }) => {
-  const [fullname, setFullname] = useState(""); // Solo necesitamos un campo para buscar por nombre/apellido.
+  const [fullname, setFullname] = useState(""); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch({ fullname }); // Pasamos el texto al buscar.
+    onSearch({ fullname }); 
   };
 
   return (

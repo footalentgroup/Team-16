@@ -12,7 +12,7 @@ const AdminPatientSearch = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Cargar todos los pacientes al montar el componente
+  
   useEffect(() => {
     const fetchAllPatients = async () => {
       setLoading(true);
@@ -30,7 +30,7 @@ const AdminPatientSearch = () => {
         if (response.ok) {
           const result = await response.json();
           setPatients(result.data || []);
-          setFilteredPatients(result.data || []); // Inicialmente mostramos todos
+          setFilteredPatients(result.data || []); 
         } else {
           setError("Error al cargar los pacientes.");
         }
@@ -45,18 +45,18 @@ const AdminPatientSearch = () => {
     fetchAllPatients();
   }, []);
 
-  // Manejar búsqueda con el endpoint `/patient/search`
+  
   const handleSearch = (query) => {
     const { fullname } = query;
   
     if (!fullname) {
-      setFilteredPatients(allPatients); // Si no hay texto en el buscador, mostrar todos los pacientes.
+      setFilteredPatients(allPatients);
       return;
     }
   
     const filtered = allPatients.filter((patient) => {
       const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
-      return fullName.includes(fullname.toLowerCase()); // Filtrar por coincidencias parciales.
+      return fullName.includes(fullname.toLowerCase()); 
     });
   
     setFilteredPatients(filtered);
