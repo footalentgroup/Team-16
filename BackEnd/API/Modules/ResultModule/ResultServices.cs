@@ -1,9 +1,11 @@
+using System.Text.Json;
 using API.DataBase.Context;
 using API.DataBase.Entities;
 using API.DataBase.Repository;
 using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Modules.ResultModule
 {
@@ -19,14 +21,95 @@ namespace API.Modules.ResultModule
 
         public async Task<List<Result>> CreataManyAsync(List<CreateResultDto> resultsDto)
         {
+            List<Result> results = new List<Result>();
 
-            var results = _mapper.Map<List<Result>>(resultsDto);
+            foreach (var dto in resultsDto)
+            {
+                if (dto.ResultValue is JsonElement jsonElement)
+                {
+                    if (jsonElement.ValueKind == JsonValueKind.Number && jsonElement.TryGetDouble(out double value))
+                    {
+                        var r = new QuantitativeResult()
+                        {
+                            ExamId = dto.ExamId,
+                            Type = "quantitative",
+                            ParameterId = dto.ParameterId,
+                            ReportId = dto.ReportId,
+                            DateResult = dto.DateResult,
+                            Value = value
+                        };
+                        results.Add(r);
 
+                    }
+                    else if (jsonElement.ValueKind == JsonValueKind.String)
+                    {
+                        var r = new QualitativeResult()
+                        {
+                            ExamId = dto.ExamId,
+                            Type = "qualitative",
+                            ParameterId = dto.ParameterId,
+                            ReportId = dto.ReportId,
+                            DateResult = dto.DateResult,
+                            Value = jsonElement.GetString()
+                        };
+                        results.Add(r);
+                    }
+                    else
+                    {
+                        throw new Exception($"Tipo de JSON no esperado: {jsonElement.ValueKind}");
+                    }
+
+                    // if (dto.ResultValue is string valueString)
+                    // {
+                    //     var r = new QualitativeResult()
+                    //     {
+                    //         ExamId = dto.ExamId,
+                    //         Type = "qualitative",
+                    //         ParameterId = dto.ParameterId,
+                    //         ReportId = dto.ReportId,
+                    //         DateResult = dto.DateResult,
+                    //         Value = valueString
+                    //     };
+                    //     results.Add(r);
+
+                    // }
+                    // else if (dto.ResultValue as double? != null)
+                    // {
+                    //     var r = new QuantitativeResult()
+                    //     {
+                    //         ExamId = dto.ExamId,
+                    //         Type = "Quantitative",
+                    //         ParameterId = dto.ParameterId,
+                    //         ReportId = dto.ReportId,
+                    //         DateResult = dto.DateResult,
+                    //         Value = Convert.ToDouble(dto.ResultValue)
+                    //     };
+                    //     results.Add(r);
+                    // }
+                    // else
+                    // {
+                    //     throw new ArgumentException("Invalid ResultValue type");
+                    // }
+                }
+
+            }
             await _dbSet.AddRangeAsync(results);
             await _context.SaveChangesAsync();
 
             return results;
 
+        }
+
+        public async Task<Report> CreateOrder(CreateReportDto createReportDto)
+        {
+
+            var report = _mapper.Map<Report>(createReportDto);
+
+            var result = await _context.Reports.AddAsync(report);
+
+            await _context.SaveChangesAsync();
+
+            return result.Entity;
         }
     }
 }

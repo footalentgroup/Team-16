@@ -17,10 +17,20 @@ namespace API.Modules.ResultModule
         }
 
         [HttpPost("create-many")]
-        public async Task<List<Result>> Results(List<CreateResultDto> resultsDto)
+        public async Task<IActionResult> Results([FromBody] List<CreateResultDto> resultsDto)
         {
 
-            return await _resultService.CreataManyAsync(resultsDto);
+            var response = await _resultService.CreataManyAsync(resultsDto);
+
+            return new OkObjectResult(response);
+        }
+
+        [HttpPost("create-orden")]
+        public async Task<IActionResult> CreateOrder(CreateReportDto createReportDto)
+        {
+            var response = await _resultService.CreateOrder(createReportDto);
+
+            return new OkObjectResult(response);
         }
     }
 }

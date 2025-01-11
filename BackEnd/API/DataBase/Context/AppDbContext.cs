@@ -90,6 +90,30 @@ namespace API.DataBase.Context
                     Phone = "+54934245673748"
                 }
             );
+
+            modelBuilder.Entity<Doctor>().HasData(
+           new Doctor
+           {
+               Id = 1,
+               Name = "John",
+               LastName = "Doe",
+               Registration = "REG12345"
+           },
+           new Doctor
+           {
+               Id = 2,
+               Name = "Jane",
+               LastName = "Smith",
+               Registration = "REG54321"
+           },
+               new Doctor
+               {
+                   Id = 3,
+                   Name = "Jennifer",
+                   LastName = "juanes",
+                   Registration = "REG44534"
+               }
+       );
         }
 
         public DbSet<Admin> Admins => Set<Admin>();
@@ -99,6 +123,8 @@ namespace API.DataBase.Context
         public DbSet<ParameterBase> Parameters => Set<ParameterBase>();
 
         public DbSet<Result> Results => Set<Result>();
+        public DbSet<Report> Reports => Set<Report>();
+        public DbSet<Doctor> Doctors => Set<Doctor>();
 
     }
 }
