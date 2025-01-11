@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../features/user/userSlice"; // Acción para manejar login
-import { setError } from "../features/ui/uiSlice"; // Acción para manejar errores
+import { login } from "../features/user/userSlice"; 
+import { setError } from "../features/ui/uiSlice"; 
 import LoginInput from "../components/LoginInput/LoginInput";
 import imgLogin from "../assets/login.png";
 
@@ -49,8 +49,9 @@ const LoginPaciente = () => {
             lastName: result.data.lastName,
             email: result.data.email,
             phone: result.data.phone,
-            birth: result.data.birth, // Incluye fecha de nacimiento
+            birth: result.data.birth, 
             token: result.data.token,
+            role: 'Patient',
           })
         );
         
