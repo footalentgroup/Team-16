@@ -1,4 +1,3 @@
-using API.DataBase.Entities;
 using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
 using API.Shared.Extensions;
@@ -20,7 +19,7 @@ namespace API.Modules.ResultModule
             _reportService = reportService;
         }
 
-        [HttpGet("get-orders-by-patient-id")]
+        [HttpGet("orders/get-by-patient-id")]
         public async Task<IActionResult> CreateOrder([FromQuery] int id)
         {
             try
@@ -36,6 +35,16 @@ namespace API.Modules.ResultModule
             }
         }
 
+        [HttpPost("orders/create")]
+        public async Task<IActionResult> CreateOrder(CreateReportDto createReportDto)
+        {
+            var response = await _resultService.CreateOrder(createReportDto);
+
+            return new OkObjectResult(response);
+        }
+
+
+
         [HttpPost("create-many")]
         public async Task<IActionResult> Results([FromBody] List<CreateResultDto> resultsDto)
         {
@@ -45,12 +54,28 @@ namespace API.Modules.ResultModule
             return new OkObjectResult(response);
         }
 
-        [HttpPost("create-orden")]
-        public async Task<IActionResult> CreateOrder(CreateReportDto createReportDto)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateResultDto resultDto)
         {
-            var response = await _resultService.CreateOrder(createReportDto);
 
-            return new OkObjectResult(response);
+            var response = await _resultService.UpdateResultDto(resultDto);
+
+            return response.ToActionResult();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] int id)
+        {
+            try
+            {
+                var response = await _resultService.DeleteResult(id);
+
+                return response.ToActionResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
         }
     }
 }

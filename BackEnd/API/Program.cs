@@ -1,21 +1,21 @@
 using API.DataBase.Context;
-using API.Modules.AuthModule.Interfaces;
 using API.Modules.AuthModule;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
-using API.Modules.ExamModule.Interfaces;
+using API.Modules.AuthModule.Interfaces;
 using API.Modules.ExamModule;
 using API.Modules.ExamModule.Dtos;
-using API.Modules.PatientModule.Interfaces;
+using API.Modules.ExamModule.Interfaces;
 using API.Modules.PatientModule;
-using System.Reflection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Swashbuckle.AspNetCore.Filters;
-using API.Modules.ResultModule.Interfaces;
+using API.Modules.PatientModule.Interfaces;
 using API.Modules.ResultModule;
-using API.Shared.Utils;
+using API.Modules.ResultModule.Dtos;
+using API.Modules.ResultModule.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,7 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new ParameterDtoConverter());
+        options.JsonSerializerOptions.Converters.Add(new ResultDtoConverter());
     });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -78,6 +79,19 @@ builder.Services.AddSwaggerGen(c =>
             ["maxValue"] = new OpenApiSchema { Type = "number", Format = "float" },
             ["unit"] = new OpenApiSchema { Type = "string" },
             ["gender"] = new OpenApiSchema { Type = "string" },
+        }
+    });
+
+    c.MapType<ResultResponseDto>(() => new OpenApiSchema
+    {
+        Type = "object",
+        Properties =
+        {
+            ["id"] = new OpenApiSchema { Type = "int" },
+            ["type"] = new OpenApiSchema { Type = "string" },
+            ["valueresult"] = new OpenApiSchema { Type = "string" },
+            ["parameterid"] = new OpenApiSchema { Type = "int" },
+            ["dateresult"] = new OpenApiSchema { Type = "datetime" },
         }
     });
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

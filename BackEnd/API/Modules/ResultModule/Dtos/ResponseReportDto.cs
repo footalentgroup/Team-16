@@ -3,7 +3,7 @@ using API.DataBase.Entities;
 
 namespace API.Modules.ResultModule.Dtos
 {
-    public class ResponseOrderDto
+    public class ResponseReportDto
     {
 
         public int Id { get; set; }
@@ -16,8 +16,7 @@ namespace API.Modules.ResultModule.Dtos
 
         public Doctor? Doctor { get; set; }
 
-
-        public List<ResultResponseDto> Results { get; set; } = new List<ResultResponseDto>();
+        public List<ResultResponseDto> Results { get; set; }
 
         public List<int>? ExamIds { get; set; }
 

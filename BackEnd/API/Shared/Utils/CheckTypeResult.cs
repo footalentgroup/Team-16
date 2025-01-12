@@ -7,7 +7,6 @@ namespace API.Shared.Utils
     public static class CheckTypeResult
     {
 
-
         public static ResultResponseDto Check(Result r)
         {
             if (r is QualitativeResult qualitativeResult)

@@ -1,6 +1,6 @@
 namespace API.DataBase.Entities
 {
-    public class Result
+    public abstract class Result
     {
         public int Id { get; set; }
 
