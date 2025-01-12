@@ -1,6 +1,8 @@
 using API.DataBase.Entities;
 using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
+using API.Shared.Extensions;
+using API.Shared.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Modules.ResultModule
@@ -10,10 +12,28 @@ namespace API.Modules.ResultModule
     public class ResultController
     {
         private readonly IResultService _resultService;
+        private readonly IReportService _reportService;
 
-        public ResultController(IResultService resultService)
+        public ResultController(IResultService resultService, IReportService reportService)
         {
             _resultService = resultService;
+            _reportService = reportService;
+        }
+
+        [HttpGet("get-orders-by-patient-id")]
+        public async Task<IActionResult> CreateOrder([FromQuery] int id)
+        {
+            try
+            {
+                var response = await _reportService.GetManyByPatientIdAsync(id);
+
+
+                return response.ToActionResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ApiResponse<object>.Failed(ex.Message + ex?.InnerException));
+            }
         }
 
         [HttpPost("create-many")]

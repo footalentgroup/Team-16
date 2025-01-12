@@ -4,13 +4,15 @@ using API.DataBase.Entities;
 using API.DataBase.Repository;
 using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
+using API.Shared.Utils;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Modules.ResultModule
 {
 
-    public class ResultService : BaseRepository<Result>, IResultService
+    public class ResultService : BaseRepository<Result>, IResultService, IReportService
     {
         private readonly IMapper _mapper;
 
@@ -111,5 +113,32 @@ namespace API.Modules.ResultModule
 
             return result.Entity;
         }
+
+        public async Task<ServiceResult<List<ResponseOrderDto>>> GetManyByPatientIdAsync(int patientId)
+        {
+
+            var result = await _context
+                                    .Reports
+                                    .Where(x => x.PatientId == patientId)
+                                    .Select(x => new ResponseOrderDto()
+                                    {
+                                        DateExam = x.DateExam,
+                                        Doctor = x.Doctor,
+                                        ExamIds = x.ExamIds.ToList(),
+                                        Id = x.Id,
+                                        Patient = x.Patient,
+                                        Results = x.Results.Select(r => CheckTypeResult.Check(r).ValueResult).ToList(),
+                                        Status = x.Status
+                                    }).ToListAsync();
+
+            if (result == null)
+            {
+                return ServiceResult<List<ResponseOrderDto>>.FailedResult(StatusCodes.Status500InternalServerError, "Lista de roportes no encontrada");
+            }
+
+            return ServiceResult<List<ResponseOrderDto>>.SuccessResult(result);
+        }
     }
+
+
 }
