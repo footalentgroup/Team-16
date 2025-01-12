@@ -49,7 +49,11 @@ const DatosPersonales = () => {
       <section className="flex min-h-screen bg-gray-50">
         <div className="flex-1 p-8">
           <ToastContainer />
-          <Breadcrumb first={"Paciente"} second={"Mis Datos"} />
+          <Breadcrumb 
+            items={[ 
+              {title: "Paciente", to: "/"},
+              {title: "Mis Datos"}
+            ]} />
 
           <h1 className="text-2xl font-bold text-gray-800 w-1/4 flex justify-center mt-14">
             Mis datos

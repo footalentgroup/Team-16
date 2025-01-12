@@ -1,5 +1,7 @@
 import MenuLateral from "../../components/menuLateral/MenuLateral";
+import MenuConfiguracion from "../../components/navigation/menuConfiguracion";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
+
 const AdminConfiguracion =()=>{
     return(
         <>
@@ -8,7 +10,7 @@ const AdminConfiguracion =()=>{
                 <MenuLateral items={arrayItemsMenuAdmin} />
             </div>
             <div className="ml-[266px] overflow-y-auto h-full">
-                
+              <MenuConfiguracion />
             </div>
         </div>
         </>
