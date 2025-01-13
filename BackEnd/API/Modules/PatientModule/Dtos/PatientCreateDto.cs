@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.Modules.PatientModule.Dtos
 {
-
-    public enum PersonalIDType
+    public enum PersonalIDTypeDto
     {
         DNI,
         Passport
@@ -24,7 +23,7 @@ namespace API.Modules.PatientModule.Dtos
 
         public required DateTime Birth { get; set; }
 
-        public PersonalIDType PersonalIDType { get; set; }
+        public PersonalIDTypeDto PersonalIDType { get; set; }
 
         [Required]
         [EmailAddress(ErrorMessage = "Formato de email no valido")]

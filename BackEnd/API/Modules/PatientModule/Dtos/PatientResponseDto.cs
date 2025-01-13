@@ -11,7 +11,7 @@ namespace API.Modules.PatientModule.Dtos
 
         public required string PersonalID { get; set; }
 
-        public PersonalIDType PersonalIDType { get; set; }
+        public PersonalIDTypeDto PersonalIDType { get; set; }
 
         public required DateTime Birth { get; set; }
 
