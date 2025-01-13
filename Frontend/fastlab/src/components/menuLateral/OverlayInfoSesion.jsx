@@ -6,7 +6,7 @@ const OverlayInfoSesion = ({ overlayRef, nameUser,lastName, email, imgProfile })
 
     }
   return (
-    <div className="w-full min-w-44 max-w-48 bg-white absolute -right-[100%] 
+    <div className="w-[150%] min-w-44 max-w-48 bg-white absolute -right-[100%] 
      -bottom-[50%] rounded-md border border-[#D4D4D4] shadow-md 
     flex flex-col
     " ref={overlayRef}

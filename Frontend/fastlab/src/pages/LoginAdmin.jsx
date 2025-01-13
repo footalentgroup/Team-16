@@ -24,6 +24,7 @@ const LoginAdmin = () => {
     setIsFormSubmitted(true); 
 
     try {
+      console.log('datos ingresados: ', data.email, data.password)
       const response = await fetch(`${BACKEND_URL}/auth/admin-login`, {
         method: "POST",
         headers: {

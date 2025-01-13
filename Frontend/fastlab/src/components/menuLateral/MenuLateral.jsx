@@ -9,7 +9,7 @@ const MenuLateral = ({ items }) => {
   const location = useLocation(); 
 
   
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.admin);
 
 
   return (
