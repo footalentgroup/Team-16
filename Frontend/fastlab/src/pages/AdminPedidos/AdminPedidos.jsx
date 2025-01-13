@@ -1,5 +1,7 @@
+import AddPatient from "../AddPatient/AddPatient";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
+
 const AdminPedidos =()=>{
     return(
         <>
@@ -8,7 +10,7 @@ const AdminPedidos =()=>{
                 <MenuLateral items={arrayItemsMenuAdmin} />
             </div>
             <div className="ml-[266px] overflow-y-auto h-full">
-                
+            <AddPatient /> 
             </div>
         </div>
         </>

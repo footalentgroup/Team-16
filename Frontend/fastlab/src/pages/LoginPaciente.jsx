@@ -69,7 +69,7 @@ const LoginPaciente = () => {
     <div className="flex justify-around items-center min-h-screen">
       <div className="w-[60%] p-14 ml-14">
         <div className="max-w-[400px]">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Ingresar a fastlab</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Ingresar a fastLab</h1>
           <p className="text-gray-500 mb-6">Estás por ingresar como paciente</p>
           <div className="w-full h-[2px] bg-gray-300 mb-6"></div>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
