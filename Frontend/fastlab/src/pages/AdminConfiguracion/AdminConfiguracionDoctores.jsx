@@ -72,7 +72,7 @@ const AdminConfiguracion = () => {
                                         <div className='flex justify-between items-center'>
                                             <div>
                                                 <h3 className='font-semibold text-lg'>{doctor.name}</h3>
-                                                <div className='text-sm text-gray-600 space-x-4'>
+                                                <div className='text-sm\ text-gray-600 space-x-4'>
                                                     <span>{doctor.specialty}</span>
                                                     <span>{doctor.registrationNumber}</span>
                                                 </div>
