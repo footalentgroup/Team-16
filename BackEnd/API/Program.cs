@@ -1,6 +1,8 @@
 using API.DataBase.Context;
 using API.Modules.AuthModule;
 using API.Modules.AuthModule.Interfaces;
+using API.Modules.DoctorModule;
+using API.Modules.DoctorModule.Interfaces;
 using API.Modules.ExamModule;
 using API.Modules.ExamModule.Dtos;
 using API.Modules.ExamModule.Interfaces;
@@ -50,6 +52,7 @@ builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IReportService, ResultService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
