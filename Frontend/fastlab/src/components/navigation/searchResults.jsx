@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import AnalisisCard from '../Cards/AnalisisCard'
 import AnalisisCardSkelleton from '../Cards/AnalisisCardSkelleton'
 
-export default function SearchResults({query}) {
+export default function SearchResults({ query }) {
     const [loading, setLoading] = useState(true)
     const [results, setResults] = useState([])
 
@@ -37,9 +37,7 @@ export default function SearchResults({query}) {
     if (loading) {
         return (
             <div>
-                <h2 className='text-xl font-semibold text-gray-900 mb-4'>
-                    Buscando resultados para "{query}"...
-                </h2>
+                <h2 className='text-xl font-semibold text-gray-900 mb-4'>Buscando resultados para "{query}"...</h2>
                 <div className='space-y-4'>
                     {[...Array(3)].map((_, index) => (
                         <AnalisisCardSkelleton key={index} />
@@ -54,12 +52,7 @@ export default function SearchResults({query}) {
             <h2 className='text-xl font-semibold text-gray-900 mb-4'>Resultados encontrados</h2>
             <div className='space-y-4'>
                 {results.map(result => (
-                    <AnalisisCard
-                        key={result.id}
-                        title={result.title}
-                        type={result.type}
-                        date={result.date}
-                    />
+                    <AnalisisCard key={result.id} id={result.id} title={result.title} type={result.type} date={result.date} />
                 ))}
             </div>
         </div>
