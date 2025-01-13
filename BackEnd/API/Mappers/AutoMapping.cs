@@ -11,6 +11,7 @@ namespace API.Mappers
         {
             CreateMap<Patient, PatientCreateDto>().ReverseMap();
             CreateMap<Patient, PatientUpdateDto>().ReverseMap();
+            CreateMap<Patient, PatientResponseDto>().ReverseMap();
         }
     }
 }

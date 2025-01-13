@@ -8,7 +8,8 @@ import PacienteMisDatos from './pages/PacienteMisDatos';
 import AdminPedidos from './pages/AdminPedidos/AdminPedidos';
 import AdminResultados from './pages/AdminResultados/AdminResultados';
 import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion';
-
+import AdminConfiguracionDoctores from './pages/AdminConfiguracion/AdminConfiguracionDoctores';
+import AdminConfiguracionMiCuenta from './pages/AdminConfiguracion/AdminConfiguracionMiCuenta';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path='/admin/pedidos' element={<AdminPedidos/>} />
         <Route path='/admin/resultados' element={<AdminResultados/>} />
         <Route path='/admin/configuracion' element={<AdminConfiguracion/>} />
+        <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores/>} />
+        <Route path='/admin/configuracion/mi-cuenta' element={<AdminConfiguracionMiCuenta/>} />
 
       </Routes>
     </Router>
