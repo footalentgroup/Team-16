@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../features/admin/adminSlice"; 
+import { login } from "../features/user/userSlice"; 
 import imgLogin from "../assets/login.png";
 import LoginInput from "../components/LoginInput/LoginInput";
 
@@ -24,6 +24,7 @@ const LoginAdmin = () => {
     setIsFormSubmitted(true); 
 
     try {
+      console.log('datos ingresados: ', data.email, data.password)
       const response = await fetch(`${BACKEND_URL}/auth/admin-login`, {
         method: "POST",
         headers: {
@@ -37,12 +38,14 @@ const LoginAdmin = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Login exitoso:", result);
+        console.log("Login exitoso:", result.data);
 
         
         dispatch(
           login({
-            id: result.data.id,
+            id: '',
+            phone: '',
+            birth: '',
             name: result.data.firstName,
             lastName: result.data.lastName,
             email: result.data.email,
@@ -51,7 +54,7 @@ const LoginAdmin = () => {
         );
 
         
-        navigate("/admin/ingresar-orden");
+        navigate("/admin/resultados");
       } else {
         const errorResult = await response.json();
         alert(errorResult.message || "Error al iniciar sesión");

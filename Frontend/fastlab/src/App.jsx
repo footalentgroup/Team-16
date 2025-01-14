@@ -1,56 +1,90 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import LoginPaciente from './pages/LoginPaciente'
-import LoginAdmin from './pages/LoginAdmin'
-import PacienteInicio from './pages/PacienteInicio'
-import PacienteHistorial from './pages/PacienteHistorial'
-import PacienteHistorialResultadoAnalisis from './pages/PacienteHistorialResultadoAnalisis'
-import PacienteMisDatos from './pages/PacienteMisDatos'
-
-// import AdminResultados from './pages/AdminResultados/AdminResultados'
-import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion'
-import AdminConfiguracionDoctores from './pages/AdminConfiguracion/AdminConfiguracionDoctores'
+import LoginPaciente from "./pages/LoginPaciente";
+import LoginAdmin from "./pages/LoginAdmin";
+import PacienteInicio from "./pages/PacienteInicio";
+import PacienteHistorial from "./pages/PacienteHistorial";
+import PacienteMisDatos from "./pages/PacienteMisDatos";
+import AdminPedidos from "./pages/AdminPedidos/AdminPedidos";
+import AdminResultados from "./pages/AdminResultados/AdminResultados";
+import AdminConfiguracion from "./pages/AdminConfiguracion/AdminConfiguracion";
+import AdminConfiguracionDoctores from "./pages/AdminConfiguracion/AdminConfiguracionDoctores";
+import AdminConfiguracionMiCuenta from "./pages/AdminConfiguracion/AdminConfiguracionMiCuenta";
+import PublicRoute from "./routes/PublicRoutes";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import NotFound from "./pages/NotFound";
+import Notauthorized from "./pages/NotAuthorized";
 import AdminConfiguracionAnadirDoctores from './pages/AdminConfiguracion/AdminConfiguracionAnadirDoctores'
 import AdminConfiguracionEditarDoctores from './pages/AdminConfiguracion/AdminConfiguracionEditarDoctores'
-import AdminConfiguracionMiCuenta from './pages/AdminConfiguracion/AdminConfiguracionMiCuenta'
 import AdminConfiguracionBioquimicos from './pages/AdminConfiguracion/AdminConfiguracionBioquimicos'
 
+import PacienteHistorialResultadoAnalisis from './pages/PacienteHistorialResultadoAnalisis'
 
 import SearchPatient from "./pages/AdminPedidos/SearchPatient";
 import SelectionPatient from "./pages/AdminPedidos/SelectionPatient";
 import ReportMethod from "./pages/AdminPedidos/ReportMethod"
-
 function App() {
-    return (
-        <>
-            <Router>
-                <Routes>
-                    {/* Definir rutas simples */}
-                    <Route path='/' element={<LoginPaciente />} />
-                    <Route path='/login/admin' element={<LoginAdmin />} />
-                    {/* Rutas para el flujo de paciente */}
-                    <Route path='/paciente/inicio' element={<PacienteInicio />} />
-                    <Route path='/paciente/historial' element={<PacienteHistorial />} />
-                    <Route path='/paciente/historial/:id' element={<PacienteHistorialResultadoAnalisis />} />
-                    <Route path='/paciente/misdatos' element={<PacienteMisDatos />} />
+  return (
+    <>
+      <Router>
+        <Routes>
+          {/* Rutas públicas para login */}
+          <Route index element={
+              <PublicRoute>
+                <LoginPaciente />
+              </PublicRoute>
+            }
+          />
 
-                    {/* rutas para el admin */}
-                    
-                    {/* <Route path='/admin/resultados' element={<AdminResultados />} /> */}
-                    <Route path='/admin/ingresar-orden/paciente-registrado/orden-de-analisis' element={<ReportMethod />} />
-                    <Route path='/admin/configuracion' element={<AdminConfiguracion />} />
-                    <Route path='/admin/configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
-                    <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores />} />
-                    <Route path='/admin/configuracion/doctores/añadir' element={<AdminConfiguracionAnadirDoctores />} />
-                    <Route path='/admin/configuracion/doctores/:id' element={<AdminConfiguracionEditarDoctores />} />
-                    <Route path='/admin/configuracion/mi-cuenta' element={<AdminConfiguracionMiCuenta />} />
-                    <Route path="/admin/ingresar-orden" element={<SelectionPatient />}/>
-                    <Route path="/admin/ingresar-orden/paciente-registrado"element={<SearchPatient />}/>
-                    
-                </Routes>
-            </Router>
-        </>
-    )
+          <Route path="/login" element={
+              <PublicRoute>
+                <LoginPaciente />
+              </PublicRoute>
+            }
+          />
+          <Route path="/admin-login" element={
+              <PublicRoute>
+                <LoginAdmin />
+              </PublicRoute>
+            }
+          />
+
+          <Route path="/paciente" element={<ProtectedRoute role="paciente" 
+            reDirecTo="/login"
+          />}>
+            {/* Rutas para el flujo de paciente */}
+            <Route path="inicio" element={<PacienteInicio />} />
+            <Route path="historial" element={<PacienteHistorial />} />
+            <Route path='historial/:id' element={<PacienteHistorialResultadoAnalisis />} />
+
+            <Route path="misdatos" element={<PacienteMisDatos />} />
+          </Route>
+
+          <Route path="/admin" element={<ProtectedRoute role="admin" reDirecTo="/admin-login" />}>
+            {/* rutas para el admin */}
+            <Route path="pedidos" element={<AdminPedidos />} />
+            <Route path="resultados" element={<AdminResultados />} />
+            <Route path="configuracion" element={<AdminConfiguracion />}/>
+            <Route path="configuracion/doctores" element={<AdminConfiguracionDoctores />} />
+            <Route path="configuracion/mi-cuenta" element={<AdminConfiguracionMiCuenta />} />
+            <Route path='configuracion/doctores/añadir' element={<AdminConfiguracionAnadirDoctores />} />
+            <Route path='configuracion/doctores/:id' element={<AdminConfiguracionEditarDoctores />} />
+            <Route path='configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
+               
+            <Route path="pedidos/ingresar-orden" element={<SelectionPatient />}/>
+            <Route path="pedidos/ingresar-orden/paciente-registrado"element={<SearchPatient />}/>
+            <Route path='pedidos/ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio' element={<ReportMethod />} />
+
+                
+          </Route>
+
+          <Route path="/notauthorized" element={<Notauthorized />}/>
+          <Route path="*" element={<NotFound />} />
+            
+        </Routes>
+      </Router>
+    </>
+  );
 }
 
-export default App
+export default App;

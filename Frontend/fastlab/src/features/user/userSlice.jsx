@@ -26,16 +26,17 @@ const userSlice = createSlice({
       state.token = token;
       state.isAuthenticated = true;
     },
-    logout(state) {
+    logout: (state) => {
       state.id = null;
       state.name = '';
-      state.lastName = '';
+      state.lastName = ''; // Guarda el apellido
       state.email = '';
-      state.phone = '';
-      state.birth = birth;
-      state.token = null;
+      state.phone = ''; // Guarda el teléfono
+      state.birth = '';
+      state.token = '';
       state.isAuthenticated = false;
-    },
+    }
+    
   },
 });
 
