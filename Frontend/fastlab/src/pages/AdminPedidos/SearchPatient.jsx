@@ -6,7 +6,7 @@ import PatientList from "./PatientList";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import Avatar from "../../assets/ellipse.svg";
-
+import { Progress } from "@/components/ui/progress";
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const SearchPatient = () => {
@@ -79,6 +79,7 @@ const SearchPatient = () => {
             { title: "Pacientes", to: "/admin/pedidos" },
           ]}
         />
+        <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3}  />
 
         <h1 className="text-2xl text-center font-bold mb-6">Buscar pacientes</h1>
 

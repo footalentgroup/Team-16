@@ -17,6 +17,7 @@ import AdminConfiguracionMiCuenta from './pages/AdminConfiguracion/AdminConfigur
 
 import SearchPatient from "./pages/AdminPedidos/SearchPatient";
 import SelectionPatient from "./pages/AdminPedidos/SelectionPatient";
+import ReportMethod from "./pages/AdminPedidos/ReportMethod"
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                     {/* rutas para el admin */}
                     
                     {/* <Route path='/admin/resultados' element={<AdminResultados />} /> */}
+                    <Route path='/admin/ingresar-orden/paciente-registrado/orden-de-analisis' element={<ReportMethod />} />
                     <Route path='/admin/configuracion' element={<AdminConfiguracion />} />
                     <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores />} />
                     <Route path='/admin/configuracion/doctores/añadir' element={<AdminConfiguracionAnadirDoctores />} />
