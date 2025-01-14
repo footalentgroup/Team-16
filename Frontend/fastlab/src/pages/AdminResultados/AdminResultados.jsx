@@ -13,7 +13,7 @@ const AdminResultados = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const token = useSelector((state) => state.admin.token);
+  const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
     const fetchPatients = async () => {
