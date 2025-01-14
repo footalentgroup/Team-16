@@ -13,6 +13,7 @@ const SelectionPatient = () => {
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
+      
 
       {/* Contenido principal */}
       <div className="ml-[266px] h-full p-6">

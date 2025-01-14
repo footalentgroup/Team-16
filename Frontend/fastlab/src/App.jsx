@@ -22,6 +22,8 @@ import PacienteHistorialResultadoAnalisis from './pages/PacienteHistorialResulta
 import SearchPatient from "./pages/AdminPedidos/SearchPatient";
 import SelectionPatient from "./pages/AdminPedidos/SelectionPatient";
 import ReportMethod from "./pages/AdminPedidos/ReportMethod"
+import AddPatient from "./pages/AddPatient/AddPatient"
+import AddAnalisis from "./pages/AddAnalisis/AddAnalisis"
 function App() {
   return (
     <>
@@ -69,11 +71,14 @@ function App() {
             <Route path='configuracion/doctores/:id' element={<AdminConfiguracionEditarDoctores />} />
             <Route path='configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
                
-            <Route path='pedidos/ingresar-orden' element={<SelectionPatient />}/>
-            <Route path="pedidos/ingresar-orden/paciente-registrado" element={<SearchPatient />}/>
-            <Route path='pedidos/ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio' element={<ReportMethod />} />
+            <Route path='ingresar-orden' element={<SelectionPatient />}/>
+            <Route path="ingresar-orden/paciente-registrado" element={<SearchPatient />}/>
+            <Route path='ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio' element={<ReportMethod />} />
 
-                
+             {/* rutas de registrar paciente */}
+            <Route path='ingresar-orden/registrar-paciente' element={<AddPatient/>} />
+            <Route path='ingresar-orden/paciente-registrado/orden-de-analisis' element={<AddAnalisis/>} />
+   
           </Route>
 
           <Route path="/notauthorized" element={<Notauthorized />}/>

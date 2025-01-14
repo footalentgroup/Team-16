@@ -7,7 +7,7 @@ function PublicRoute({ children }) {
 
   // Si está autenticado, redirigir según el rol
   if (isAuthenticated) {
-    return <Navigate to={birth === '' ? '/admin/pedidos' : '/paciente/inicio'} replace />;
+    return <Navigate to={birth === '' ? '/admin/ingresar-orden' : '/paciente/inicio'} replace />;
   }
 
   // Renderizar las rutas públicas (login)
