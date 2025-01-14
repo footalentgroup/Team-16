@@ -2,9 +2,9 @@ import React, { forwardRef } from "react";
 import { useController } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './Calendario.css';
+import "./Calendario.css";
 
-// Componente  para input de react-datepicker
+// Componente personalizado para el input de react-datepicker
 const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref) => (
   <div className="relative">
     <input
@@ -12,13 +12,16 @@ const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref
       onClick={onClick}
       value={value}
       placeholder={placeholder}
-      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${hasError ? "border-red-500 placeholder-red-500 focus:ring-red-500" : "focus:ring-teal-500 border-gray-300"
-        }`}
+      className={`w-full px-4 py-2 border rounded-md focus:outline-none bg-gray-50 focus:ring-2 ${
+        hasError
+          ? "border-red-500 placeholder-red-500 focus:ring-red-500"
+          : "focus:ring-teal-500 border-gray-300"
+      }`}
     />
   </div>
 ));
 
-const Calendario = ({ control, name, placeholder }) => {
+const Calendario = ({ control, name, placeholder, label, labelClassName }) => {
   const {
     field: { value, onChange, onBlur },
     fieldState: { error },
@@ -30,11 +33,14 @@ const Calendario = ({ control, name, placeholder }) => {
 
   return (
     <div className="mb-4">
-      <label htmlFor={name} className="block text-sm text-gray-700 mb-1">
-        Fecha de nacimiento
+      <label
+        htmlFor={name}
+        className={`block mb-1 ${labelClassName || "text-sm text-gray-700"}`} // Clase por defecto o personalizada
+      >
+        {label || "Fecha de nacimiento"}
       </label>
       <DatePicker
-        selected={value ? new Date(value) : null} // Convierte el valor a Date si existe
+        selected={value ? new Date(value) : null}
         onChange={(date) => onChange(date)}
         onBlur={onBlur}
         dateFormat="dd/MM/yyyy"
@@ -46,7 +52,6 @@ const Calendario = ({ control, name, placeholder }) => {
           />
         }
       />
-
       {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
     </div>
   );
