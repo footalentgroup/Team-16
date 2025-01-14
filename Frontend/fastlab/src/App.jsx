@@ -13,6 +13,7 @@ import AdminConfiguracionDoctores from './pages/AdminConfiguracion/AdminConfigur
 import AdminConfiguracionAnadirDoctores from './pages/AdminConfiguracion/AdminConfiguracionAnadirDoctores'
 import AdminConfiguracionEditarDoctores from './pages/AdminConfiguracion/AdminConfiguracionEditarDoctores'
 import AdminConfiguracionMiCuenta from './pages/AdminConfiguracion/AdminConfiguracionMiCuenta'
+import AdminConfiguracionBioquimicos from './pages/AdminConfiguracion/AdminConfiguracionBioquimicos'
 
 
 import SearchPatient from "./pages/AdminPedidos/SearchPatient";
@@ -38,6 +39,7 @@ function App() {
                     {/* <Route path='/admin/resultados' element={<AdminResultados />} /> */}
                     <Route path='/admin/ingresar-orden/paciente-registrado/orden-de-analisis' element={<ReportMethod />} />
                     <Route path='/admin/configuracion' element={<AdminConfiguracion />} />
+                    <Route path='/admin/configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
                     <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores />} />
                     <Route path='/admin/configuracion/doctores/añadir' element={<AdminConfiguracionAnadirDoctores />} />
                     <Route path='/admin/configuracion/doctores/:id' element={<AdminConfiguracionEditarDoctores />} />
