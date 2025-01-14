@@ -54,7 +54,7 @@ const LoginAdmin = () => {
         );
 
         
-        navigate("/admin/resultados");
+        navigate("admin/pedidos/ingresar-orden");
       } else {
         const errorResult = await response.json();
         alert(errorResult.message || "Error al iniciar sesión");
