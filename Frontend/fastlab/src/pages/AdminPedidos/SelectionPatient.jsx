@@ -23,7 +23,6 @@ const SelectionPatient = () => {
             { title: "Ingresar orden", to: "/admin/ingresar-orden" },
           ]}
         />
-
         <h1 className="text-2xl text-center font-bold mb-8">Ingresar orden</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto">
