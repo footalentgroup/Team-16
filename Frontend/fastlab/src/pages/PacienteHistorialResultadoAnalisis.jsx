@@ -30,13 +30,14 @@ const PacienteHistorialResultadoAnalisis = () => {
                 <div className='fixed top-0 left-0 min-w-[266px] h-full'>
                     <MenuLateral items={arrayItemsMenuPaciente} />
                 </div>
-                <div className='ml-[266px] overflow-y-auto h-full'>
-                    <div className='flex min-h-screen bg-gray-50'>
-                        <main className='flex-1 p-8'>
-                            <Breadcrumb items={[{ title: 'Paciente', to: '/' }, { title: 'Historial' }]} />
-
-                            <h1 className='text-2xl font-semibold text-gray-900 mb-6'>Mi historial de resultados</h1>
-                        </main>
+                <div className='ml-[266px] overflow-y-auto'>
+                    <div className='flex bg-gray-50'>
+                        <div className='flex-1 p-8'>
+                            <Breadcrumb
+                                items={[{ title: 'Paciente', to: '/' }, { title: 'Historial', to: '/paciente/historial' }, { title: 'Resultados' }]}
+                            />
+                            <h1 className='text-2xl font-semibold text-gray-900 '>Mi historial de resultados</h1>
+                        </div>
                     </div>
 
                     <ResultadoAnalisis resultData={resultData} patientName={patientName} />
