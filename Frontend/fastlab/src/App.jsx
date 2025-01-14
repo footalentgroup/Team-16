@@ -69,8 +69,8 @@ function App() {
             <Route path='configuracion/doctores/:id' element={<AdminConfiguracionEditarDoctores />} />
             <Route path='configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
                
-            <Route path="pedidos/ingresar-orden" element={<SelectionPatient />}/>
-            <Route path="pedidos/ingresar-orden/paciente-registrado"element={<SearchPatient />}/>
+            <Route path='pedidos/ingresar-orden' element={<SelectionPatient />}/>
+            <Route path="pedidos/ingresar-orden/paciente-registrado" element={<SearchPatient />}/>
             <Route path='pedidos/ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio' element={<ReportMethod />} />
 
                 
