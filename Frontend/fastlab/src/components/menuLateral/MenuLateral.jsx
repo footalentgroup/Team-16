@@ -45,7 +45,7 @@ const MenuLateral = ({ items }) => {
             nameUser={user.name + " " + user.lastName} 
             
             email={user.email || "Sin correo"} 
-            imgProfile={"/public/perfil.png"} 
+            imgProfile={"/perfil.png"} 
           />
         </div>
       </div>
