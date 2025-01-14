@@ -7,7 +7,7 @@ import PacienteHistorial from './pages/PacienteHistorial'
 import PacienteHistorialResultadoAnalisis from './pages/PacienteHistorialResultadoAnalisis'
 import PacienteMisDatos from './pages/PacienteMisDatos'
 
-import AdminResultados from './pages/AdminResultados/AdminResultados'
+// import AdminResultados from './pages/AdminResultados/AdminResultados'
 import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion'
 import AdminConfiguracionDoctores from './pages/AdminConfiguracion/AdminConfiguracionDoctores'
 import AdminConfiguracionAnadirDoctores from './pages/AdminConfiguracion/AdminConfiguracionAnadirDoctores'
@@ -34,7 +34,7 @@ function App() {
 
                     {/* rutas para el admin */}
                     
-                    <Route path='/admin/resultados' element={<AdminResultados />} />
+                    {/* <Route path='/admin/resultados' element={<AdminResultados />} /> */}
                     <Route path='/admin/configuracion' element={<AdminConfiguracion />} />
                     <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores />} />
                     <Route path='/admin/configuracion/doctores/añadir' element={<AdminConfiguracionAnadirDoctores />} />
