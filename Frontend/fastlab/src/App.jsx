@@ -10,6 +10,8 @@ import AdminResultados from './pages/AdminResultados/AdminResultados';
 import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion';
 import AdminConfiguracionDoctores from './pages/AdminConfiguracion/AdminConfiguracionDoctores';
 import AdminConfiguracionMiCuenta from './pages/AdminConfiguracion/AdminConfiguracionMiCuenta';
+import AddPatient from './pages/AddPatient/AddPatient';
+import AddAnalisis from './pages/AddAnalisis/AddAnalisis';
 
 function App() {
   return (
@@ -30,6 +32,13 @@ function App() {
         <Route path='/admin/configuracion' element={<AdminConfiguracion/>} />
         <Route path='/admin/configuracion/doctores' element={<AdminConfiguracionDoctores/>} />
         <Route path='/admin/configuracion/mi-cuenta' element={<AdminConfiguracionMiCuenta/>} />
+
+
+
+
+{/* rutas de registrar paciente */}
+<Route path='/admin/add-paciente' element={<AddPatient/>} />
+<Route path="admin/add-analisis" element={<AddAnalisis/>} />
 
       </Routes>
     </Router>
