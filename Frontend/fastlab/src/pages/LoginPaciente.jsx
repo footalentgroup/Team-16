@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ const LoginPaciente = () => {
             phone: result.data.phone,
             birth: result.data.birth, 
             token: result.data.token,
-            role: 'Patient',
+            
           })
         );
         
