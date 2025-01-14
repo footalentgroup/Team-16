@@ -5,7 +5,6 @@ import LoginAdmin from "./pages/LoginAdmin";
 import PacienteInicio from "./pages/PacienteInicio";
 import PacienteHistorial from "./pages/PacienteHistorial";
 import PacienteMisDatos from "./pages/PacienteMisDatos";
-import AdminPedidos from "./pages/AdminPedidos/AdminPedidos";
 import AdminResultados from "./pages/AdminResultados/AdminResultados";
 import AdminConfiguracion from "./pages/AdminConfiguracion/AdminConfiguracion";
 import AdminConfiguracionDoctores from "./pages/AdminConfiguracion/AdminConfiguracionDoctores";
@@ -62,7 +61,6 @@ function App() {
 
           <Route path="/admin" element={<ProtectedRoute role="admin" reDirecTo="/admin-login" />}>
             {/* rutas para el admin */}
-            <Route path="pedidos" element={<AdminPedidos />} />
             <Route path="resultados" element={<AdminResultados />} />
             <Route path="configuracion" element={<AdminConfiguracion />}/>
             <Route path="configuracion/doctores" element={<AdminConfiguracionDoctores />} />

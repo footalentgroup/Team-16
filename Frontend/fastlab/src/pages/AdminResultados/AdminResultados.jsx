@@ -1,8 +1,8 @@
 import  { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
-import SearchBar from "../AdminResultados/SearchBar";
-import PatientList from "../AdminResultados/PatientList";
+import SearchBar from "../AdminPedidos/SearchBar";
+import PatientList from "../AdminPedidos/PatientList";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
