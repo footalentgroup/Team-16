@@ -19,6 +19,14 @@ namespace API.Modules.ResultModule
             _reportService = reportService;
         }
 
+        [HttpGet("orders/get-all")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var response = await _reportService.GetAll();
+
+            return response.ToActionResult();
+        }
+
         [HttpGet("orders/get-by-patient-id")]
         public async Task<IActionResult> CreateOrder([FromQuery] int id)
         {
@@ -35,6 +43,14 @@ namespace API.Modules.ResultModule
             }
         }
 
+        [HttpGet("orders/get-by-id")]
+        public async Task<IActionResult> GetOrderById([FromQuery] int id)
+        {
+            var response = await _reportService.GetReportById(id);
+
+            return response.ToActionResult();
+        }
+
         [HttpPost("orders/create")]
         public async Task<IActionResult> CreateOrder(CreateReportDto createReportDto)
         {
@@ -42,6 +58,7 @@ namespace API.Modules.ResultModule
 
             return new OkObjectResult(response);
         }
+
 
 
 

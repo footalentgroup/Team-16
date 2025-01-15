@@ -7,7 +7,7 @@ namespace API.Shared.Utils
     public static class CheckTypeResult
     {
 
-        public static ResultResponseDto Check(Result r)
+        public static ResultResponseDto Check(Result r, ParameterBase parameter)
         {
             if (r is QualitativeResult qualitativeResult)
             {
@@ -16,9 +16,9 @@ namespace API.Shared.Utils
                     Type = r.Type,
                     ValueResult = qualitativeResult.Value,
                     DateResult = r.DateResult,
-                    ExamId = r.ExamId,
                     Id = r.Id,
-                    ParameterId = r.ParameterId,
+                    Parameter = parameter?.Name,
+                    Reference = parameter is QualitativeParameter qp ? qp?.Reference : throw new Exception("por el momento acepta parametros qualitativos")
                 };
             }
             else if (r is QuantitativeResult QuantitativeResult)
@@ -28,9 +28,9 @@ namespace API.Shared.Utils
                     Type = r.Type,
                     ValueResult = QuantitativeResult.Value,
                     DateResult = r.DateResult,
-                    ExamId = r.ExamId,
                     Id = r.Id,
-                    ParameterId = r.ParameterId
+                    Parameter = parameter?.Name,
+                    Reference = parameter is QualitativeParameter qp ? qp?.Reference : throw new Exception("por el momento acepta parametros qualitativos")
                 };
             }
             else

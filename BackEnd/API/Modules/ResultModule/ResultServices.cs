@@ -32,7 +32,6 @@ namespace API.Modules.ResultModule
                     {
                         var r = new QuantitativeResult()
                         {
-                            ExamId = dto.ExamId,
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
                             ReportId = dto.ReportId,
@@ -46,7 +45,6 @@ namespace API.Modules.ResultModule
                     {
                         var r = new QualitativeResult()
                         {
-                            ExamId = dto.ExamId,
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
                             ReportId = dto.ReportId,
@@ -63,6 +61,7 @@ namespace API.Modules.ResultModule
                 }
 
             }
+
             await _dbSet.AddRangeAsync(results);
             await _context.SaveChangesAsync();
 
@@ -104,6 +103,8 @@ namespace API.Modules.ResultModule
             var result = await _context
                                     .Reports
                                     .Where(x => x.PatientId == patientId)
+                                    .Include(x => x.Results)
+                                    .ThenInclude(r => r.Parameter)
                                     .Select(x => new
                                     {
                                         x.DateExam,
@@ -123,7 +124,12 @@ namespace API.Modules.ResultModule
                 Id = x.Id,
                 Patient = x.Patient,
                 Status = x.Status,
-                Results = x.Results.Select(x => CheckTypeResult.Check(x)).ToList()
+                Results = x.Results.Select(x =>
+                {
+                    var param = x.Parameter;
+
+                    return CheckTypeResult.Check(x, param);
+                }).ToList()
             }).ToList();
 
             if (result == null)
@@ -146,7 +152,6 @@ namespace API.Modules.ResultModule
                         var result = new QuantitativeResult()
                         {
                             Id = entity.Id,
-                            ExamId = dto.ExamId,
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
@@ -163,7 +168,6 @@ namespace API.Modules.ResultModule
                         {
                             Id = entity.Id,
                             ReportId = entity.ReportId,
-                            ExamId = dto.ExamId,
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
@@ -193,6 +197,84 @@ namespace API.Modules.ResultModule
 
 
         }
+
+        public async Task<ServiceResult<List<ReportResponseWithoutResultsDto>>> GetAll()
+        {
+            try
+            {
+                var response = await _context.Reports.Select(x => new ReportResponseWithoutResultsDto()
+                {
+                    DateExam = x.DateExam,
+                    Doctor = x.Doctor,
+                    ExamIds = x.ExamIds,
+                    Id = x.Id,
+                    Observations = x.Observations,
+                    Patient = x.Patient,
+                    Priority = x.Priority,
+                    Status = x.Status,
+                }).ToListAsync();
+
+                return ServiceResult<List<ReportResponseWithoutResultsDto>>.SuccessResult(response);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<List<ReportResponseWithoutResultsDto>>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message + ex?.InnerException);
+
+            }
+        }
+        public async Task<ServiceResult<ResponseReportDto>> GetReportById(int reportId)
+        {
+            try
+            {
+                var result = await _context
+                               .Reports
+                               .Where(x => x.Id == reportId)
+                               .Include(x => x.Results)
+                               .ThenInclude(r => r.Parameter)
+                               .Select(x => new
+                               {
+                                   x.DateExam,
+                                   x.Doctor,
+                                   ExamIds = x.ExamIds.ToList(),
+                                   x.Id,
+                                   x.Patient,
+                                   x.Status,
+                                   Results = x.Results.ToList()
+                               }).FirstOrDefaultAsync();
+
+                if (result == null)
+                {
+                    return ServiceResult<ResponseReportDto>.FailedResult(StatusCodes.Status404NotFound, " roporte no encontrada");
+                }
+
+                ResponseReportDto response = new ResponseReportDto()
+                {
+                    DateExam = result.DateExam,
+                    Doctor = result.Doctor,
+                    ExamIds = result.ExamIds,
+                    Id = result.Id,
+                    Patient = result.Patient,
+                    Status = result.Status,
+                    Results = result.Results.Select(x =>
+                    {
+                        var param = x.Parameter;
+
+                        return CheckTypeResult.Check(x, param);
+                    }).ToList()
+                };
+
+
+                return ServiceResult<ResponseReportDto>.SuccessResult(response);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<ResponseReportDto>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message + ex?.InnerException);
+
+            }
+        }
+
     }
 
 
