@@ -37,6 +37,8 @@ namespace API.Modules.ResultModule.Dtos
 
         public DateTime? DateResult { get; set; }
 
+        public string NameExam { get; set; }
+
         public string Reference { get; set; }
     }
 
