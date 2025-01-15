@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Usa localStorage
 import userReducer from '../features/user/userSlice';
 import uiReducer from '../features/ui/uiSlice';
-
+import pacientesReducer from '../features/pacientes/pacientesSlice';
 // Configuración de persistencia
 const persistConfig = {
   key: 'root',
@@ -15,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer, 
   ui: uiReducer, // Reducer de UI
+  pacientes: pacientesReducer
 });
 
 // Reducer persistido
