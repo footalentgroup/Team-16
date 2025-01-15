@@ -5,7 +5,7 @@ import SearchBar from "../AdminPedidos/SearchBar";
 import PatientList from "../AdminPedidos/PatientList";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import { useDispatch } from "react-redux";
-import { getAllPacientes } from "../../features/pacientes/pacientesSlice";
+import { setAllPacientes } from "../../features/pacientes/pacientesSlice";
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const AdminResultados = () => {
@@ -38,7 +38,7 @@ const AdminResultados = () => {
           setFilteredPatients(result.data || []); // Mostrar todos al inicio.
           console.log(result)
           
-          dispatch(getAllPacientes(result.data));
+          dispatch(setAllPacientes(result.data));
         } else {
           setError("Error al cargar los pacientes.");
         }

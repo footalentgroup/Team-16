@@ -1,6 +1,5 @@
-import React from "react";
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import LoginInput from "../../components/LoginInput/LoginInput";
@@ -9,8 +8,9 @@ import Breadcrumb from "../../components/navigation/breadcrumb";
 import { FaAngleRight } from "react-icons/fa6";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
-
+import { usePacientes } from "../../hooks/usePacientes";
 const AddPatient = () => {
+  const {addOnePaciente}=usePacientes();
   const {
     register,
     handleSubmit,
@@ -21,16 +21,11 @@ const AddPatient = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    toast.success("Paciente añadido exitosamente", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+    console.log(typeof (data.fechaNacimiento))
+    addOnePaciente(data)
     console.log("Datos del formulario:", data);
     navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis");
+
   };
 
   return (
@@ -191,6 +186,7 @@ const AddPatient = () => {
                     <div className="flex justify-end mb-8 w-full ml-20">
                       <button
                         type="submit"
+
                         className="bg-teal-500 text-white mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
                       >
                         Siguiente

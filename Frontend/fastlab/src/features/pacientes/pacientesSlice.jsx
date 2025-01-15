@@ -8,7 +8,7 @@ const pacientesSlice = createSlice({
   name: 'pacientes',
   initialState,
   reducers: {
-    getAllPacientes(state, action) {
+    setAllPacientes(state, action) {
       state.lista = action.payload;
       
     },
@@ -19,6 +19,6 @@ const pacientesSlice = createSlice({
   },
 });
 
-export const { getAllPacientes, addPaciente } = pacientesSlice.actions;
+export const { setAllPacientes, addPaciente } = pacientesSlice.actions;
 export default pacientesSlice.reducer;
 

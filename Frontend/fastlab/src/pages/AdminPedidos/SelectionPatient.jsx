@@ -1,44 +1,18 @@
-import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Importación añadida
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { getAllPacientes } from "../../features/pacientes/pacientesSlice";
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+
+import { usePacientes } from "../../hooks/usePacientes";
 
 const SelectionPatient = () => {
   const navigate = useNavigate(); // Uso de useNavigate
-  const token = useSelector((state) => state.user.token);
- 
-  const dispatch=useDispatch();
+  const {getAllPacientes}=usePacientes();
   useEffect(() => {
-      const fetchPatients = async () => {
-  
-        try {
-          const response = await fetch(`${BACKEND_URL}/patient/get-all`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
-          if (response.ok) {
-            const result = await response.json();
-            console.log(result.data)
-            dispatch(getAllPacientes(result.data));
-          } else {
-            console.log('Error al cargar los pacientes');
-          }
-        } catch (error) {
-          console.log("Error de conexión con el servidor.");
-          console.error(error);
-        } 
-      };
-  
+    const fetchPatients = async () => {
+      await getAllPacientes();
+    };
       fetchPatients();
     }, []);
 
