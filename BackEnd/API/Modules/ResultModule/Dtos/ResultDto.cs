@@ -2,8 +2,6 @@ namespace API.Modules.ResultModule.Dtos
 {
     public class CreateResultDto
     {
-        public int ExamId { get; set; }
-
         public int ParameterId { get; set; }
 
         public int ReportId { get; set; }
