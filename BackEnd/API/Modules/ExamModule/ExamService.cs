@@ -51,8 +51,9 @@ namespace API.Modules.ExamModule
                 {
                     if (p is QualitativeParameter qualitativeParam)
                     {
-                        return new QualitativeParameterDto
+                        return new GetQualitativeParameterDto
                         {
+                            Id = qualitativeParam.Id,
                             Name = qualitativeParam.Name,
                             Type = qualitativeParam.Type,
                             Reference = qualitativeParam.Reference,
@@ -60,8 +61,9 @@ namespace API.Modules.ExamModule
                     }
                     else if (p is QuantitativeParameter quantitativeParam)
                     {
-                        return new QuantitativeParameterDto
+                        return new GetQuantitativeParameterDto
                         {
+                            Id = quantitativeParam.Id,
                             Name = quantitativeParam.Name,
                             Type = quantitativeParam.Type,
                             MinValue = quantitativeParam.MinValue,
