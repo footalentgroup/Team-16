@@ -75,8 +75,8 @@ const SearchPatient = () => {
       <div className={`ml-[266px] h-full p-6 ${selectedPatient ? "overflow-hidden" : ""}`}>
         <Breadcrumb
           items={[
-            { title: "Admin", to: "/admin/pedidos" },
-            { title: "Pacientes", to: "/admin/pedidos" },
+            { title: "Admin", to: "/admin/ingresar-orden" },
+            { title: "Pacientes", to: "/admin/ingresar-orden" },
           ]}
         />
         <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3}  />
