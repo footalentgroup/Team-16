@@ -14,7 +14,7 @@ namespace API.Modules.ResultModule
     public class ResultService : BaseRepository<Result>, IResultService, IReportService
     {
         private readonly IMapper _mapper;
-
+        private Dictionary<int, string> dic;
         public ResultService(AppDbContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
@@ -116,6 +116,11 @@ namespace API.Modules.ResultModule
                                         Results = x.Results.ToList()
                                     }).ToListAsync();
 
+            if (dic == null)
+            {
+                dic = await _context.Parameters.Include(x => x.Exam).ToDictionaryAsync(parameter => parameter.Id, param => param.Exam.Name);
+            }
+
             var response = result.Select(x => new ResponseReportDto()
             {
                 DateExam = x.DateExam,
@@ -127,8 +132,9 @@ namespace API.Modules.ResultModule
                 Results = x.Results.Select(x =>
                 {
                     var param = x.Parameter;
+                    string examName = GetExamByParameterId(param.Id);
 
-                    return CheckTypeResult.Check(x, param);
+                    return CheckTypeResult.Check(x, param, examName);
                 }).ToList()
             }).ToList();
 
@@ -232,6 +238,7 @@ namespace API.Modules.ResultModule
                                .Where(x => x.Id == reportId)
                                .Include(x => x.Results)
                                .ThenInclude(r => r.Parameter)
+                               .ThenInclude(r => r.Exam)
                                .Select(x => new
                                {
                                    x.DateExam,
@@ -248,6 +255,12 @@ namespace API.Modules.ResultModule
                     return ServiceResult<ResponseReportDto>.FailedResult(StatusCodes.Status404NotFound, " roporte no encontrada");
                 }
 
+                if (dic == null)
+                {
+                    Console.WriteLine("hol parameter busca ------------------------");
+                    dic = await _context.Parameters.Include(x => x.Exam).ToDictionaryAsync(parameter => parameter.Id, param => param.Exam.Name);
+                }
+
                 ResponseReportDto response = new ResponseReportDto()
                 {
                     DateExam = result.DateExam,
@@ -259,8 +272,8 @@ namespace API.Modules.ResultModule
                     Results = result.Results.Select(x =>
                     {
                         var param = x.Parameter;
-
-                        return CheckTypeResult.Check(x, param);
+                        string examName = GetExamByParameterId(param.Id);
+                        return CheckTypeResult.Check(x, param, examName);
                     }).ToList()
                 };
 
@@ -272,6 +285,19 @@ namespace API.Modules.ResultModule
             {
                 return ServiceResult<ResponseReportDto>.FailedResult(StatusCodes.Status500InternalServerError, ex.Message + ex?.InnerException);
 
+            }
+        }
+
+        private string GetExamByParameterId(int parameterId)
+        {
+
+            if (dic.TryGetValue(parameterId, out string examName))
+            {
+                return examName;
+            }
+            else
+            {
+                return "";
             }
         }
 
