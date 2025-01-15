@@ -20,7 +20,7 @@ const SelectionPatient = () => {
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
-            { title: "Admin", to: "/admin/pedidos" },
+            { title: "Admin", to: "/admin/ingresar-orden" },
             { title: "Ingresar orden", to: "/admin/ingresar-orden" },
           ]}
         />

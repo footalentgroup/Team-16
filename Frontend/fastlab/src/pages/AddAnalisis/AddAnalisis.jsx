@@ -1,14 +1,22 @@
 import { FaAngleRight } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Calendario from "../../components/DatosPersonales/Calendario";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
+import Breadcrumb from "../../components/navigation/breadcrumb";
+import { Progress } from "@/components/ui/progress";
+import { ChevronLeft } from 'lucide-react';
+
 const AddAnalisis = () => {
   const { control, register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  const navigate = useNavigate();
 
   const doctors = [
     { value: "doctor1", label: "Ricky Maravilla" },
@@ -21,7 +29,23 @@ const AddAnalisis = () => {
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
-    <div className="p-6 bg-gray-50">
+    <div className=" bg-gray-50 ml-[266px] overflow-y-auto h-full">
+    
+    <div className="my-4 mx-4">
+    <Breadcrumb
+          items={[
+            { title: "Admin", to: "/admin/ingresar-orden" },
+            { title: "Orden de Analisis", to: "/admin/ingresar-orden" },
+          ]}
+        />
+        </div>
+        {/* boton de regresar */}
+        <div className="flex mb-4 items-center gap-1">
+        <ChevronLeft size={18}/>
+        <button onClick={() => navigate(-1)} className="text-[#0E1B27] text-sm font-medium">Regresar</button>
+        </div>
+
+        <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3}  />
       <h1 className="text-xl font-bold mb-4 text-center  mt-10 text-[#0E1B27]">Órden de Análisis</h1>
       <div className="w-full flex justify-center">
         <form className="space-y-4 w-1/2" onSubmit={handleSubmit(onSubmit)}>
@@ -125,10 +149,10 @@ const AddAnalisis = () => {
           </div>
 
           {/* Botón */}
-          <div className="flex justify-end w-full ml-20">
+          <div className="flex justify-end w-full ml-20 mb-8">
             <button
               type="submit"
-              className="bg-teal-500 text-white mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
+              className="bg-teal-500 text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
             >
               Siguiente
               <FaAngleRight className="ml-2" />
