@@ -6,6 +6,10 @@ namespace API.DataBase.Entities
 
         public string Status { get; set; }
 
+        public string? Priority { get; set; }
+
+        public string? Observations { get; set; }
+
         public DateTime DateExam { get; set; }
 
         public Patient Patient { get; set; }
