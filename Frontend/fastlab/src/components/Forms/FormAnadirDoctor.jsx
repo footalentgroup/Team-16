@@ -30,6 +30,7 @@ function FormAnadirDoctor() {
                     name: data.name,
                     lastname: data.lastname,
                     registration: data.registration,
+                    title: data.title,
                 }),
             })
 
@@ -53,7 +54,7 @@ function FormAnadirDoctor() {
         } finally {
             setIsFormSubmitted(false)
             setTimeout(() => {
-                navigate('/configuracion/doctores')
+                navigate('/admin/configuracion/doctores')
             }, 3000)
         }
     }
@@ -100,19 +101,19 @@ function FormAnadirDoctor() {
                         </div>
 
                         <div>
-                            <label htmlFor='titulo' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='title' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Título
                             </label>
                             <input
                                 type='text'
-                                id='titulo'
-                                name='titulo'
+                                id='title'
+                                name='title'
                                 placeholder='Ingrese el título'
                                 disabled={isFormSubmitted}
                                 className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
-                                  ${errors.titulo ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
+                                  ${errors.title ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
                                   `}
-                                {...register('titulo', { required: 'Este campo es requerido' })}
+                                {...register('title', { required: 'Este campo es requerido' })}
                             />
                         </div>
 

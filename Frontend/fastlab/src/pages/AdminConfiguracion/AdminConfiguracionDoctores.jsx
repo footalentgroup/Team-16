@@ -19,7 +19,7 @@ const AdminConfiguracionDoctores = () => {
             setFilteredDoctors(doctors)
         } else {
             const filtered = doctors.filter(doctor => {
-                const fullData = `${doctor.name} ${doctor.lastName} ${doctor.registration}`
+                const fullData = `${doctor.name} ${doctor.lastName} ${doctor.registration} ${doctor.title}`
                 return fullData.toLowerCase().includes(searchQuery.toLowerCase()) // Solo normalizamos en la comparación
             })
             setFilteredDoctors(filtered)
@@ -117,7 +117,8 @@ const AdminConfiguracionDoctores = () => {
                                                             {doctor.name} {doctor.lastName}
                                                         </h3>
                                                         <div className='text-sm text-gray-600 space-x-4'>
-                                                            <span>{doctor.registration}</span>
+                                                            <span>{doctor.title}</span>
+                                                            <span>Matricula: {doctor.registration}</span>
                                                         </div>
                                                     </div>
                                                     <Link
