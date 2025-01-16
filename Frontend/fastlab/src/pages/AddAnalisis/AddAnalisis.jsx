@@ -7,9 +7,14 @@ import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft } from 'lucide-react';
+import Select from 'react-select'
+import { useState } from "react";
+
+
 
 const AddAnalisis = () => {
   const { control, register, handleSubmit, formState: { errors } } = useForm();
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -22,6 +27,20 @@ const AddAnalisis = () => {
     { value: "doctor2", label: " Manuel Pascual " },
     { value: "doctor3", label: "Ricardo Forman" }
   ];
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vainilla' },
+    { value: 'mango', label: 'Mango' },
+    { value: 'fresa', label: 'Fresa' },
+    { value: 'lúcuma', label: 'Lúcuma' },
+    { value: 'menta', label: 'Menta' }
+
+  ]
+  const handleChange = (selected) => {
+    setSelectedOptions(selected);
+    console.log("Opciones seleccionadas:", selected);
+  };
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
@@ -53,7 +72,16 @@ const AddAnalisis = () => {
             <label htmlFor="tipoAnalisis" className="block font-medium mb-1 text-sm text-[#0E1B27]">
               Tipo de análisis
             </label>
-            <select
+            <Select options={options}
+            isMulti // Permite la selección múltiple
+        value={selectedOptions} // Valor actual del select
+        onChange={handleChange} // Controlador para manejar los cambios
+        placeholder="Selecciona frutas..." // Texto por defecto
+        className="basic-multi-select" // Clase CSS opcional
+        classNamePrefix="select" // Prefijo para las clases CSS
+             />
+
+            {/* <select
               id="tipoAnalisis"
               name="tipoAnalisis"
               className={`w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none appearance-none ${errors.tipoAnalisis ? 'border-red-500' : ''}`}
@@ -65,7 +93,7 @@ const AddAnalisis = () => {
               <option value="sangre">Hemograma Completo</option>
               <option value="imagen">Glucosa en sangre</option>
               <option value="orina">Perfil Lipido</option>
-            </select>
+            </select> */}
             {errors.tipoAnalisis && (
               <p className="text-red-500 text-sm mt-1">{errors.tipoAnalisis.message}</p>
             )}
