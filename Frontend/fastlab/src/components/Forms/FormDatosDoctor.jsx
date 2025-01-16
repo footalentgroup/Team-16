@@ -28,7 +28,7 @@ function FormDatosDoctor({ doctor }) {
                     id: doctor.id,
                     name: data.name,
                     lastName: data.lastname,
-                    speciality: data.speciality,
+                    title: data.title,
                     registration: data.registration,
                 }),
             })
@@ -59,8 +59,8 @@ function FormDatosDoctor({ doctor }) {
     useEffect(() => {
         setValue('name', doctor.name || '')
         setValue('lastname', doctor.lastName || '')
-        setValue('speciality', doctor.speciality || '')
         setValue('registration', doctor.registration || '')
+        setValue('title', doctor.title || '')
     }, [doctor, setValue])
 
     return (
@@ -101,17 +101,17 @@ function FormDatosDoctor({ doctor }) {
                         </div>
 
                         <div>
-                            <label htmlFor='speciality' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='title' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Título
                             </label>
                             <input
                                 type='text'
-                                id='speciality'
-                                name='speciality'
+                                id='title'
+                                name='title'
                                 placeholder='Ejemplo: Dr. Genética'
                                 disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                {...register('speciality', { required: 'Este campo es requerido' })}
+                                {...register('title', { required: 'Este campo es requerido' })}
                             />
                         </div>
 
