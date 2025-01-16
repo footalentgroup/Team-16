@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
 import { setAllPacientes, addPaciente } from "../features/pacientes/pacientesSlice";
 import { useSelector } from "react-redux";
-import { toast } from 'react-toastify';
+
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 export const usePacientes = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
+    const pacientes=useSelector((state)=>state.pacientes.lista);
 
     const getAllPacientes = async () => {
         try {
@@ -36,10 +37,17 @@ export const usePacientes = () => {
             Authorization: `Bearer ${token}`,
         },
     };
-    const searchPaciente = async (id) => {
-
+    const searchPaciente =  (idBuscado) => {
+        const pacienteFiltrado = pacientes.filter(paciente => paciente.id === idBuscado);
+        if (pacienteFiltrado.length > 0) {
+            return 0;
+        } else {
+            return pacienteFiltrado[0]
+         }
     };
 
+    
+    
     const addOnePaciente = async (paciente) => {
         const pacienteAEnviar = {
             firstname: paciente?.nombres,
@@ -64,14 +72,7 @@ export const usePacientes = () => {
                 console.log(result)
                 pacienteAEnviar.id=result.data.personalID;
                 dispatch(addPaciente(pacienteAEnviar));
-                toast.success("Paciente añadido exitosamente", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
+                
             } else {
                 console.log("Error añadir el paciente.", response.json());
             }

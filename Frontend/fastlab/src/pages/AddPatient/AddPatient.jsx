@@ -19,9 +19,8 @@ const AddPatient = () => {
   } = useForm();
 
   const navigate = useNavigate();
-
+    
   const onSubmit = (data) => {
-    console.log(typeof (data.fechaNacimiento))
     addOnePaciente(data)
     console.log("Datos del formulario:", data);
     navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis");
@@ -35,7 +34,6 @@ const AddPatient = () => {
         <div className="fixed top-0 left-0 min-w-[266px] h-full">
           <MenuLateral items={arrayItemsMenuAdmin} />
         </div>
-
         {/* Contenido principal */}
         <div className="ml-[266px] pt-10  mx-auto overflow-y-auto h-full ">
           <main className='flex-1 p-8'>
