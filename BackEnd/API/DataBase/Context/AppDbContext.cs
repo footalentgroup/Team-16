@@ -97,21 +97,26 @@ namespace API.DataBase.Context
                Id = 1,
                Name = "John",
                LastName = "Doe",
-               Registration = "REG12345"
+               Registration = "REG12345",
+               Title = ""
            },
            new Doctor
            {
                Id = 2,
                Name = "Jane",
                LastName = "Smith",
-               Registration = "REG54321"
+               Registration = "REG54321",
+               Title = ""
+
            },
                new Doctor
                {
                    Id = 3,
                    Name = "Jennifer",
                    LastName = "juanes",
-                   Registration = "REG44534"
+                   Registration = "REG44534",
+                   Title = ""
+
                }
        );
         }
