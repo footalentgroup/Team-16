@@ -1,6 +1,5 @@
 import { FaAngleRight } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendario from "../../components/DatosPersonales/Calendario";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
@@ -45,7 +44,7 @@ const AddAnalisis = () => {
         <button onClick={() => navigate(-1)} className="text-[#0E1B27] text-sm font-medium">Regresar</button>
         </div>
 
-        <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3}  />
+        <Progress className="[&>*]:bg-[#02807D] mb-6" value={66.6}  />
       <h1 className="text-xl font-bold mb-4 text-center  mt-10 text-[#0E1B27]">Órden de Análisis</h1>
       <div className="w-full flex justify-center">
         <form className="space-y-4 w-1/2" onSubmit={handleSubmit(onSubmit)}>
