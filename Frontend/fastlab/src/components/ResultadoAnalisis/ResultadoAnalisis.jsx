@@ -1,75 +1,113 @@
-import { Button } from '@/components/ui/button'
-import { pdf } from '@react-pdf/renderer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { pdf } from '@react-pdf/renderer';
+import MenuLateral from '../../components/menuLateral/MenuLateral';
+import arrayItemsMenuPaciente from '../../utils/itemsMenuPaciente';
+import { PDFTemplate } from './pdfTemplate';
 
-const ResultadoAnalisis = ({ resultData, patientName }) => {
-    const generatePDF = async () => {
-        try {
-            const { PDFTemplate } = await import('./pdfTemplate')
-            const blob = await pdf(<PDFTemplate data={resultData} patientName={patientName} />).toBlob()
-            const url = URL.createObjectURL(blob)
-            const link = document.createElement('a')
-            link.href = url
-            link.download = 'resultados-medicos.pdf'
-            link.click()
-            URL.revokeObjectURL(url)
-        } catch (error) {
-            console.error('Error generating PDF:', error)
-        }
-    }
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
-    return (
-        <div className='flex min-h-screen bg-gray-50'>
-            <main className='flex-1 p-8'>
-                <div className='flex justify-between items-start mb-8'>
-                    <h1 className='text-xl font-semibold'>Resultado para: {patientName} </h1>
-                    <Button onClick={generatePDF} className='bg-emerald-600 hover:bg-emerald-700'>
-                        Descargar
-                    </Button>
-                </div>
+const ResultadoAnalisis = () => {
+  const { id } = useParams();
+  const [examen, setExamen] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-                <div className='bg-white border rounded-lg p-6 space-y-6'>
-                    <div className='text-center text-sm text-gray-600 mb-4'>Mariano Boedo 23 - Tel.(0387)-4215440 - 4400 Salta</div>
+  useEffect(() => {
+    const fetchExamen = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/results/orders/get-by-id?id=${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-                    <div className='border-b pb-4'>
-                        <div className='flex gap-2 font-bold'>
-                            <span>Paciente:</span>
-                            <span>{patientName}</span>
-                            <span>- PROT. 78254</span>
-                        </div>
-                    </div>
+        if (!response.ok) throw new Error('Error al cargar el examen.');
 
-                    <div className='space-y-4'>
-                        <div className='grid grid-cols-3 gap-4 text-sm'>
-                            <div className='flex-4'></div>
-                            <div className='flex-1 text-left underline'>Valores Obtenidos</div>
-                            <div className='flex-1 text-left text-gray-600 underline'>Valores de Referencia</div>
-                        </div>
-                        {resultData.map((result, index) => (
-                            <ResultRow key={index} {...result} level={0} />
-                        ))}
-                    </div>
-                </div>
-            </main>
+        const data = await response.json();
+        setExamen(data.data);
+      } catch (error) {
+        console.error('Error al cargar el examen:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExamen();
+  }, [id]);
+
+  const generatePDF = async () => {
+    if (!examen) return;
+    const blob = await pdf(<PDFTemplate data={examen} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `examen_${id}.pdf`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (loading) {
+    return <div className="text-center mt-10">Cargando examen...</div>;
+  }
+
+  if (!examen) {
+    return <div className="text-center mt-10">No se encontró el examen.</div>;
+  }
+
+  return (
+    <div className="relative h-screen bg-gray-50 flex">
+      {/* Menú lateral */}
+      <div className="fixed top-0 left-0 w-[266px] h-full">
+        <MenuLateral items={arrayItemsMenuPaciente} />
+      </div>
+
+      {/* Contenido principal */}
+      <div className="flex-1 p-6">
+        {/* Botón para descargar PDF */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={generatePDF}
+            className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+          >
+            Descargar PDF
+          </button>
         </div>
-    )
-}
 
-function ResultRow({ label, value, reference, subItems, level }) {
-    return (
-        <div className={`${level > 0 ? 'ml-4 space-y-2' : ''}`}>
-            <div className={`grid grid-cols-3 gap-4 text-sm`}>
-                <div className={`flex-4 ${level === 0 ? 'font-semibold' : ''}`}>{label}</div>
-                {(value || reference) && (
-                    <>
-                        <div className='flex-1 text-left'>{value}</div>
-                        <div className='flex-1 text-left'>{reference}</div>
-                    </>
-                )}
+        <div className="bg-white p-6 rounded-lg shadow-md mt-6 max-w-4xl mx-auto">
+          {/* Encabezado */}
+          <div className="text-center mb-6">
+            <h2 className="text-lg font-bold">Mariano Boedo 23 - Tel.(0387)-4215440 - 4400 Salta</h2>
+          </div>
+
+          {/* Información del paciente */}
+          <div className="border-b pb-4 mb-4">
+            <p className="mb-2"><strong>Paciente:</strong> {examen.patient.firstName} {examen.patient.lastName}</p>
+            <p className="mb-2"><strong>Fecha del Examen:</strong> {new Date(examen.dateExam).toLocaleDateString('es-AR')}</p>
+            <p className="mb-2"><strong>Observaciones:</strong> {examen.observations || 'Sin observaciones'}</p>
+            <p className="mb-2"><strong>Prioridad:</strong> {examen.priority || 'Normal'}</p>
+          </div>
+
+          {/* Resultados */}
+          <div>
+            <div className="flex justify-between font-bold border-b pb-2 mb-4">
+              <span className="w-1/2">Parámetro</span>
+              <span className="w-1/4 text-right">Valores Obtenidos</span>
+              <span className="w-1/4 text-right">Valores de Referencia</span>
             </div>
-            {subItems && subItems.map((subItem, index) => <ResultRow key={index} {...subItem} level={level + 1} />)}
-        </div>
-    )
-}
 
-export default ResultadoAnalisis
+            {examen.results.map((result, index) => (
+              <div key={result.id} className={`flex justify-between py-2 ${index % 2 === 0 ? 'bg-gray-50' : ''}`}>
+                <span className="w-1/2 font-medium">{result.parameter}</span>
+                <span className="w-1/4 text-right">{result.valueResult}</span>
+                <span className="w-1/4 text-right text-gray-600">{result.reference}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ResultadoAnalisis;
