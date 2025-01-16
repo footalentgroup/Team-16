@@ -13,17 +13,5 @@ namespace API.Modules.ResultModule.Interfaces
         Task<ServiceResult<object>> DeleteResult(int id);
     }
 
-    public interface IReportService
-    {
 
-        Task<Report> CreateOrder(CreateReportDto createReportDto);
-
-        Task<ServiceResult<List<ResponseReportDto>>> GetManyByPatientIdAsync(int patientId);
-
-        Task<ServiceResult<List<ReportResponseWithoutResultsDto>>> GetAll();
-
-        Task<ServiceResult<ResponseReportDto>> GetReportById(int reportId);
-
-        Task<ServiceResult<object>> UpdateReport(UpdateReportDto updateDto);
-    }
 }

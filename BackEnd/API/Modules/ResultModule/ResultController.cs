@@ -20,9 +20,9 @@ namespace API.Modules.ResultModule
         }
 
         [HttpGet("orders/get-all")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders([FromQuery] string? status)
         {
-            var response = await _reportService.GetAll();
+            var response = await _reportService.GetAll(status);
 
             return response.ToActionResult();
         }
