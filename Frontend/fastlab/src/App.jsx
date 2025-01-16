@@ -12,7 +12,7 @@ import AdminConfiguracionMiCuenta from "./pages/AdminConfiguracion/AdminConfigur
 import PublicRoute from "./routes/PublicRoutes";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import NotFound from "./pages/NotFound";
-import Notauthorized from "./pages/NotAuthorized";
+import Notauthorized from "./pages/Notauthorized";
 import AdminConfiguracionAnadirDoctores from "./pages/AdminConfiguracion/AdminConfiguracionAnadirDoctores";
 import AdminConfiguracionEditarDoctores from "./pages/AdminConfiguracion/AdminConfiguracionEditarDoctores";
 import AdminConfiguracionBioquimicos from "./pages/AdminConfiguracion/AdminConfiguracionBioquimicos";
@@ -90,9 +90,7 @@ const App = () => {
 
             <Route path="ingresar-orden" element={<SelectionPatient />} />
             <Route path="ingresar-orden/paciente-registrado" element={<SearchPatient />} />
-            <Route
-              path="ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio"
-              element={<ReportMethod />}
+            <Route path="ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio"element={<ReportMethod />}
             />
 
             {/* rutas de registrar paciente */}
