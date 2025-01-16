@@ -4,10 +4,13 @@ import MenuLateral from "../../components/menuLateral/MenuLateral";
 import SearchBar from "../AdminPedidos/SearchBar";
 import PatientList from "../AdminPedidos/PatientList";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
-
+import { useDispatch } from "react-redux";
+import { setAllPacientes } from "../../features/pacientes/pacientesSlice";
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const AdminResultados = () => {
+  const dispatch = useDispatch();
+
   const [allPatients, setAllPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +36,9 @@ const AdminResultados = () => {
           const result = await response.json();
           setAllPatients(result.data || []);
           setFilteredPatients(result.data || []); // Mostrar todos al inicio.
+          console.log(result)
+          
+          dispatch(setAllPacientes(result.data));
         } else {
           setError("Error al cargar los pacientes.");
         }

@@ -10,7 +10,7 @@ export default function analisisCard({ id, title, type, date }) {
                 </div>
                 <div className='flex-grow'>
                     <h3 className='font-medium text-gray-900'>{title}</h3>
-                    <p className='text-sm text-gray-600'>Tipo: {type}</p>
+                    <p className='text-sm text-gray-600'>Paciente: {type}</p>
                     <div className='flex items-center gap-2 mt-2 text-sm text-gray-500'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' className='flex-shrink-0'>
                             <rect x='3' y='4' width='18' height='18' rx='2' ry='2' />

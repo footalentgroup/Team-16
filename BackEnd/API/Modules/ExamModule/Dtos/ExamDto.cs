@@ -9,13 +9,13 @@ namespace API.Modules.ExamModule.Dtos
     public required List<ParameterDto> Parameters { get; set; }
   }
 
- public class ExamSummaryDto
-{
+  public class ExamSummaryDto
+  {
     public int Id { get; set; }
     public required string Name { get; set; }
     public required string Sample { get; set; }
     public string? Description { get; set; }
-}
+  }
 
   public class CreateExamDto
   {
@@ -36,11 +36,21 @@ namespace API.Modules.ExamModule.Dtos
     public required string Reference { get; set; }
   }
 
+  public class GetQualitativeParameterDto : QualitativeParameterDto
+  {
+    public required int Id { get; set; }
+  }
+
   public class QuantitativeParameterDto : ParameterDto
   {
     public double MinValue { get; set; }
     public double MaxValue { get; set; }
     public required string Unit { get; set; }
     public string? Gender { get; set; }
+  }
+
+  public class GetQuantitativeParameterDto : QuantitativeParameterDto
+  {
+    public required int Id { get; set; }
   }
 }

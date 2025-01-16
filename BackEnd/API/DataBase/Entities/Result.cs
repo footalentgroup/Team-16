@@ -6,10 +6,6 @@ namespace API.DataBase.Entities
 
         public required string Type { get; set; }
 
-        public Exam Exam { get; set; }
-
-        public int ExamId { get; set; }
-
         public Report Report { get; set; }
 
         public int ReportId { get; set; }

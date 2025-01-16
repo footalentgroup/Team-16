@@ -18,5 +18,9 @@ namespace API.Modules.ResultModule.Interfaces
     public interface IReportService
     {
         Task<ServiceResult<List<ResponseReportDto>>> GetManyByPatientIdAsync(int patientId);
+
+        Task<ServiceResult<List<ReportResponseWithoutResultsDto>>> GetAll();
+
+        Task<ServiceResult<ResponseReportDto>> GetReportById(int reportId);
     }
 }
