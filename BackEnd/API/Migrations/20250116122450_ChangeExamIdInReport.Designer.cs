@@ -3,6 +3,7 @@ using System;
 using API.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250116122450_ChangeExamIdInReport")]
+    partial class ChangeExamIdInReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace API.Migrations
                             Email = "admin@gmail.com",
                             LastName = "admin1",
                             Name = "admin1",
-                            Password = "$2a$11$HKpqx1b9tKtqOz98Ll0iRuixre8vYWNOsJLvfvy8RT6osqNfpL71a"
+                            Password = "$2a$11$TxOqj5B0YE8F/vbd3atZEe2m8hKr6B./s2IOEj91SrK4h/J1RabXa"
                         },
                         new
                         {
@@ -68,7 +71,7 @@ namespace API.Migrations
                             Email = "admin2@gmail.com",
                             LastName = "admin2",
                             Name = "admin2",
-                            Password = "$2a$11$4gCwtVIQqlRRrJZ/JRKvL.UmGPLLJf48/03mEjIP4fR3K3uT0rltG"
+                            Password = "$2a$11$v1VORySFZ3b5WX530OGR8Otk2x3/cyeOIf7YMBNsKxN/mn/ppnE3m"
                         });
                 });
 
@@ -226,7 +229,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$IGNcsH5RZMzI.lMWL5LN..Hz5wUhkSclVsj06Ro4ERY06L.v3s2yG",
+                            Password = "$2a$11$Fc/hsGbVrSe9B/yBFlLPmOI0subjKXrw27s3tRiFR/B/EMHtq5462",
                             PersonalID = "34098349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -238,7 +241,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$eU/p68MtFpsNPSTltG/3du06Cr2g6NFXdXuIBnZFDPT/HJwkojT.C",
+                            Password = "$2a$11$kHICLGQeUv6PNCpICiRtceh73/C9BfcR1cH.vXRoGVFHZOqNagydS",
                             PersonalID = "49298349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -250,7 +253,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$sDnuXVA4ci2tZk5MTeWYluPJMpQhEuoXL/dG5OwcKJI2iWrRsLjZO",
+                            Password = "$2a$11$iGfXsdLbsl5dfcMFyHlkGez/2CV.rrwDaTkF/Di.Vyzx2b27imLQW",
                             PersonalID = "AA34098349",
                             PersonalIDType = 1,
                             Phone = "+54934245673748"
@@ -276,14 +279,12 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Observations")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Priority")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
