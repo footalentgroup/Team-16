@@ -47,6 +47,7 @@ const AddPatient = () => {
                   ]}
                 />
               </div>
+              
 
               {/* Título */}
               <h1 className="text-2xl font-bold text-[#0E1B27]  py-5">
