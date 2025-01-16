@@ -26,6 +26,8 @@ import AddPatient from "./pages/AddPatient/AddPatient";
 import AddAnalisis from "./pages/AddAnalisis/AddAnalisis";
 import ResultadosList from "./pages/AdminResultados/ResultadosList"; // Agregado
 import ResultadoAnalisis from "./pages/PacienteHistorialResultadoAnalisis"; // Si se usa en el admin
+import AdminResults from "./pages/AdminResultados/AdminResults";
+import CargaResultados from "./pages/AdminResultados/InfoAnalisisPost";
 
 const App = () => {
   return (
@@ -78,8 +80,9 @@ const App = () => {
             }
           >
             {/* rutas para el admin */}
-            <Route path="resultados" element={<AdminResultados />} />
-            <Route path="resultados/lista" element={<ResultadosList />} /> {/* Nueva ruta */}
+            <Route path="resultados" element={<AdminResults />} />
+            <Route path="resultados/carga-de-resultados" element={<AdminResultados />} /> 
+            <Route path="resultados/carga-de-resultados/info-analisis" element={<CargaResultados />} /> 
             <Route path="resultados/:id" element={<ResultadoAnalisis />} /> {/* Detalles por ID */}
             <Route path="configuracion" element={<AdminConfiguracion />} />
             <Route path="configuracion/doctores" element={<AdminConfiguracionDoctores />} />
