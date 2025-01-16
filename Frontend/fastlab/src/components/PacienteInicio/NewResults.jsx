@@ -21,7 +21,6 @@ const NewResults = () => {
             date: 'diciembre 2024',
         },
     ];
-  const arrayResults0 = [];
   return (
     <section className="flex min-h-screen bg-gray-50">
       <div className="flex-1 p-8">
