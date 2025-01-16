@@ -1,148 +1,147 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { setError } from '../../features/ui/uiSlice'
+import { toast, ToastContainer } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+
+const BACKEND_URL = import.meta.env.VITE_API_URL
 
 function FormAnadirDoctor() {
-    const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        speciality: '',
-        registrationNumber: '',
-        // email: datos.email,
-    })
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const [errors, setErrors] = useState({})
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
 
-    const handleChange = e => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
-    const validateForm = () => {
-        const newErrors = {}
-        if (!formData.nombre.trim()) newErrors.nombre = 'El nombre es requerido.'
-        if (!formData.apellido.trim()) newErrors.apellido = 'El apellido es requerido.'
-        if (!formData.speciality.trim()) newErrors.speciality = 'El título es requerido.'
-        if (!formData.registrationNumber.trim()) newErrors.registrationNumber = 'La matrícula es requerida.'
-        // if (!/^\+?\d{10,15}$/.test(formData.telefono)) newErrors.telefono = 'El teléfono debe tener un formato válido.'
-        // if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'El correo electrónico no es válido.'
+    const onSubmit = async data => {
+        setIsFormSubmitted(true)
+        try {
+            const response = await fetch(`${BACKEND_URL}/doctor`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: data.name,
+                    lastname: data.lastname,
+                    registration: data.registration,
+                }),
+            })
 
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
-    }
+            const result = await response.json()
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        if (validateForm()) {
-            alert('Formulario enviado correctamente.')
-            // Aquí puedes enviar los datos al backend
+            if (response.ok) {
+                toast.success('Se actualizaron los datos correctamente', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            } else {
+                dispatch(setError(result.message || 'Error al iniciar sesión'))
+            }
+        } catch (error) {
+            dispatch(setError('Error de conexión con el servidor.'))
+        } finally {
+            setIsFormSubmitted(false)
+            setTimeout(() => {
+                navigate('/configuracion/doctores')
+            }, 3000)
         }
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit} className='space-y-8'>
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-8'>
                 {/* Datos personales */}
                 <section>
+                    <ToastContainer />
                     <div className='space-y-4'>
                         <div>
-                            <label htmlFor='nombre' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='name' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Nombre
                             </label>
                             <input
                                 type='text'
-                                id='nombre'
-                                name='nombre'
+                                id='name'
+                                name='name'
                                 placeholder='Ejemplo: Juan José'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.nombre}
-                                onChange={e => setFormData({ ...formData, nombre: e.target.value })}
+                                disabled={isFormSubmitted}
+                                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
+                                  ${errors.name ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
+                                  `}
+                                {...register('name', { required: 'Este campo es requerido' })}
                             />
                         </div>
 
                         <div>
-                            <label htmlFor='apellido' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='lastname' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Apellido
                             </label>
                             <input
                                 type='text'
-                                id='apellido'
-                                name='apellido'
+                                id='lastname'
+                                name='lastname'
                                 placeholder='Ejemplo: Campos Estrada'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.apellido}
-                                onChange={e => setFormData({ ...formData, apellido: e.target.value })}
+                                disabled={isFormSubmitted}
+                                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
+                                  ${errors.lastname ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
+                                  `}
+                                {...register('lastname', { required: 'Este campo es requerido' })}
                             />
                         </div>
 
                         <div>
-                            <label htmlFor='speciality' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='titulo' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Título
                             </label>
                             <input
                                 type='text'
-                                id='speciality'
-                                name='speciality'
+                                id='titulo'
+                                name='titulo'
                                 placeholder='Ingrese el título'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.speciality}
-                                onChange={e => setFormData({ ...formData, speciality: e.target.value })}
+                                disabled={isFormSubmitted}
+                                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
+                                  ${errors.titulo ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
+                                  `}
+                                {...register('titulo', { required: 'Este campo es requerido' })}
                             />
                         </div>
 
                         <div>
-                            <label htmlFor='registrationNumber' className='block text-sm font-medium text-gray-700 mb-1'>
+                            <label htmlFor='registration' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Matrícula
                             </label>
                             <input
                                 type='text'
-                                id='registrationNumber'
-                                name='registrationNumber'
+                                id='registration'
+                                name='registration'
                                 placeholder='Ingrese la matrícula'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.registrationNumber}
-                                onChange={e => setFormData({ ...formData, registrationNumber: e.target.value })}
+                                disabled={isFormSubmitted}
+                                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent
+                                  ${errors.registration ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'}
+                                  `}
+                                {...register('registration', { required: 'Este campo es requerido' })}
                             />
                         </div>
-
-                        {/* <div>
-                            <label htmlFor='telefono' className='block text-sm font-medium text-gray-700 mb-1'>
-                                Teléfono
-                            </label>
-                            <input
-                                type='tel'
-                                id='telefono'
-                                name='telefono'
-                                placeholder='Ejemplo: +54 999 999 999'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.telefono}
-                                onChange={e => setFormData({ ...formData, telefono: e.target.value })}
-                            />
-                        </div> */}
-
-                        {/* <div>
-                            <label htmlFor='correo' className='block text-sm font-medium text-gray-700 mb-1'>
-                                Correo electrónico
-                            </label>
-                            <input
-                                type='email'
-                                id='correo'
-                                name='correo'
-                                placeholder='Ejemplo: email@email.com'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.correo}
-                                onChange={e => setFormData({ ...formData, correo: e.target.value })}
-                            />
-                        </div> */}
                     </div>
                 </section>
 
                 <div className='flex justify-end'>
                     <button
                         type='submit'
+                        disabled={isFormSubmitted}
                         className='px-6 py-2 bg-[#02807D] text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
                     >
-                        Guardar
+                        {isFormSubmitted ? 'Guardando...' : 'Guardar'}
                     </button>
                 </div>
             </form>
