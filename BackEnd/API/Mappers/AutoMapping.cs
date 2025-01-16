@@ -16,7 +16,11 @@ namespace API.Mappers
 
             CreateMap<Result, CreateResultDto>();
 
-            CreateMap<Report, CreateReportDto>().ReverseMap();
+            CreateMap<Report, CreateReportDto>();
+
+            CreateMap<CreateReportDto, Report>()
+             .ForMember(dest => dest.ExamIds,
+                  opt => opt.MapFrom(src => string.Join(",", src.ExamIds ?? new List<int>())));
 
             CreateMap<Doctor, CreateDoctorDto>().ReverseMap();
 
