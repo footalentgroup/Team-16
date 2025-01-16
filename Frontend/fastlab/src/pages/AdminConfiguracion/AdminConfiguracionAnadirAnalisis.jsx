@@ -2,18 +2,17 @@ import { useState } from 'react'
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
 import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
-import FormAnadirDoctor from '../../components/Forms/FormAnadirDoctor'
 import { LucideTrash2 } from 'lucide-react'
+import FormAnadirAnalisis from '../../components/Forms/FormAnadirAnalisis'
 
-const doctor = {
-    id: 1,
-    name: 'Arturo',
-    lastname: 'Díaz',
-    speciality: 'Dr. Genética',
-    registrationNumber: 'N°47774',
+const analisis = {
+    id: 3,
+    name: 'Hemograma completo',
+    sample: '5ml de sangre',
+    price: '20',
 }
 
-const AdminConfiguracionAnadirDoctores = () => {
+const AdminConfiguracionAnadirAnalisis = () => {
     const [query, setQuery] = useState('')
     const [hasSearched, setHasSearched] = useState('')
 
@@ -36,16 +35,16 @@ const AdminConfiguracionAnadirDoctores = () => {
                                 items={[
                                     { title: 'Admin', to: '/' },
                                     { title: 'Configuración', to: '/admin/configuracion' },
-                                    { title: 'Doctores', to: '/admin/configuracion/doctores' },
-                                    { title: 'Añadir doctor' },
+                                    { title: 'Analisis', to: '/admin/configuracion/analisis' },
+                                    { title: 'Añadir análisis' },
                                 ]}
                             />
 
                             <div className='flex justify-between items-center mb-8'>
-                                <h1 className='text-2xl font-semibold'>Añadir doctor</h1>
+                                <h1 className='text-2xl font-semibold'>Añadir análisis</h1>
                             </div>
                             <div className='max-w-2xl mx-auto'>
-                                <FormAnadirDoctor />
+                                <FormAnadirAnalisis />
                             </div>
                         </div>
                     </main>
@@ -54,4 +53,4 @@ const AdminConfiguracionAnadirDoctores = () => {
         </>
     )
 }
-export default AdminConfiguracionAnadirDoctores
+export default AdminConfiguracionAnadirAnalisis

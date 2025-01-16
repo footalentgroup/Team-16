@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import LoginPaciente from "./pages/LoginPaciente";
 import LoginAdmin from "./pages/LoginAdmin";
@@ -16,6 +16,7 @@ import Notauthorized from "./pages/Notauthorized";
 import AdminConfiguracionAnadirDoctores from "./pages/AdminConfiguracion/AdminConfiguracionAnadirDoctores";
 import AdminConfiguracionEditarDoctores from "./pages/AdminConfiguracion/AdminConfiguracionEditarDoctores";
 import AdminConfiguracionBioquimicos from "./pages/AdminConfiguracion/AdminConfiguracionBioquimicos";
+import AdminConfiguracionAnalisis from './pages/AdminConfiguracion/AdminConfiguracionAnalisis'
 
 import PacienteHistorialResultadoAnalisis from "./pages/PacienteHistorialResultadoAnalisis";
 
@@ -26,6 +27,8 @@ import AddPatient from "./pages/AddPatient/AddPatient";
 import AddAnalisis from "./pages/AddAnalisis/AddAnalisis";
 import ResultadosList from "./pages/AdminResultados/ResultadosList"; // Agregado
 import ResultadoAnalisis from "./pages/PacienteHistorialResultadoAnalisis"; // Si se usa en el admin
+import AdminConfiguracionAnadirAnalisis from './pages/AdminConfiguracion/AdminConfiguracionAnadirAnalisis'
+import AdminConfiguracionEditarAnalisis from './pages/AdminConfiguracion/AdminConfiguracionEditarAnalisis'
 
 const App = () => {
   return (
@@ -86,7 +89,10 @@ const App = () => {
             <Route path="configuracion/mi-cuenta" element={<AdminConfiguracionMiCuenta />} />
             <Route path="configuracion/doctores/añadir" element={<AdminConfiguracionAnadirDoctores />} />
             <Route path="configuracion/doctores/:id" element={<AdminConfiguracionEditarDoctores />} />
-            <Route path="configuracion/bioquimicos" element={<AdminConfiguracionBioquimicos />} />
+            <Route path='configuracion/bioquimicos' element={<AdminConfiguracionBioquimicos />} />
+            <Route path='configuracion/analisis' element={<AdminConfiguracionAnalisis />} />
+            <Route path='configuracion/analisis/añadir' element={<AdminConfiguracionAnadirAnalisis />} />
+            <Route path='configuracion/analisis/:id' element={<AdminConfiguracionEditarAnalisis />} />
 
             <Route path="ingresar-orden" element={<SelectionPatient />} />
             <Route path="ingresar-orden/paciente-registrado" element={<SearchPatient />} />
@@ -109,4 +115,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App
