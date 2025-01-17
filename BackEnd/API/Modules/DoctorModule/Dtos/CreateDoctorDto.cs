@@ -7,5 +7,7 @@
         public required string LastName { get; set; }
 
         public required string Registration { get; set; }
+
+        public required string Title { get; set; }
     }
 }

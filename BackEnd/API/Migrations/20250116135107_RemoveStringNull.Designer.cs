@@ -3,6 +3,7 @@ using System;
 using API.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250116135107_RemoveStringNull")]
+    partial class RemoveStringNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace API.Migrations
                             Email = "admin@gmail.com",
                             LastName = "admin1",
                             Name = "admin1",
-                            Password = "$2a$11$DgVp2uNMuJDnxy.sLHqKOOrlSx7TuSjzkkms6E02vksnHR.lpHDTC"
+                            Password = "$2a$11$HKpqx1b9tKtqOz98Ll0iRuixre8vYWNOsJLvfvy8RT6osqNfpL71a"
                         },
                         new
                         {
@@ -68,7 +71,7 @@ namespace API.Migrations
                             Email = "admin2@gmail.com",
                             LastName = "admin2",
                             Name = "admin2",
-                            Password = "$2a$11$QcIgbE1i1oQWnUx6XpMB7.lDznB097LZgv/0mDJv4L.0udsn3Wrla"
+                            Password = "$2a$11$4gCwtVIQqlRRrJZ/JRKvL.UmGPLLJf48/03mEjIP4fR3K3uT0rltG"
                         });
                 });
 
@@ -92,10 +95,6 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -106,24 +105,21 @@ namespace API.Migrations
                             Id = 1,
                             LastName = "Doe",
                             Name = "John",
-                            Registration = "REG12345",
-                            Title = ""
+                            Registration = "REG12345"
                         },
                         new
                         {
                             Id = 2,
                             LastName = "Smith",
                             Name = "Jane",
-                            Registration = "REG54321",
-                            Title = ""
+                            Registration = "REG54321"
                         },
                         new
                         {
                             Id = 3,
                             LastName = "juanes",
                             Name = "Jennifer",
-                            Registration = "REG44534",
-                            Title = ""
+                            Registration = "REG44534"
                         });
                 });
 
@@ -233,7 +229,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$HaoDLkBJH.jG3944BFVyC.Gi85LnWc.hwnqU0H72eUBHHqWYSPQTy",
+                            Password = "$2a$11$IGNcsH5RZMzI.lMWL5LN..Hz5wUhkSclVsj06Ro4ERY06L.v3s2yG",
                             PersonalID = "34098349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -245,7 +241,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$1Jz9YRFn3dAWcKJ6mynzyOoFX0W1P3yURm5SM5tMFMH4Xq0xPF.cO",
+                            Password = "$2a$11$eU/p68MtFpsNPSTltG/3du06Cr2g6NFXdXuIBnZFDPT/HJwkojT.C",
                             PersonalID = "49298349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -257,7 +253,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$gaLRQC9mHOXBVNSiKKBC9ODlE7B6yARPPUJUSDXxDmrFvEnc1abcK",
+                            Password = "$2a$11$sDnuXVA4ci2tZk5MTeWYluPJMpQhEuoXL/dG5OwcKJI2iWrRsLjZO",
                             PersonalID = "AA34098349",
                             PersonalIDType = 1,
                             Phone = "+54934245673748"

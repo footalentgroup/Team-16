@@ -15,7 +15,7 @@ namespace API.Modules.ResultModule.Dtos
 
         public int? DoctorId { get; set; }
 
-        public ICollection<int>? ExamIds { get; set; }
+        public List<int>? ExamIds { get; set; }
 
     }
 }

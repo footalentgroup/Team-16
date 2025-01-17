@@ -4,9 +4,9 @@ import { ChevronRight } from 'lucide-react'
 
 const menuItems = [
     { title: 'Análisis', href: '/admin/configuracion/analisis' },
-    { title: 'Parámetros', href: '/admin/configuracion/parametros' },
-    { title: 'Estudios', href: '/admin/configuracion/estudios' },
-    { title: 'Bioquímica', href: '/admin/configuracion/bioquimicos' },
+    // { title: 'Parámetros', href: '/admin/configuracion/parametros' },
+    // { title: 'Estudios', href: '/admin/configuracion/estudios' },
+    // { title: 'Bioquimicos', href: '/admin/configuracion/bioquimicos' },
     { title: 'Doctores', href: '/admin/configuracion/doctores' },
 ]
 

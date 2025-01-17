@@ -20,9 +20,9 @@ namespace API.Modules.ResultModule
         }
 
         [HttpGet("orders/get-all")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders([FromQuery] string? status)
         {
-            var response = await _reportService.GetAll();
+            var response = await _reportService.GetAll(status);
 
             return response.ToActionResult();
         }
@@ -54,12 +54,18 @@ namespace API.Modules.ResultModule
         [HttpPost("orders/create")]
         public async Task<IActionResult> CreateOrder(CreateReportDto createReportDto)
         {
-            var response = await _resultService.CreateOrder(createReportDto);
+            var response = await _reportService.CreateOrder(createReportDto);
 
             return new OkObjectResult(response);
         }
 
+        [HttpPut("orders/update")]
+        public async Task<IActionResult> UpdateOrder(UpdateReportDto updateReportDto)
+        {
+            var response = await _reportService.UpdateReport(updateReportDto);
 
+            return new OkObjectResult(response);
+        }
 
 
         [HttpPost("create-many")]

@@ -6,9 +6,9 @@ import { ChevronRight, SearchIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 const BACKEND_URL = import.meta.env.VITE_API_URL
 
-const AdminConfiguracionDoctores = () => {
-    const [doctors, setDoctors] = useState([])
-    const [filteredDoctors, setFilteredDoctors] = useState([])
+const AdminConfiguracionAnalisis = () => {
+    const [analisisList, setAnalisisList] = useState([])
+    const [filteredList, setFilteredList] = useState([])
     const searchInputRef = useRef()
 
     const handleSearch = e => {
@@ -16,23 +16,23 @@ const AdminConfiguracionDoctores = () => {
         const searchQuery = searchInputRef.current.value
 
         if (searchQuery === '') {
-            setFilteredDoctors(doctors)
+            setFilteredList(analisisList)
         } else {
-            const filtered = doctors.filter(doctor => {
-                const fullData = `${doctor.name} ${doctor.lastName} ${doctor.registration} ${doctor.title}`
+            const filtered = analisisList.filter(analisis => {
+                const fullData = `${analisis.name} ${analisis.lastName} ${analisis.registration}`
                 return fullData.toLowerCase().includes(searchQuery.toLowerCase()) // Solo normalizamos en la comparación
             })
-            setFilteredDoctors(filtered)
+            setFilteredList(filtered)
         }
     }
 
     const handleClear = () => {
         searchInputRef.current.value = ''
-        setFilteredDoctors(doctors)
+        setFilteredList(analisisList)
     }
 
-    const fetchDoctors = async () => {
-        const response = await fetch(`${BACKEND_URL}/doctor/get-all`, {
+    const fetchAnalisis = async () => {
+        const response = await fetch(`${BACKEND_URL}/exams`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -40,13 +40,13 @@ const AdminConfiguracionDoctores = () => {
         const result = await response.json()
 
         if (response.ok) {
-            setDoctors(result.data)
-            setFilteredDoctors(result.data)
+            setAnalisisList(result)
+            setFilteredList(result)
         }
     }
 
     useEffect(() => {
-        fetchDoctors()
+        fetchAnalisis()
     }, [])
 
     return (
@@ -59,20 +59,20 @@ const AdminConfiguracionDoctores = () => {
                     <main className='flex-1 p-8'>
                         <div className='mx-auto'>
                             <Breadcrumb
-                                items={[{ title: 'Admin', to: '/' }, { title: 'Configuración', to: '/admin/configuracion' }, { title: 'Doctores' }]}
+                                items={[{ title: 'Admin', to: '/' }, { title: 'Configuración', to: '/admin/configuracion' }, { title: 'Analisis' }]}
                             />
 
                             <div className='flex justify-between items-center mb-8'>
-                                <h1 className='text-2xl font-semibold'>Doctores</h1>
+                                <h1 className='text-2xl font-semibold'>Analisis</h1>
                             </div>
                             <div className='mx-auto'>
                                 <div className='flex justify-between gap-4 mb-8'>
                                     <form onSubmit={handleSearch} className='relative w-[500px]'>
                                         <input
                                             type='text'
-                                            ref={searchInputRef}
                                             onChange={handleSearch}
-                                            placeholder='Buscar doctores'
+                                            ref={searchInputRef}
+                                            placeholder='Buscar análisis'
                                             className='w-full px-4 py-2 border rounded-lg pr-20 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
                                         />
                                         {searchInputRef.current && searchInputRef.current.value && (
@@ -96,10 +96,10 @@ const AdminConfiguracionDoctores = () => {
                                     </form>
 
                                     <Link
-                                        to={'/admin/configuracion/doctores/añadir'}
+                                        to={'/admin/configuracion/analisis/añadir'}
                                         className='px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
                                     >
-                                        + Añadir doctor
+                                        + Añadir análisis
                                     </Link>
                                 </div>
 
@@ -108,31 +108,28 @@ const AdminConfiguracionDoctores = () => {
                                 )}
 
                                 <div className='rounded-md border overflow-hidden'>
-                                    {filteredDoctors.length > 0 ? (
-                                        filteredDoctors.map(doctor => (
-                                            <div key={doctor.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
-                                                <div className='flex justify-between items-center'>
-                                                    <div className='space-y-2'>
-                                                        <h3 className='font-semibold text-sm'>
-                                                            {doctor.name} {doctor.lastName}
-                                                        </h3>
+                                    {filteredList.map(analisis => (
+                                        <div key={analisis.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
+                                            <div className='flex justify-between items-center'>
+                                                <div className='flex align-middle'>
+                                                    <img src='/ellipse.png' alt='Icon' className='w-[40px] h-[40px] mr-[16px]' />
+                                                    <div>
+                                                        <h3 className='font-semibold text-sm'>{analisis.name}</h3>
                                                         <div className='text-sm text-gray-600 space-x-4'>
-                                                            <span>{doctor.title}</span>
-                                                            <span>Matricula: {doctor.registration}</span>
+                                                            <span>Muestra requerida: {analisis.sample}</span>
+                                                            {/* <span>Precio: {analisis.price}</span> */}
                                                         </div>
                                                     </div>
-                                                    <Link
-                                                        to={`/admin/configuracion/doctores/${doctor.id}`}
-                                                        className='text-teal-600 inline-flex hover:text-teal-800'
-                                                    >
-                                                        Ver detalles <ChevronRight />
-                                                    </Link>
                                                 </div>
+                                                <Link
+                                                    to={`/admin/configuracion/analisis/${analisis.id}`}
+                                                    className='text-teal-600 inline-flex hover:text-teal-800'
+                                                >
+                                                    Ver detalles <ChevronRight />
+                                                </Link>
                                             </div>
-                                        ))
-                                    ) : (
-                                        <div className='p-4 text-sm text-gray-500'>No se encontraron resultados.</div>
-                                    )}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -142,4 +139,4 @@ const AdminConfiguracionDoctores = () => {
         </>
     )
 }
-export default AdminConfiguracionDoctores
+export default AdminConfiguracionAnalisis

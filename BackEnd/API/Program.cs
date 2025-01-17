@@ -51,7 +51,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IResultService, ResultService>();
-builder.Services.AddScoped<IReportService, ResultService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
