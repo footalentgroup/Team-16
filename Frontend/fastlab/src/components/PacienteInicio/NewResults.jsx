@@ -1,3 +1,5 @@
+
+
 import Breadcrumb from "../navigation/breadcrumb"
 import AnalisisCard from "../Cards/AnalisisCard";
 
@@ -22,3 +24,4 @@ const NewResults = ({data}) => {
   );
 };
 export default NewResults;
+

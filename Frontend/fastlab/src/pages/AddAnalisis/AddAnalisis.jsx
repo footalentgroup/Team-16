@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from "react";
 import { FaAngleRight } from "react-icons/fa6";
 import { useForm, Controller } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import Calendario from "../../components/DatosPersonales/Calendario";
+import Calendario from "../../components/ui/calendar.jsx";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import Breadcrumb from "../../components/navigation/breadcrumb";
@@ -10,8 +11,10 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronLeft } from "lucide-react";
 import { FancyMultiSelect } from "../../components/craft/fancy-multi-select";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL;
+
 const AddAnalisis = () => {
-  const { state } = useLocation(); 
+  const { state } = useLocation();
   const navigate = useNavigate();
 
   const {
@@ -21,42 +24,77 @@ const AddAnalisis = () => {
     formState: { errors },
   } = useForm();
 
-  // Al enviar el formulario
+  const [analysisOptions, setAnalysisOptions] = useState([]);
+  const [doctorOptions, setDoctorOptions] = useState([]);
+  const [loadingExams, setLoadingExams] = useState(true);
+  const [loadingDoctors, setLoadingDoctors] = useState(true);
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/exams`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener los exámenes: ${response.status}`);
+        }
+        const data = await response.json();
+        const formattedOptions = data.map((exam) => ({
+          value: exam.id,
+          label: exam.name,
+        }));
+        setAnalysisOptions(formattedOptions);
+      } catch (error) {
+        console.error("Error al cargar los exámenes:", error);
+      } finally {
+        setLoadingExams(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/doctor/get-all`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener los doctores: ${response.status}`);
+        }
+        const result = await response.json();
+        if (result.success && result.data) {
+          const formattedOptions = result.data.map((doctor) => ({
+            value: doctor.id,
+            label: `${doctor.name} ${doctor.lastName}`,
+          }));
+          setDoctorOptions(formattedOptions);
+        } else {
+          console.error("El formato de respuesta no es válido:", result);
+        }
+      } catch (error) {
+        console.error("Error al cargar los doctores:", error);
+      } finally {
+        setLoadingDoctors(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
   const onSubmit = (data) => {
-    console.log("Datos del formulario:", data);
-
-    // data.tipoAnalisis es un array de objetos { value, label }
     const examIds = data.tipoAnalisis.map((item) => item.value);
-    console.log("Exámenes seleccionados (IDs):", examIds);
+    const doctorId = data.medico[0]?.value;
 
-    // Creamos el nuevo objeto, incluyendo patientId y doctorId numéricos
     const formDataWithExams = {
       ...data,
       examIds,
-      patientId: state?.patientId || 0, 
-      doctorId: parseInt(data.medico, 10),
+      patientId: state?.patientId || 0,
+      doctorId: parseInt(doctorId, 10),
     };
 
-    // Navegar a la siguiente pantalla con toda la información
     navigate(
       "/admin/ingresar-orden/paciente-registrado/orden-de-analisis/metodo-de-envio",
       { state: formDataWithExams }
     );
   };
-
-  // Opciones del FancyMultiSelect (usa value y label)
-  const analysisOptions = [
-    { value: 1, label: "Hemograma Completo" },
-    { value: 2, label: "Glucosa en sangre" },
-    { value: 3, label: "Perfil Lipido" },
-  ];
-
-  // Opciones de médico (usa value para ID)
-  const doctors = [
-    { value: 1, label: "Ricky Maravilla" },
-    { value: 2, label: "Manuel Pascual" },
-    { value: 3, label: "Ricardo Forman" },
-  ];
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
@@ -69,12 +107,11 @@ const AddAnalisis = () => {
           <Breadcrumb
             items={[
               { title: "Admin", to: "/admin/ingresar-orden" },
-              { title: "Orden de Análisis", to: "/admin/ingresar-orden" },
+              { title: "Orden de análisis", to: "/admin/ingresar-orden" },
             ]}
           />
         </div>
 
-        {/* Botón de regresar */}
         <div className="flex mb-4 items-center gap-1">
           <ChevronLeft size={18} />
           <button
@@ -88,12 +125,12 @@ const AddAnalisis = () => {
         <Progress className="[&>*]:bg-[#02807D] mb-6" value={66.6} />
 
         <h1 className="text-xl font-bold mb-4 text-center mt-10 text-[#0E1B27]">
-          Órden de Análisis
+          Órden de análisis
         </h1>
 
         <div className="w-full flex justify-center">
           <form className="space-y-4 w-1/2" onSubmit={handleSubmit(onSubmit)}>
-            {/* Campo: Tipo de análisis con FancyMultiSelect */}
+            {/* Tipo de análisis */}
             <div>
               <label
                 htmlFor="tipoAnalisis"
@@ -101,25 +138,29 @@ const AddAnalisis = () => {
               >
                 Tipo de análisis
               </label>
-              <Controller
-                name="tipoAnalisis"
-                control={control}
-                rules={{ required: "Seleccione al menos un análisis." }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <>
-                    <FancyMultiSelect
-                      options={analysisOptions}
-                      selected={value || []}
-                      onSelect={onChange}
-                    />
-                    {error && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {error.message}
-                      </p>
-                    )}
-                  </>
-                )}
-              />
+              {loadingExams ? (
+                <p className="text-sm text-gray-500">Cargando exámenes...</p>
+              ) : (
+                <Controller
+                  name="tipoAnalisis"
+                  control={control}
+                  rules={{ required: "Seleccione al menos un análisis." }}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <>
+                      <FancyMultiSelect
+                        options={analysisOptions}
+                        selected={value || []}
+                        onSelect={onChange}
+                      />
+                      {error && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {error.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
+              )}
             </div>
 
             {/* Prioridad */}
@@ -132,8 +173,7 @@ const AddAnalisis = () => {
               </label>
               <select
                 id="prioridad"
-                name="prioridad"
-                className={`w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none ${
+                className={`w-full border bg-gray-50 rounded-md px-3 py-2 ${
                   errors.prioridad ? "border-red-500" : ""
                 }`}
                 {...register("prioridad", {
@@ -141,10 +181,10 @@ const AddAnalisis = () => {
                 })}
               >
                 <option value="" disabled>
-                  Seleccionar Prioridad
+                  Seleccionar prioridad
                 </option>
-                <option value="urgente">Urgente</option>
                 <option value="normal">Normal</option>
+                <option value="urgente">Urgente</option>
               </select>
               {errors.prioridad && (
                 <p className="text-red-500 text-sm mt-1">
@@ -154,49 +194,56 @@ const AddAnalisis = () => {
             </div>
 
             {/* Fecha de receta */}
-            <Calendario
-              control={control}
-              name="fechaReceta"
-              placeholder="Selecciona la fecha de la receta"
-              label="Fecha de receta"
-              labelClassName="text-sm font-semibold text-[#0E1B27]"
-            />
-
-            <h1 className="text-lg font-semibold text-[#0E1B27] mt-6">
-              Detalles adicionales de médico/solicitante
-            </h1>
+            <div>
+              <label
+                htmlFor="fechaReceta"
+                className="block font-medium mb-1 text-sm text-[#0E1B27]"
+              >
+                Fecha de receta
+              </label>
+              <Calendario
+                control={control}
+                name="fechaReceta"
+                placeholder="Selecciona la fecha"
+              />
+              {errors.fechaReceta && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.fechaReceta.message}
+                </p>
+              )}
+            </div>
 
             {/* Médico solicitante */}
             <div>
               <label
                 htmlFor="medico"
-                className="block text-sm font-medium mb-1 text-[#0E1B27]"
+                className="block font-medium mb-1 text-sm text-[#0E1B27]"
               >
                 Médico solicitante
               </label>
-              <select
-                id="medico"
-                name="medico"
-                className={`w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none ${
-                  errors.medico ? "border-red-500" : ""
-                }`}
-                {...register("medico", {
-                  required: "Seleccione un médico.",
-                })}
-              >
-                <option value="" disabled>
-                  Buscar médico
-                </option>
-                {doctors.map((doctor) => (
-                  <option key={doctor.value} value={doctor.value}>
-                    {doctor.label}
-                  </option>
-                ))}
-              </select>
-              {errors.medico && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.medico.message}
-                </p>
+              {loadingDoctors ? (
+                <p className="text-sm text-gray-500">Cargando doctores...</p>
+              ) : (
+                <Controller
+                  name="medico"
+                  control={control}
+                  rules={{ required: "Seleccione un médico." }}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <>
+                      <FancyMultiSelect
+                        options={doctorOptions}
+                        selected={value || []}
+                        onSelect={onChange}
+                        single // Forzar selección única
+                      />
+                      {error && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {error.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
               )}
             </div>
 
@@ -204,32 +251,22 @@ const AddAnalisis = () => {
             <div>
               <label
                 htmlFor="observaciones"
-                className="block text-sm font-medium mb-1 text-[#0E1B27]"
+                className="block font-medium mb-1 text-sm text-[#0E1B27]"
               >
                 Observaciones
               </label>
               <textarea
                 id="observaciones"
-                name="observaciones"
-                className={`w-full border bg-slate-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 focus:outline-none ${
-                  errors.observaciones ? "border-red-500" : ""
-                }`}
+                className="w-full border bg-gray-50 rounded-md px-3 py-2"
                 placeholder="Escriba sus observaciones aquí"
-                rows={4}
                 {...register("observaciones")}
-              />
-              {errors.observaciones && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.observaciones.message}
-                </p>
-              )}
+              ></textarea>
             </div>
 
-            {/* Botón submit */}
-            <div className="flex justify-end w-full ml-20 mb-8">
+            <div className="flex justify-end">
               <button
                 type="submit"
-                className="bg-teal-500 text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
+                className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 flex items-center"
               >
                 Siguiente
                 <FaAngleRight className="ml-2" />

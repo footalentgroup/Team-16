@@ -1,63 +1,128 @@
-import React from "react"
-import { FaAngleRight } from "react-icons/fa6"
-import { useForm, Controller } from "react-hook-form"
-import { useLocation, useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { FaAngleRight } from "react-icons/fa6";
+import { useForm, Controller } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import Calendar from "../../components/ui/calendar"
-import MenuLateral from "../../components/menuLateral/MenuLateral"
-import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin"
-import Breadcrumb from "../../components/navigation/breadcrumb"
-import { Progress } from "@/components/ui/progress"
-import { ChevronLeft } from "lucide-react"
+import Calendar from "../../components/ui/calendar";
+import MenuLateral from "../../components/menuLateral/MenuLateral";
+import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
+import Breadcrumb from "../../components/navigation/breadcrumb";
+import { Progress } from "@/components/ui/progress";
+import { ChevronLeft } from "lucide-react";
+import { FancyMultiSelect } from "../../components/craft/fancy-multi-select";
 
-/**
- * Formulario para la Carga de Resultados
- */
+const BACKEND_URL = import.meta.env.VITE_API_URL; // Configurado en tu .env
+
 const CargaResultados = () => {
-  // Si necesitas leer algo del state, puedes usar useLocation:
-  const { state } = useLocation()
-  const navigate = useNavigate()
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
-  // Inicialización de react-hook-form
   const {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
-  // Al enviar el formulario
-  const onSubmit = (data) => {
-    console.log("Datos del formulario:", data)
+  const [orderOptions, setOrderOptions] = useState([]);
+  const [examOptions, setExamOptions] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
+  const [allExams, setAllExams] = useState([]); // Lista de todos los exámenes
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [loadingExams, setLoadingExams] = useState(false);
 
-    // Ejemplo: Podrías procesar la info o navegar a otra ruta
-    // con la data en el state
-    navigate("/admin/resultados/revision-final", { state: data })
-  }
-
-  // Opciones de ejemplo para "Tipo de examen"
-  const examOptions = [
-    { value: "hemograma", label: "Hemograma Completo" },
-    { value: "glucemia", label: "Glucemia" },
-    { value: "perfil_lipido", label: "Perfil Lipídico" },
-  ]
-
-  // Opciones para "Estado del análisis"
   const estadoOptions = [
     { value: "pendiente", label: "Pendiente" },
     { value: "en_proceso", label: "En proceso" },
     { value: "finalizado", label: "Finalizado" },
-  ]
+  ];
+
+  useEffect(() => {
+    if (!state?.patientId) {
+      console.error("No se proporcionó un ID de paciente válido.");
+      return;
+    }
+
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/results/orders/get-by-patient-id?id=${state.patientId}`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener las órdenes: ${response.status}`);
+        }
+        const data = await response.json();
+        if (!data || !data.data) {
+          throw new Error("Formato de respuesta no válido del backend.");
+        }
+
+        setOrdersData(data.data);
+        const formattedOptions = data.data.map((order) => ({
+          value: order.id,
+          label: `Orden #${order.id}`,
+        }));
+        setOrderOptions(formattedOptions);
+      } catch (error) {
+        console.error("Error al cargar las órdenes:", error);
+      } finally {
+        setLoadingOrders(false);
+      }
+    };
+
+    const fetchAllExams = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/exams`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener los exámenes: ${response.status}`);
+        }
+        const data = await response.json();
+        setAllExams(data); // Guardar todos los exámenes en el estado
+      } catch (error) {
+        console.error("Error al cargar los exámenes:", error);
+      }
+    };
+
+    fetchOrders();
+    fetchAllExams();
+  }, [state?.patientId]);
+
+  const handleOrderSelection = (selectedOrderId) => {
+    const selectedOrder = ordersData.find((order) => order.id === selectedOrderId);
+
+    if (selectedOrder) {
+      const formattedExams = selectedOrder.examIds
+        .map((examId) => {
+          const exam = allExams.find((e) => e.id === examId);
+          return exam ? { value: exam.id, label: exam.name } : null;
+        })
+        .filter((exam) => exam !== null);
+
+      setExamOptions(formattedExams);
+    } else {
+      setExamOptions([]);
+    }
+  };
+
+  const onSubmit = (data) => {
+    const selectedExams = data.tipoExamen.map((item) => item.value);
+    const formDataWithExams = {
+      ...data,
+      selectedExams,
+    };
+
+    console.log("Datos del formulario:", formDataWithExams);
+
+    navigate("/admin/resultados/carga-de-resultados/parametros", {
+      state: formDataWithExams,
+    });
+  };
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
-      {/* Menú lateral */}
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
 
       <div className="bg-gray-50 ml-[266px] overflow-y-auto h-full">
-        {/* Breadcrumb */}
         <div className="my-4 mx-4">
           <Breadcrumb
             items={[
@@ -68,7 +133,6 @@ const CargaResultados = () => {
           />
         </div>
 
-        {/* Botón de regresar */}
         <div className="flex mb-4 items-center gap-1">
           <ChevronLeft size={18} />
           <button
@@ -79,7 +143,6 @@ const CargaResultados = () => {
           </button>
         </div>
 
-        {/* Barra de progreso (opcional) */}
         <Progress className="[&>*]:bg-[#02807D] mb-6" value={66.66} />
 
         <h1 className="text-xl font-bold mb-4 text-center mt-10 text-[#0E1B27]">
@@ -88,7 +151,6 @@ const CargaResultados = () => {
 
         <div className="w-full flex justify-center">
           <form className="space-y-4 w-1/2" onSubmit={handleSubmit(onSubmit)}>
-            {/* Número de orden */}
             <div>
               <label
                 htmlFor="numeroOrden"
@@ -96,25 +158,39 @@ const CargaResultados = () => {
               >
                 Número de orden
               </label>
-              <input
-                id="numeroOrden"
-                type="text"
-                placeholder="Ejemplo: 23434"
-                className={`w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 ${
-                  errors.numeroOrden ? "border-red-500" : ""
-                }`}
-                {...register("numeroOrden", {
-                  required: "Este campo es obligatorio.",
-                })}
-              />
-              {errors.numeroOrden && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.numeroOrden.message}
-                </p>
+              {loadingOrders ? (
+                <p className="text-sm text-gray-500">Cargando órdenes...</p>
+              ) : (
+                <Controller
+                  name="numeroOrden"
+                  control={control}
+                  rules={{ required: "Seleccione una orden." }}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <>
+                      <FancyMultiSelect
+                        options={orderOptions}
+                        selected={value || []}
+                        onSelect={(selected) => {
+                          onChange(selected);
+                          if (selected.length > 0) {
+                            handleOrderSelection(selected[0].value);
+                          } else {
+                            setExamOptions([]);
+                          }
+                        }}
+                        single
+                      />
+                      {error && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {error.message}
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
               )}
             </div>
 
-            {/* Fecha de la toma de muestra */}
             <div>
               <label
                 htmlFor="fechaToma"
@@ -135,7 +211,6 @@ const CargaResultados = () => {
               )}
             </div>
 
-            {/* Fecha del análisis */}
             <div>
               <label
                 htmlFor="fechaAnalisis"
@@ -156,7 +231,6 @@ const CargaResultados = () => {
               )}
             </div>
 
-            {/* Tipo de examen */}
             <div>
               <label
                 htmlFor="tipoExamen"
@@ -164,32 +238,20 @@ const CargaResultados = () => {
               >
                 Tipo de examen
               </label>
-              <select
-                id="tipoExamen"
-                className={`w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 ${
-                  errors.tipoExamen ? "border-red-500" : ""
-                }`}
-                {...register("tipoExamen", {
-                  required: "Seleccione el tipo de examen.",
-                })}
-              >
-                <option value="" disabled>
-                  Seleccione una opción
-                </option>
-                {examOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              {errors.tipoExamen && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.tipoExamen.message}
-                </p>
-              )}
+              <Controller
+                name="tipoExamen"
+                control={control}
+                rules={{ required: "Seleccione al menos un examen." }}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <FancyMultiSelect
+                    options={examOptions}
+                    selected={value || []}
+                    onSelect={onChange}
+                  />
+                )}
+              />
             </div>
 
-            {/* Estado del análisis */}
             <div>
               <label
                 htmlFor="estadoAnalisis"
@@ -222,7 +284,6 @@ const CargaResultados = () => {
               )}
             </div>
 
-            {/* Botón submit */}
             <div className="flex justify-end w-full ml-20 mb-8">
               <button
                 type="submit"
@@ -236,7 +297,7 @@ const CargaResultados = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CargaResultados
+export default CargaResultados;
