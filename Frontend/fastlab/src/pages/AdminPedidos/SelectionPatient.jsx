@@ -1,11 +1,20 @@
-import React from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Importación añadida
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 
+import { usePacientes } from "../../hooks/usePacientes";
+
 const SelectionPatient = () => {
   const navigate = useNavigate(); // Uso de useNavigate
+  const {getAllPacientes}=usePacientes();
+  useEffect(() => {
+    const fetchPatients = async () => {
+      await getAllPacientes();
+    };
+      fetchPatients();
+    }, []);
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
@@ -20,7 +29,7 @@ const SelectionPatient = () => {
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
-            { title: "Admin", to: "/admin/pedidos" },
+            { title: "Admin", to: "/admin/ingresar-orden" },
             { title: "Ingresar orden", to: "/admin/ingresar-orden" },
           ]}
         />

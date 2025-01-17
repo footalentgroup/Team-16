@@ -1,8 +1,11 @@
+
+
 import Breadcrumb from "../navigation/breadcrumb"
 import AnalisisCard from "../Cards/AnalisisCard";
+
 const NewResults = ({data}) => {
- data=[]
- 
+  data=[]
+  
   return (
     <section className="flex min-h-screen bg-gray-50">
       <div className="flex-1 p-8">
@@ -21,3 +24,4 @@ const NewResults = ({data}) => {
   );
 };
 export default NewResults;
+

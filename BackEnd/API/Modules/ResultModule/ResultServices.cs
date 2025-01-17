@@ -5,16 +5,14 @@ using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
 using API.Shared.Utils;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace API.Modules.ResultModule
 {
 
-    public class ResultService : BaseRepository<Result>, IResultService, IReportService
+    public class ResultService : BaseRepository<Result>, IResultService
     {
         private readonly IMapper _mapper;
-
         public ResultService(AppDbContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
@@ -32,7 +30,6 @@ namespace API.Modules.ResultModule
                     {
                         var r = new QuantitativeResult()
                         {
-                            ExamId = dto.ExamId,
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
                             ReportId = dto.ReportId,
@@ -46,7 +43,6 @@ namespace API.Modules.ResultModule
                     {
                         var r = new QualitativeResult()
                         {
-                            ExamId = dto.ExamId,
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
                             ReportId = dto.ReportId,
@@ -63,6 +59,7 @@ namespace API.Modules.ResultModule
                 }
 
             }
+
             await _dbSet.AddRangeAsync(results);
             await _context.SaveChangesAsync();
 
@@ -70,17 +67,6 @@ namespace API.Modules.ResultModule
 
         }
 
-        public async Task<Report> CreateOrder(CreateReportDto createReportDto)
-        {
-
-            var report = _mapper.Map<Report>(createReportDto);
-
-            var result = await _context.Reports.AddAsync(report);
-
-            await _context.SaveChangesAsync();
-
-            return result.Entity;
-        }
 
         public async Task<ServiceResult<object>> DeleteResult(int id)
         {
@@ -98,42 +84,6 @@ namespace API.Modules.ResultModule
             }
         }
 
-        public async Task<ServiceResult<List<ResponseReportDto>>> GetManyByPatientIdAsync(int patientId)
-        {
-
-            var result = await _context
-                                    .Reports
-                                    .Where(x => x.PatientId == patientId)
-                                    .Select(x => new
-                                    {
-                                        x.DateExam,
-                                        x.Doctor,
-                                        ExamIds = x.ExamIds.ToList(),
-                                        x.Id,
-                                        x.Patient,
-                                        x.Status,
-                                        Results = x.Results.ToList()
-                                    }).ToListAsync();
-
-            var response = result.Select(x => new ResponseReportDto()
-            {
-                DateExam = x.DateExam,
-                Doctor = x.Doctor,
-                ExamIds = x.ExamIds,
-                Id = x.Id,
-                Patient = x.Patient,
-                Status = x.Status,
-                Results = x.Results.Select(x => CheckTypeResult.Check(x)).ToList()
-            }).ToList();
-
-            if (result == null)
-            {
-                return ServiceResult<List<ResponseReportDto>>.FailedResult(StatusCodes.Status500InternalServerError, "Lista de roportes no encontrada");
-            }
-
-            return ServiceResult<List<ResponseReportDto>>.SuccessResult(response);
-        }
-
         public async Task<ServiceResult<UpdateResultDto>> UpdateResultDto(UpdateResultDto dto)
         {
             try
@@ -146,7 +96,6 @@ namespace API.Modules.ResultModule
                         var result = new QuantitativeResult()
                         {
                             Id = entity.Id,
-                            ExamId = dto.ExamId,
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
@@ -163,7 +112,6 @@ namespace API.Modules.ResultModule
                         {
                             Id = entity.Id,
                             ReportId = entity.ReportId,
-                            ExamId = dto.ExamId,
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
@@ -193,6 +141,9 @@ namespace API.Modules.ResultModule
 
 
         }
+
+
+
     }
 
 

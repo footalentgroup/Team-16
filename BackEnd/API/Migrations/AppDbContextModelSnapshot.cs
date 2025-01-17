@@ -60,7 +60,7 @@ namespace API.Migrations
                             Email = "admin@gmail.com",
                             LastName = "admin1",
                             Name = "admin1",
-                            Password = "$2a$11$ZTrQCICmkkLAV9micXF8B.yktXRD1xvEVgRzGMdsGRRSF5jXbmyb6"
+                            Password = "$2a$11$DgVp2uNMuJDnxy.sLHqKOOrlSx7TuSjzkkms6E02vksnHR.lpHDTC"
                         },
                         new
                         {
@@ -68,7 +68,7 @@ namespace API.Migrations
                             Email = "admin2@gmail.com",
                             LastName = "admin2",
                             Name = "admin2",
-                            Password = "$2a$11$rw1J4blFJ6bCCgsBWEy5nOB5tgzUUeT8GS4kW0hZue7q/ec6wdD16"
+                            Password = "$2a$11$QcIgbE1i1oQWnUx6XpMB7.lDznB097LZgv/0mDJv4L.0udsn3Wrla"
                         });
                 });
 
@@ -92,6 +92,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
@@ -102,21 +106,24 @@ namespace API.Migrations
                             Id = 1,
                             LastName = "Doe",
                             Name = "John",
-                            Registration = "REG12345"
+                            Registration = "REG12345",
+                            Title = ""
                         },
                         new
                         {
                             Id = 2,
                             LastName = "Smith",
                             Name = "Jane",
-                            Registration = "REG54321"
+                            Registration = "REG54321",
+                            Title = ""
                         },
                         new
                         {
                             Id = 3,
                             LastName = "juanes",
                             Name = "Jennifer",
-                            Registration = "REG44534"
+                            Registration = "REG44534",
+                            Title = ""
                         });
                 });
 
@@ -226,7 +233,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$u9WWjJ4rEVlAWtet1jCuzOANhLeboMI42GHR.Ecpzdz.1CROfYoM.",
+                            Password = "$2a$11$HaoDLkBJH.jG3944BFVyC.Gi85LnWc.hwnqU0H72eUBHHqWYSPQTy",
                             PersonalID = "34098349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -238,7 +245,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$w1Qt3R2m35KOh9nZbfrUcOK9rpNDF6VUX.AQif1pNF/NZu6yQCD6m",
+                            Password = "$2a$11$1Jz9YRFn3dAWcKJ6mynzyOoFX0W1P3yURm5SM5tMFMH4Xq0xPF.cO",
                             PersonalID = "49298349",
                             PersonalIDType = 0,
                             Phone = "+54934245673748"
@@ -250,7 +257,7 @@ namespace API.Migrations
                             Email = "Marcos@gmail.com",
                             FirstName = "Marcos",
                             LastName = "Rodriguez",
-                            Password = "$2a$11$5fpq1F/DAmGKk2NB2T1MhuUYJz2Lo7rOv1U3QFfDvYR72ZIMUyePq",
+                            Password = "$2a$11$gaLRQC9mHOXBVNSiKKBC9ODlE7B6yARPPUJUSDXxDmrFvEnc1abcK",
                             PersonalID = "AA34098349",
                             PersonalIDType = 1,
                             Phone = "+54934245673748"
@@ -271,11 +278,20 @@ namespace API.Migrations
                     b.Property<int?>("DoctorId")
                         .HasColumnType("integer");
 
-                    b.Property<int[]>("ExamIds")
-                        .HasColumnType("integer[]");
+                    b.Property<string>("ExamIds")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -301,9 +317,6 @@ namespace API.Migrations
                     b.Property<DateTime?>("DateResult")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ExamId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ParameterId")
                         .HasColumnType("integer");
 
@@ -316,8 +329,6 @@ namespace API.Migrations
                         .HasColumnType("character varying(13)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
 
                     b.HasIndex("ParameterId");
 
@@ -418,12 +429,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.DataBase.Entities.Result", b =>
                 {
-                    b.HasOne("API.DataBase.Entities.Exam", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.DataBase.Entities.ParameterBase", "Parameter")
                         .WithMany()
                         .HasForeignKey("ParameterId")
@@ -435,8 +440,6 @@ namespace API.Migrations
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Exam");
 
                     b.Navigation("Parameter");
 

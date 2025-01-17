@@ -1,45 +1,53 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
 import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
 import { ChevronRight, SearchIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
-const doctores = [
-    {
-        id: 1,
-        name: 'Pedro Martines',
-        specialty: 'Dr. Dermatología',
-        registrationNumber: 'Matrícula: N°33659',
-    },
-    {
-        id: 2,
-        name: 'Arturo Dias',
-        specialty: 'Dr. Genética',
-        registrationNumber: 'Matrícula: N°47774',
-    },
-    {
-        id: 3,
-        name: 'Arturo Sánchez',
-        specialty: 'Dr. Neurología',
-        registrationNumber: 'Matrícula: N°47454',
-    },
-]
+const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const AdminConfiguracionDoctores = () => {
-    const [query, setQuery] = useState('')
-    const [hasSearched, setHasSearched] = useState('')
+    const [doctors, setDoctors] = useState([])
+    const [filteredDoctors, setFilteredDoctors] = useState([])
+    const searchInputRef = useRef()
 
     const handleSearch = e => {
         e.preventDefault()
-        setQuery(query)
-        setHasSearched(true)
+        const searchQuery = searchInputRef.current.value
+
+        if (searchQuery === '') {
+            setFilteredDoctors(doctors)
+        } else {
+            const filtered = doctors.filter(doctor => {
+                const fullData = `${doctor.name} ${doctor.lastName} ${doctor.registration} ${doctor.title}`
+                return fullData.toLowerCase().includes(searchQuery.toLowerCase()) // Solo normalizamos en la comparación
+            })
+            setFilteredDoctors(filtered)
+        }
     }
 
     const handleClear = () => {
-        setQuery('')
-        handleSearch('')
+        searchInputRef.current.value = ''
+        setFilteredDoctors(doctors)
     }
+
+    const fetchDoctors = async () => {
+        const response = await fetch(`${BACKEND_URL}/doctor/get-all`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+
+        const result = await response.json()
+
+        if (response.ok) {
+            setDoctors(result.data)
+            setFilteredDoctors(result.data)
+        }
+    }
+
+    useEffect(() => {
+        fetchDoctors()
+    }, [])
 
     return (
         <>
@@ -62,12 +70,12 @@ const AdminConfiguracionDoctores = () => {
                                     <form onSubmit={handleSearch} className='relative w-[500px]'>
                                         <input
                                             type='text'
-                                            value={query}
-                                            onChange={e => setQuery(e.target.value)}
+                                            ref={searchInputRef}
+                                            onChange={handleSearch}
                                             placeholder='Buscar doctores'
                                             className='w-full px-4 py-2 border rounded-lg pr-20 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
                                         />
-                                        {query && (
+                                        {searchInputRef.current && searchInputRef.current.value && (
                                             <button
                                                 type='button'
                                                 onClick={handleClear}
@@ -95,40 +103,37 @@ const AdminConfiguracionDoctores = () => {
                                     </Link>
                                 </div>
 
-                                <div className='mb-4 text-sm text-gray-600'>Resultados para "José Armando":</div>
+                                {searchInputRef.current && searchInputRef.current.value && (
+                                    <div className='mb-4 text-sm text-gray-600'>Resultados para "{searchInputRef.current.value}":</div>
+                                )}
 
                                 <div className='rounded-md border overflow-hidden'>
-                                    {doctores.map(doctor => (
-                                        <div key={doctor.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
-                                            <div className='flex justify-between items-center'>
-                                                <div className='space-y-2'>
-                                                    <h3 className='font-semibold text-sm'>{doctor.name}</h3>
-                                                    <div className='text-sm text-gray-600 space-x-4'>
-                                                        <span>{doctor.specialty}</span>
-                                                        <span>{doctor.registrationNumber}</span>
+                                    {filteredDoctors.length > 0 ? (
+                                        filteredDoctors.map(doctor => (
+                                            <div key={doctor.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
+                                                <div className='flex justify-between items-center'>
+                                                    <div className='space-y-2'>
+                                                        <h3 className='font-semibold text-sm'>
+                                                            {doctor.name} {doctor.lastName}
+                                                        </h3>
+                                                        <div className='text-sm text-gray-600 space-x-4'>
+                                                            <span>{doctor.title}</span>
+                                                            <span>Matricula: {doctor.registration}</span>
+                                                        </div>
                                                     </div>
+                                                    <Link
+                                                        to={`/admin/configuracion/doctores/${doctor.id}`}
+                                                        className='text-teal-600 inline-flex hover:text-teal-800'
+                                                    >
+                                                        Ver detalles <ChevronRight />
+                                                    </Link>
                                                 </div>
-                                                <Link
-                                                    to={`/admin/configuracion/doctores/${doctor.id}`}
-                                                    className='text-teal-600 inline-flex hover:text-teal-800'
-                                                >
-                                                    Ver detalles <ChevronRight />
-                                                </Link>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))
+                                    ) : (
+                                        <div className='p-4 text-sm text-gray-500'>No se encontraron resultados.</div>
+                                    )}
                                 </div>
-
-                                {/* <div className='flex justify-center gap-2 mt-8'>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>← Anterior</button>
-                                    <button className='px-3 py-1 border rounded text-sm bg-teal-50'>1</button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>2</button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>3</button>
-                                    <button className='px-3 py-1 border rounded text-sm text-gray-400' disabled>
-                                        ...
-                                    </button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>Siguiente →</button>
-                                </div> */}
                             </div>
                         </div>
                     </main>

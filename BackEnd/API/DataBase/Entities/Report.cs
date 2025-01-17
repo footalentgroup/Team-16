@@ -4,7 +4,11 @@ namespace API.DataBase.Entities
     {
         public int Id { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
+
+        public string Priority { get; set; } = string.Empty;
+
+        public string Observations { get; set; } = string.Empty;
 
         public DateTime DateExam { get; set; }
 
@@ -18,7 +22,7 @@ namespace API.DataBase.Entities
 
         public ICollection<Result> Results { get; set; } = new List<Result>();
 
-        public ICollection<int>? ExamIds { get; set; }
+        public string ExamIds { get; set; } = string.Empty;
 
     }
 }

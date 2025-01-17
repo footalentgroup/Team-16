@@ -41,7 +41,17 @@ const ResultadosList = () => {
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
       <div className="ml-[266px] overflow-y-auto h-full p-6">
-       
+
+        <NewResults
+          arrayResults={adminOrders}
+          breadcrumbItems={[
+            { title: "Admin", to: "/admin/inicio" },
+            { title: "Órdenes" },
+          ]}
+          title="Lista de Órdenes del Administrador"
+          role="admin" 
+        />
+
       </div>
     </div>
   );

@@ -8,15 +8,10 @@ namespace API.Modules.ResultModule.Interfaces
     {
         Task<List<Result>> CreataManyAsync(List<CreateResultDto> resultsDto);
 
-        Task<Report> CreateOrder(CreateReportDto createReportDto);
-
         Task<ServiceResult<UpdateResultDto>> UpdateResultDto(UpdateResultDto resultDto);
 
         Task<ServiceResult<object>> DeleteResult(int id);
     }
 
-    public interface IReportService
-    {
-        Task<ServiceResult<List<ResponseReportDto>>> GetManyByPatientIdAsync(int patientId);
-    }
+
 }

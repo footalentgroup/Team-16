@@ -33,7 +33,12 @@ const AdminConfiguracionAnadirDoctores = () => {
                     <main className='flex-1 p-8'>
                         <div className='mx-auto'>
                             <Breadcrumb
-                                items={[{ title: 'Admin', to: '/' }, { title: 'Configuración', to: '/admin/configuracion' }, { title: 'Doctores' }]}
+                                items={[
+                                    { title: 'Admin', to: '/' },
+                                    { title: 'Configuración', to: '/admin/configuracion' },
+                                    { title: 'Doctores', to: '/admin/configuracion/doctores' },
+                                    { title: 'Añadir doctor' },
+                                ]}
                             />
 
                             <div className='flex justify-between items-center mb-8'>

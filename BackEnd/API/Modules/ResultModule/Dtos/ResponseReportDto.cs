@@ -14,6 +14,10 @@ namespace API.Modules.ResultModule.Dtos
 
         public Patient Patient { get; set; }
 
+        public string? Observations { get; set; }
+
+        public string? Priority { get; set; }
+
         public Doctor? Doctor { get; set; }
 
         public List<ResultResponseDto> Results { get; set; }
@@ -29,11 +33,13 @@ namespace API.Modules.ResultModule.Dtos
 
         public required string Type { get; set; }
 
-        public int ExamId { get; set; }
-
-        public int ParameterId { get; set; }
+        public string Parameter { get; set; }
 
         public DateTime? DateResult { get; set; }
+
+        public string NameExam { get; set; }
+
+        public string Reference { get; set; }
     }
 
     public class QualitativeResponseResultDto : ResultResponseDto
