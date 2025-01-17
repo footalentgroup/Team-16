@@ -96,7 +96,7 @@ const App = () => {
             <Route path="resultados/carga-de-resultados/info-analisis" element={<CargaResultados />} /> 
             <Route path="resultados/carga-de-resultados/parametros" element={<Parameters />} /> 
 
-            <Route path="resultados/:id" element={<ResultadoAnalisis />} /> {/* Detalles por ID */}
+             {/* Detalles por ID */}
             <Route path="configuracion" element={<AdminConfiguracion />} />
             <Route path="configuracion/doctores" element={<AdminConfiguracionDoctores />} />
             <Route path="configuracion/mi-cuenta" element={<AdminConfiguracionMiCuenta />} />
