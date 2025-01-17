@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import NewResults from "../../components/PacienteInicio/NewResults";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
@@ -6,33 +6,33 @@ import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 const BACKEND_URL = import.meta.env.VITE_API_URL; 
 
 const ResultadosList = () => {
-  const [adminResults, setAdminResults] = useState([]);
+  const [adminOrders, setAdminOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchExams = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/get-exams`, {
+        const response = await fetch(`${BACKEND_URL}/results/orders/get-all`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (!response.ok) throw new Error("Error al cargar los exámenes.");
+        if (!response.ok) throw new Error("Error al cargar las órdenes.");
         const data = await response.json();
-        setAdminResults(data.exams); 
+        setAdminOrders(data.data); 
       } catch (error) {
-        console.error("Error al cargar los exámenes:", error);
+        console.error("Error al cargar las órdenes:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchExams();
+    fetchOrders();
   }, []);
 
   if (loading) {
-    return <div className="text-center mt-10">Cargando resultados...</div>;
+    return <div className="text-center mt-10">Cargando órdenes...</div>;
   }
 
   return (
@@ -42,12 +42,12 @@ const ResultadosList = () => {
       </div>
       <div className="ml-[266px] overflow-y-auto h-full p-6">
         <NewResults
-          arrayResults={adminResults}
+          arrayResults={adminOrders}
           breadcrumbItems={[
             { title: "Admin", to: "/admin/inicio" },
-            { title: "Resultados" },
+            { title: "Órdenes" },
           ]}
-          title="Resultados del Administrador"
+          title="Lista de Órdenes del Administrador"
           role="admin" 
         />
       </div>
