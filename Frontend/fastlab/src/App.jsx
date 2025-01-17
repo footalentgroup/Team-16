@@ -79,7 +79,8 @@ const App = () => {
           >
             {/* rutas para el admin */}
             <Route path="resultados" element={<AdminResultados />} />
-            <Route path="resultados/lista" element={<ResultadosList />} /> {/* Nueva ruta */}
+            <Route path="resultados/lista-de-resultados" element={<ResultadosList />} /> {/* Nueva ruta */}
+            
             <Route path="resultados/:id" element={<ResultadoAnalisis />} /> {/* Detalles por ID */}
             <Route path="configuracion" element={<AdminConfiguracion />} />
             <Route path="configuracion/doctores" element={<AdminConfiguracionDoctores />} />
