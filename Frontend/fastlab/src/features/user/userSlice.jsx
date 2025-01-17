@@ -35,11 +35,20 @@ const userSlice = createSlice({
       state.birth = '';
       state.token = '';
       state.isAuthenticated = false;
+    },
+    updateData:(state, action)=>{
+      const { firstName, lastName, birth, email, phone } = action.payload;
+      state.name = firstName;
+      state.lastName = lastName; // Guarda el apellido
+      state.email = email;
+      state.phone = phone; // Guarda el teléfono
+      state.birth = birth;
     }
+
     
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateData } = userSlice.actions;
 export default userSlice.reducer;
 

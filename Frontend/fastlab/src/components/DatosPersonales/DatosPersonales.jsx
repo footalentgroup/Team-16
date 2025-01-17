@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux"; // Importar useSelector
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,8 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Calendario from "./Calendario";
 import LoginInput from "../LoginInput/LoginInput";
 import Breadcrumb from "../navigation/breadcrumb";
-
+import { useUserPaciente } from "../../hooks/useUserPaciente";
 const DatosPersonales = () => {
+
+  const {updateUser} =useUserPaciente();
   const {
     control,
     register,
@@ -19,6 +21,7 @@ const DatosPersonales = () => {
   // Obtén los datos del usuario desde el store
   const user = useSelector((state) => state.user);
   console.log("Datos del usuario desde Redux:", user);
+
   useEffect(() => {
     // Rellenar el formulario con los datos del usuario desde Redux
     if (user) {
@@ -31,9 +34,10 @@ const DatosPersonales = () => {
   }, [user, setValue]);
 
   const onSubmit = (data) => {
+    updateUser(data);
     toast.success("Se actualizaron los datos correctamente", {
       position: "top-right",
-      autoClose: 3000,
+      autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

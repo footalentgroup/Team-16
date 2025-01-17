@@ -8,7 +8,7 @@ import pacientesReducer from '../features/pacientes/pacientesSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'], // Persistir el estado de usuario y administrador
+  whitelist: ['user','pacientes'], // Persistir el estado de usuario y administrador
 };
 
 // Combinación de reducers
