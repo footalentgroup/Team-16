@@ -135,7 +135,10 @@ const LoginPaciente = () => {
                             error={errors.password}
                             errorClass='placeholder-red-500 border-red-500'
                         />
-
+                        <label htmlFor="remember" className="text-sm text-gray-500 inline-block mb-4">
+                          <input type="checkbox" id="remember" name="remember" className="mr-2" />
+                          Recordar contraseña
+                        </label>
                         <button
                             type='submit'
                             disabled={isFormSubmitted}
