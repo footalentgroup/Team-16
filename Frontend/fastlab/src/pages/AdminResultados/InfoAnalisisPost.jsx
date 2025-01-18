@@ -103,18 +103,26 @@ const CargaResultados = () => {
   };
 
   const onSubmit = (data) => {
-    const selectedExams = data.tipoExamen.map((item) => item.value);
+    const selectedExams = data.tipoExamen.map(item => item.value);
+    const reportId = data.numeroOrden?.[0]?.value; // Extraer el reportId de la selección.
+  
+    if (!reportId) {
+      console.error("No se seleccionó un número de orden.");
+      return;
+    }
+  
     const formDataWithExams = {
-      ...data,
+      reportId,
       selectedExams,
     };
-
-    console.log("Datos del formulario:", formDataWithExams);
-
+  
+    console.log("Datos enviados al siguiente componente:", formDataWithExams);
+  
     navigate("/admin/resultados/carga-de-resultados/parametros", {
-      state: formDataWithExams,
+      state: { ...formDataWithExams, reportId },
     });
   };
+  
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
