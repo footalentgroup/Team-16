@@ -13,31 +13,16 @@ const Parameters = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [parameters, setParameters] = useState([]);
+  const [parameters, setParameters] = useState([]); // Parámetros a mostrar en la tabla
   const [loading, setLoading] = useState(true);
-  const { state } = location;
-
-  const unitOptions = [
-    "mm3",
-    "mg/dL",
-    "gr/dL",
-    "mm3",
-    "IU/L",
-    "fl",
-    "mmHg",
-    "mL/min",
-    "g/L",
-    "%",
-  ]; // Opciones de unidades de medida
+  const { state } = location; // Exámenes seleccionados enviados desde el componente anterior
 
   useEffect(() => {
-    if (!state?.reportId || !state?.selectedExams) {
-      console.error("Falta el reportId o los exámenes seleccionados.");
+    if (!state || !state.selectedExams) {
+      console.error("No se proporcionaron exámenes seleccionados.");
       return;
     }
 
-    console.log("ID de la orden recibido:", state.reportId);
-    console.log("Exámenes seleccionados:", state.selectedExams);
     const fetchParameters = async () => {
       try {
         const fetchedParameters = [];
@@ -52,11 +37,11 @@ const Parameters = () => {
           if (examData && examData.parameters) {
             fetchedParameters.push(
               ...examData.parameters.map((param) => ({
-                parameterId: param.id,
+                parameterId: param.id, // Agregado para usar en el POST
                 parameterName: param.name,
                 reference: param.reference,
-                resultValue: "",
-                unit: "",
+                resultValue: "", // Inicializado vacío para escritura
+                unit: "", // Inicializado vacío para escritura
               }))
             );
           }
@@ -82,16 +67,14 @@ const Parameters = () => {
   };
 
   const handleGenerateResults = async () => {
-    const reportId = state.reportId; // ID de la orden
+    const reportId = state.reportId; // Obtenemos el ID de la orden desde el estado
     const resultsToPost = parameters.map((param) => ({
       parameterId: param.parameterId,
       reportId: reportId,
-      type: "Manual",
+      type: "Manual", // Se puede ajustar según sea necesario
       resultValue: param.resultValue,
       dateResult: new Date().toISOString(),
     }));
-
-    console.log("Cuerpo enviado al backend:", resultsToPost);
 
     try {
       const response = await fetch(`${BACKEND_URL}/results/create-many`, {
@@ -103,13 +86,11 @@ const Parameters = () => {
       });
 
       if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("Error del servidor:", errorBody);
         throw new Error("Error al enviar los resultados");
       }
 
       console.log("Resultados enviados correctamente");
-      navigate("/admin/resultados", { state: { results: resultsToPost } });
+      navigate("/admin/resultados/generar-reporte", { state: { results: resultsToPost } });
     } catch (error) {
       console.error("Error al generar resultados:", error);
     }
@@ -124,15 +105,22 @@ const Parameters = () => {
       accessorKey: "reference",
       header: "Rango de Referencia",
     },
+    ,
     {
-      accessorKey: "resultValue",
-      header: "Resultado Obtenido",
-      cell: ({ row }) => (
+      accessorKey: "resultado",
+      header: "Resultado obtenido",
+      cell: ({ row, column }) => (
         <input
           type="text"
           className="w-full border bg-gray-50 rounded-md px-2 py-1"
-          value={parameters[row.index]?.resultValue || ""}
-          onChange={(e) => handleInputChange(row.index, "resultValue", e.target.value)}
+          value={row.original[column.id]}
+          onChange={(e) =>
+            row.update({
+              ...row.original,
+              [column.id]: e.target.value,
+            })
+          }
+          placeholder="Ingrese resultado"
         />
       ),
     },
@@ -140,18 +128,12 @@ const Parameters = () => {
       accessorKey: "unit",
       header: "Unidad de Medida",
       cell: ({ row }) => (
-        <select
+        <input
+          type="text"
           className="w-full border bg-gray-50 rounded-md px-2 py-1"
           value={parameters[row.index]?.unit || ""}
           onChange={(e) => handleInputChange(row.index, "unit", e.target.value)}
-        >
-          <option value="">Seleccione unidad</option>
-          {unitOptions.map((option, idx) => (
-            <option key={idx} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        />
       ),
     },
   ];
@@ -181,6 +163,21 @@ const Parameters = () => {
         ) : (
           <DataTable columns={columns} data={parameters} />
         )}
+
+        <div className="mt-6">
+          <label
+            htmlFor="observaciones"
+            className="block font-medium mb-1 text-sm text-[#0E1B27]"
+          >
+            Observaciones
+          </label>
+          <textarea
+            id="observaciones"
+            className="w-full border bg-gray-50 rounded-md px-3 py-2"
+            rows="4"
+            placeholder="Escribe tus observaciones aquí"
+          />
+        </div>
 
         <div className="flex justify-end mt-6">
           <Button
