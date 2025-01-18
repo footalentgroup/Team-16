@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import MenuLateral from "../../components/menuLateral/MenuLateral";
-import NewResults from "../../components/PacienteInicio/NewResults";
+import Breadcrumb from "../../components/navigation/breadcrumb";
+import AdminAnalisisCard from "../../components/Cards/AdminAnalisisCard";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; 
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const ResultadosList = () => {
   const [adminOrders, setAdminOrders] = useState([]);
@@ -20,7 +21,7 @@ const ResultadosList = () => {
         });
         if (!response.ok) throw new Error("Error al cargar las órdenes.");
         const data = await response.json();
-        setAdminOrders(data.data); 
+        setAdminOrders(data.data);
       } catch (error) {
         console.error("Error al cargar las órdenes:", error);
       } finally {
@@ -41,17 +42,36 @@ const ResultadosList = () => {
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
       <div className="ml-[266px] overflow-y-auto h-full p-6">
-
-        <NewResults
-          arrayResults={adminOrders}
-          breadcrumbItems={[
-            { title: "Admin", to: "/admin/inicio" },
-            { title: "Órdenes" },
+        <Breadcrumb
+          items={[
+            { title: "Admin", to: "/admin" },
+            { title: "Resultados", to: "/admin/resultados" },
           ]}
-          title="Lista de Órdenes del Administrador"
-          role="admin" 
         />
+        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+          Lista de Órdenes
+        </h1>
 
+        {adminOrders.length === 0 ? (
+          <div className="text-center">
+            <h2 className="font-semibold text-xl text-[#0E1B27]">
+              No hay órdenes disponibles
+            </h2>
+            <p className="text-gray-500">Actualmente no hay órdenes registradas en el sistema.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6">
+            {adminOrders.map((order) => (
+              <AdminAnalisisCard
+                key={`order-${order.id}`}
+                title={`Orden N° ${order.id}`}
+                type={`${order.patient.firstName} ${order.patient.lastName}`}
+                date={new Date(order.dateExam).toLocaleDateString("es-ES")}
+                id={order.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
