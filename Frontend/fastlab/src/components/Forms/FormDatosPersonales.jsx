@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 function FormDatosPersonales() {
+    const user = useSelector(state => state.user)
+
     const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        telefono: '',
-        email: '',
+        nombre: user.name,
+        apellido: user.lastName,
+        telefono: user.phone,
+        email: user.email,
         password: '',
         confirmPassword: '',
     })
@@ -42,23 +45,15 @@ function FormDatosPersonales() {
 
     return (
         <>
-            <form
-                onSubmit={handleSubmit}
-                className='space-y-8'
-            >
+            <form onSubmit={handleSubmit} className='space-y-8'>
                 {/* Datos personales */}
                 <section>
                     <h2 className='text-lg font-medium mb-2'>Datos personales</h2>
-                    <p className='text-sm text-gray-600 mb-6'>
-                        Puedes ver tus datos y modificar los que creas necesarios
-                    </p>
+                    <p className='text-sm text-gray-600 mb-6'>Puedes ver tus datos y modificar los que creas necesarios</p>
 
                     <div className='space-y-4'>
                         <div>
-                            <label
-                                htmlFor='nombre'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='nombre' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Nombre
                             </label>
                             <input
@@ -73,10 +68,7 @@ function FormDatosPersonales() {
                         </div>
 
                         <div>
-                            <label
-                                htmlFor='apellido'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='apellido' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Apellido
                             </label>
                             <input
@@ -91,10 +83,7 @@ function FormDatosPersonales() {
                         </div>
 
                         <div>
-                            <label
-                                htmlFor='telefono'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='telefono' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Teléfono
                             </label>
                             <input
@@ -109,10 +98,7 @@ function FormDatosPersonales() {
                         </div>
 
                         <div>
-                            <label
-                                htmlFor='correo'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='correo' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Correo electrónico
                             </label>
                             <input
@@ -121,7 +107,7 @@ function FormDatosPersonales() {
                                 name='correo'
                                 placeholder='Ejemplo: email@email.com'
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.correo}
+                                value={formData.email}
                                 onChange={e => setFormData({ ...formData, correo: e.target.value })}
                             />
                         </div>
@@ -135,10 +121,7 @@ function FormDatosPersonales() {
 
                     <div className='space-y-4'>
                         <div>
-                            <label
-                                htmlFor='contrasena'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='contrasena' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Contraseña
                             </label>
                             <input
@@ -152,10 +135,7 @@ function FormDatosPersonales() {
                         </div>
 
                         <div>
-                            <label
-                                htmlFor='repetirContrasena'
-                                className='block text-sm font-medium text-gray-700 mb-1'
-                            >
+                            <label htmlFor='repetirContrasena' className='block text-sm font-medium text-gray-700 mb-1'>
                                 Repetir contraseña
                             </label>
                             <input
