@@ -26,8 +26,8 @@ import ReportMethod from "./pages/AdminPedidos/ReportMethod";
 import AddPatient from "./pages/AddPatient/AddPatient";
 import AddAnalisis from "./pages/AddAnalisis/AddAnalisis";
 import ResultadosList from "./pages/AdminResultados/ResultadosList"; // Agregado
-import ResultadoAnalisis from "./pages/PacienteHistorialResultadoAnalisis"; // Si se usa en el admin
 
+import ResultadoAnalisisAdmin from './components/ResultadoAnalisis/ResultadoAnalisisAdmin';
 import AdminResults from "./pages/AdminResultados/AdminResults";
 import CargaResultados from "./pages/AdminResultados/InfoAnalisisPost";
 import Parameters from "./pages/AdminResultados/Parameters";
@@ -94,7 +94,8 @@ const App = () => {
             <Route path="resultados/lista-de-resultados" element={<ResultadosList />} />
             <Route path="resultados/carga-de-resultados" element={<AdminResultados />} /> 
             <Route path="resultados/carga-de-resultados/info-analisis" element={<CargaResultados />} /> 
-            <Route path="resultados/carga-de-resultados/parametros" element={<Parameters />} /> 
+            <Route path="resultados/carga-de-resultados/parametros" element={<Parameters />} />
+            <Route path="resultados/lista-de-resultados/detalle/:id" element={<ResultadoAnalisisAdmin />} /> 
 
              {/* Detalles por ID */}
             <Route path="configuracion" element={<AdminConfiguracion />} />

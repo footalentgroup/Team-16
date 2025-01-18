@@ -1,209 +1,198 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import MenuLateral from "../../components/menuLateral/MenuLateral";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table"; // Importamos el componente DataTable
+import { DataTable } from "@/components/ui/data-table";
 
-// Opciones para cada campo
-const options = {
-  nombre: ["Glucemia", "LDL COLESTEROL", "Triglicéridos"],
-  unidad: ["mg/dl", "seg.", "mm3"],
-  rango: ["70-110 mg/dl", "mayor a 35 mg/dl", "150.000 a 40000 por mm3"],
-  bioquimico: ["Ricky Maravilla", "Manuel Pascual", "Ricardo Forman"],
-};
-
-// Definición de columnas
-const columns = [
-  {
-    accessorKey: "nombre",
-    header: "Nombre del Parámetro",
-    cell: ({ row, column }) => (
-      <select
-        className="w-full border bg-gray-50 rounded-md px-2 py-1"
-        value={row.original[column.id]}
-        onChange={(e) =>
-          row.update({
-            ...row.original,
-            [column.id]: e.target.value,
-          })
-        }
-      >
-        <option value="">Seleccione un parámetro</option>
-        {options.nombre.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    ),
-  },
-  {
-    accessorKey: "resultado",
-    header: "Resultado obtenido",
-    cell: ({ row, column }) => (
-      <select
-        className="w-full border bg-gray-50 rounded-md px-2 py-1"
-        value={row.original[column.id]}
-        onChange={(e) =>
-          row.update({
-            ...row.original,
-            [column.id]: e.target.value,
-          })
-        }
-      >
-        <option value="">Ingrese resultado</option>
-        {options.rango.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    ),
-  },
-  {
-    accessorKey: "unidad",
-    header: "Unidad de Medida",
-    cell: ({ row, column }) => (
-      <select
-        className="w-full border bg-gray-50 rounded-md px-2 py-1"
-        value={row.original[column.id]}
-        onChange={(e) =>
-          row.update({
-            ...row.original,
-            [column.id]: e.target.value,
-          })
-        }
-      >
-        <option value="">Seleccione una unidad</option>
-        {options.unidad.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    ),
-  },
-  
-  {
-    accessorKey: "reference",
-    header: "Rango de referencia",
-    cell: ({ row, column }) => (
-      <select
-        className="w-full border bg-gray-50 rounded-md px-2 py-1"
-        value={row.original[column.id]}
-        onChange={(e) =>
-          row.update({
-            ...row.original,
-            [column.id]: e.target.value,
-          })
-        }
-      >
-        <option value="">Seleccione rango de referencia</option>
-        {options.bioquimico.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    ),
-  },
-];
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const Parameters = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Datos iniciales para los parámetros
-  const [data, setData] = useState([
-    { id: 1, nombre: "", unidad: "", rango: "", bioquimico: "" },
-    { id: 2, nombre: "", unidad: "", rango: "", bioquimico: "" },
-    { id: 3, nombre: "", unidad: "", rango: "", bioquimico: "" },
-    { id: 4, nombre: "", unidad: "", rango: "", bioquimico: "" },
-    { id: 5, nombre: "", unidad: "", rango: "", bioquimico: "" },
-  ]);
+  const [parameters, setParameters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { state } = location;
 
-  const handleGenerateResults = () => {
-    console.log("Datos generados:", data);
-    navigate("/admin/resultados/generar-reporte", { state: { data } });
+  const unitOptions = [
+    "mm3",
+    "mg/dL",
+    "gr/dL",
+    "mm3",
+    "IU/L",
+    "fl",
+    "mmHg",
+    "mL/min",
+    "g/L",
+    "%",
+  ]; // Opciones de unidades de medida
+
+  useEffect(() => {
+    if (!state?.reportId || !state?.selectedExams) {
+      console.error("Falta el reportId o los exámenes seleccionados.");
+      return;
+    }
+
+    console.log("ID de la orden recibido:", state.reportId);
+    console.log("Exámenes seleccionados:", state.selectedExams);
+    const fetchParameters = async () => {
+      try {
+        const fetchedParameters = [];
+
+        for (const examId of state.selectedExams) {
+          const response = await fetch(`${BACKEND_URL}/exams/${examId}`);
+          if (!response.ok) {
+            throw new Error(`Error al obtener el examen ${examId}`);
+          }
+
+          const examData = await response.json();
+          if (examData && examData.parameters) {
+            fetchedParameters.push(
+              ...examData.parameters.map((param) => ({
+                parameterId: param.id,
+                parameterName: param.name,
+                reference: param.reference,
+                resultValue: "",
+                unit: "",
+              }))
+            );
+          }
+        }
+
+        setParameters(fetchedParameters);
+      } catch (error) {
+        console.error("Error al cargar los parámetros:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParameters();
+  }, [state]);
+
+  const handleInputChange = (index, field, value) => {
+    setParameters((prevParameters) => {
+      const updatedParameters = [...prevParameters];
+      updatedParameters[index][field] = value;
+      return updatedParameters;
+    });
   };
+
+  const handleGenerateResults = async () => {
+    const reportId = state.reportId; // ID de la orden
+    const resultsToPost = parameters.map((param) => ({
+      parameterId: param.parameterId,
+      reportId: reportId,
+      type: "Manual",
+      resultValue: param.resultValue,
+      dateResult: new Date().toISOString(),
+    }));
+
+    console.log("Cuerpo enviado al backend:", resultsToPost);
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/results/create-many`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resultsToPost),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("Error del servidor:", errorBody);
+        throw new Error("Error al enviar los resultados");
+      }
+
+      console.log("Resultados enviados correctamente");
+      navigate("/admin/resultados", { state: { results: resultsToPost } });
+    } catch (error) {
+      console.error("Error al generar resultados:", error);
+    }
+  };
+
+  const columns = [
+    {
+      accessorKey: "parameterName",
+      header: "Nombre del Parámetro",
+    },
+    {
+      accessorKey: "reference",
+      header: "Rango de Referencia",
+    },
+    {
+      accessorKey: "resultValue",
+      header: "Resultado Obtenido",
+      cell: ({ row }) => (
+        <input
+          type="text"
+          className="w-full border bg-gray-50 rounded-md px-2 py-1"
+          value={parameters[row.index]?.resultValue || ""}
+          onChange={(e) => handleInputChange(row.index, "resultValue", e.target.value)}
+        />
+      ),
+    },
+    {
+      accessorKey: "unit",
+      header: "Unidad de Medida",
+      cell: ({ row }) => (
+        <select
+          className="w-full border bg-gray-50 rounded-md px-2 py-1"
+          value={parameters[row.index]?.unit || ""}
+          onChange={(e) => handleInputChange(row.index, "unit", e.target.value)}
+        >
+          <option value="">Seleccione unidad</option>
+          {unitOptions.map((option, idx) => (
+            <option key={idx} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ),
+    },
+  ];
 
   return (
     <div className="relative max-h-screen h-screen bg-gray-50">
-      {/* Menú lateral */}
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
 
       <div className="ml-[266px] h-full overflow-y-auto p-6">
-        {/* Breadcrumb */}
         <Breadcrumb
           items={[
             { title: "Admin", to: "/admin/resultados" },
-            { title: "Carga de resultados", to: "/admin/resultados/carga" },
+            { title: "Carga de Resultados", to: "/admin/resultados/carga" },
           ]}
         />
 
         <h1 className="text-2xl text-center font-bold mb-4">
-          Información de los parámetros
+          Información de los Parámetros
         </h1>
 
         <Progress className="[&>*]:bg-[#02807D] mb-6" value={66} />
 
-        {/* Tabla con DataTable */}
-        <DataTable columns={columns} data={data} />
-
-        <div className="mt-6">
-          <label
-            htmlFor="bioquimico"
-            className="block font-medium mb-1 text-sm text-[#0E1B27]"
-          >
-            Nombre del Bioquímico
-          </label>
-          <select
-            id="bioquimico"
-            className="w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
-          >
-            <option value="" disabled>
-              Seleccione una opción
-            </option>
-            <option value="bioquimico_1">Bioquímico 1</option>
-            <option value="bioquimico_2">Bioquímico 2</option>
-          </select>
-        </div>
-
-        <div className="mt-6">
-          <label
-            htmlFor="observaciones"
-            className="block font-medium mb-1 text-sm text-[#0E1B27]"
-          >
-            Observaciones
-          </label>
-          <textarea
-            id="observaciones"
-            className="w-full border bg-gray-50 rounded-md px-3 py-2"
-            rows="4"
-            placeholder="Escribe tus observaciones aquí"
-          />
-        </div>
+        {loading ? (
+          <div className="text-center">Cargando parámetros...</div>
+        ) : (
+          <DataTable columns={columns} data={parameters} />
+        )}
 
         <div className="flex justify-end mt-6">
           <Button
             className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
             onClick={handleGenerateResults}
           >
-            Generar resultados
+            Generar Resultados
           </Button>
         </div>
       </div>
-        
-      </div>
-    
+    </div>
   );
 };
 
 export default Parameters;
-
