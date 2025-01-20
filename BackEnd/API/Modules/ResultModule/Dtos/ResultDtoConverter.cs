@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using API.Modules.OrdenModule.Dtos;
 
 namespace API.Modules.ResultModule.Dtos
 {

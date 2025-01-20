@@ -1,3 +1,5 @@
+using API.Modules.OrdenModule.Dtos;
+using API.Modules.OrdenModule.Interfaces;
 using API.Modules.ResultModule.Dtos;
 using API.Modules.ResultModule.Interfaces;
 using API.Shared.Extensions;
@@ -11,9 +13,9 @@ namespace API.Modules.ResultModule
     public class ResultController
     {
         private readonly IResultService _resultService;
-        private readonly IReportService _reportService;
+        private readonly IOrderService _reportService;
 
-        public ResultController(IResultService resultService, IReportService reportService)
+        public ResultController(IResultService resultService, IOrderService reportService)
         {
             _resultService = resultService;
             _reportService = reportService;
@@ -46,7 +48,7 @@ namespace API.Modules.ResultModule
         [HttpGet("orders/get-by-id")]
         public async Task<IActionResult> GetOrderById([FromQuery] int id)
         {
-            var response = await _reportService.GetReportById(id);
+            var response = await _reportService.GetOrderById(id);
 
             return response.ToActionResult();
         }
@@ -56,13 +58,13 @@ namespace API.Modules.ResultModule
         {
             var response = await _reportService.CreateOrder(createReportDto);
 
-            return new OkObjectResult(response);
+            return response.ToActionResult();
         }
 
         [HttpPut("orders/update")]
         public async Task<IActionResult> UpdateOrder(UpdateReportDto updateReportDto)
         {
-            var response = await _reportService.UpdateReport(updateReportDto);
+            var response = await _reportService.UpdateOrder(updateReportDto);
 
             return new OkObjectResult(response);
         }

@@ -6,9 +6,9 @@ namespace API.DataBase.Entities
 
         public required string Type { get; set; }
 
-        public Report Report { get; set; }
+        public Order Order { get; set; }
 
-        public int ReportId { get; set; }
+        public int OrderId { get; set; }
 
         public ParameterBase Parameter { get; set; }
 

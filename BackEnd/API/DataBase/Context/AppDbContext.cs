@@ -31,6 +31,20 @@ namespace API.DataBase.Context
             .HasValue<QualitativeResult>("qualitative")
             .HasValue<QuantitativeResult>("quantitative");
 
+            modelBuilder.Entity<OrderExam>()
+                .HasKey(re => new { re.OrderId, re.ExamId });
+
+            modelBuilder.Entity<OrderExam>()
+                .HasOne(x => x.Order)
+                .WithMany(x => x.OrderExams)
+                .HasForeignKey(x => x.OrderId);
+
+            modelBuilder.Entity<OrderExam>()
+                .HasOne(x => x.Exam)
+                .WithMany(x => x.OrderExams)
+                .HasForeignKey(x => x.ExamId);
+
+
             modelBuilder.Entity<Admin>()
             .HasData(
                 new Admin()
@@ -128,7 +142,7 @@ namespace API.DataBase.Context
         public DbSet<ParameterBase> Parameters => Set<ParameterBase>();
 
         public DbSet<Result> Results => Set<Result>();
-        public DbSet<Report> Reports => Set<Report>();
+        public DbSet<Order> Orders => Set<Order>();
         public DbSet<Doctor> Doctors => Set<Doctor>();
 
     }

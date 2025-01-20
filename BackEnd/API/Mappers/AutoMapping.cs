@@ -1,5 +1,6 @@
 ﻿using API.DataBase.Entities;
 using API.Modules.DoctorModule.Dtos;
+using API.Modules.OrdenModule.Dtos;
 using API.Modules.PatientModule.Dtos;
 using API.Modules.ResultModule.Dtos;
 using AutoMapper;
@@ -16,11 +17,8 @@ namespace API.Mappers
 
             CreateMap<Result, CreateResultDto>();
 
-            CreateMap<Report, CreateReportDto>();
+            CreateMap<Order, CreateReportDto>().ReverseMap();
 
-            CreateMap<CreateReportDto, Report>()
-             .ForMember(dest => dest.ExamIds,
-                  opt => opt.MapFrom(src => string.Join(",", src.ExamIds ?? new List<int>())));
 
             CreateMap<Doctor, CreateDoctorDto>().ReverseMap();
 
