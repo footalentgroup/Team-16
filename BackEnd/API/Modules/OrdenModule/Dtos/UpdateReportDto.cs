@@ -1,4 +1,4 @@
-﻿namespace API.Modules.ResultModule.Dtos
+﻿namespace API.Modules.OrdenModule.Dtos
 {
     public class UpdateReportDto
     {

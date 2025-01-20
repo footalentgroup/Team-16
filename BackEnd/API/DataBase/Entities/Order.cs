@@ -1,6 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace API.DataBase.Entities
 {
-    public class Report
+    public class Order
     {
         public int Id { get; set; }
 
@@ -22,7 +24,8 @@ namespace API.DataBase.Entities
 
         public ICollection<Result> Results { get; set; } = new List<Result>();
 
-        public string ExamIds { get; set; } = string.Empty;
+        [JsonIgnore]
+        public ICollection<OrderExam> OrderExams { get; set; } = new List<OrderExam>();
 
     }
 }

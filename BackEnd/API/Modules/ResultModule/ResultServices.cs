@@ -32,7 +32,7 @@ namespace API.Modules.ResultModule
                         {
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
-                            ReportId = dto.ReportId,
+                            OrderId = dto.ReportId,
                             DateResult = dto.DateResult,
                             Value = value
                         };
@@ -45,7 +45,7 @@ namespace API.Modules.ResultModule
                         {
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
-                            ReportId = dto.ReportId,
+                            OrderId = dto.ReportId,
                             DateResult = dto.DateResult,
                             Value = jsonElement.GetString()
                         };
@@ -99,7 +99,7 @@ namespace API.Modules.ResultModule
                             Type = "quantitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
-                            ReportId = entity.ReportId,
+                            OrderId = entity.OrderId,
                             Value = value
                         };
 
@@ -111,7 +111,7 @@ namespace API.Modules.ResultModule
                         var result = new QualitativeResult()
                         {
                             Id = entity.Id,
-                            ReportId = entity.ReportId,
+                            OrderId = entity.OrderId,
                             Type = "qualitative",
                             ParameterId = dto.ParameterId,
                             DateResult = dto.DateResult,
@@ -142,9 +142,5 @@ namespace API.Modules.ResultModule
 
         }
 
-
-
     }
-
-
 }
