@@ -148,6 +148,7 @@ const SearchPatient = () => {
                           state: {
                             patientId: selectedPatient.id,
                             patientName: `${selectedPatient.firstName} ${selectedPatient.lastName}`,
+                            patientBirth: selectedPatient.birth,
                           },
                         });
                       }}

@@ -21,7 +21,7 @@ const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref
   </div>
 ));
 
-const Calendar = ({ control, name, placeholder, label, labelClassName }) => {
+const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }) => {
   const {
     field: { value, onChange, onBlur },
     fieldState: { error },
@@ -43,6 +43,7 @@ const Calendar = ({ control, name, placeholder, label, labelClassName }) => {
         selected={value ? new Date(value) : null}
         onChange={(date) => onChange(date)}
         onBlur={onBlur}
+        minDate={minDate ? minDate : null}
         dateFormat="dd/MM/yyyy"
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
