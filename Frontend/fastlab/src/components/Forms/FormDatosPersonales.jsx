@@ -38,15 +38,12 @@ function FormDatosPersonales() {
     const handleSubmit = e => {
         e.preventDefault()
         if (validateForm()) {
-            alert('Formulario enviado correctamente.')
-            // Aquí puedes enviar los datos al backend
         }
     }
 
     return (
         <>
             <form onSubmit={handleSubmit} className='space-y-8'>
-                {/* Datos personales */}
                 <section>
                     <h2 className='text-lg font-medium mb-2'>Datos personales</h2>
                     <p className='text-sm text-gray-600 mb-6'>Puedes ver tus datos y modificar los que creas necesarios</p>
@@ -114,49 +111,13 @@ function FormDatosPersonales() {
                     </div>
                 </section>
 
-                {/* Modificar contraseña */}
-                <section>
-                    <h2 className='text-lg font-medium mb-2'>Modificar contraseña</h2>
-                    <p className='text-sm text-gray-600 mb-6'>Puedes modificar tu contraseña si lo deseas</p>
-
-                    <div className='space-y-4'>
-                        <div>
-                            <label htmlFor='contrasena' className='block text-sm font-medium text-gray-700 mb-1'>
-                                Contraseña
-                            </label>
-                            <input
-                                type='password'
-                                id='contrasena'
-                                name='contrasena'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.contrasena}
-                                onChange={e => setFormData({ ...formData, contrasena: e.target.value })}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor='repetirContrasena' className='block text-sm font-medium text-gray-700 mb-1'>
-                                Repetir contraseña
-                            </label>
-                            <input
-                                type='password'
-                                id='repetirContrasena'
-                                name='repetirContrasena'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.repetirContrasena}
-                                onChange={e => setFormData({ ...formData, repetirContrasena: e.target.value })}
-                            />
-                        </div>
-                    </div>
-                </section>
-
                 <div>
-                    <button
+                    {/* <button
                         type='submit'
                         className='px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
                     >
                         Guardar
-                    </button>
+                    </button> */}
                 </div>
             </form>
         </>

@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import { useController } from "react-hook-form";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../ui/calendar.css";
 
@@ -30,6 +30,19 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
     rules: { required: "Selecciona una opción." },
   });
 
+  const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
+  const locale = {
+    localize: {
+      day: n => days[n],
+      month: n => months[n]
+    },
+    formatLong: {
+      date: () => 'dd/MM/yyyy'
+    }
+  }
+
   return (
     <div className="mb-4">
       <label
@@ -44,7 +57,7 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
         onBlur={onBlur}
         minDate={minDate ? minDate : null}
         maxDate={new Date()} 
-        dateFormat="dd/MM/yyyy"
+        locale={locale}
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
           <InputCalendar

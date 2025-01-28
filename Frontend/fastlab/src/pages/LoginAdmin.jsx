@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { login } from '../features/user/userSlice'
 import imgLogin from '../assets/login.png'
 import LoginInput from '../components/LoginInput/LoginInput'
-
+import { toast, ToastContainer } from 'react-toastify'
 const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const LoginAdmin = () => {
@@ -54,8 +54,13 @@ const LoginAdmin = () => {
 
                 navigate('/admin/ingresar-orden')
             } else {
+
                 const errorResult = await response.json()
-                alert(errorResult.message || 'Error al iniciar sesión')
+                toast.error(`${errorResult.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                })
             }
         } catch (error) {
             console.error('Error de conexión:', error)
@@ -66,6 +71,8 @@ const LoginAdmin = () => {
     }
 
     return (
+        <>
+        <ToastContainer />
         <div className='flex justify-around items-center min-h-screen'>
             <div className='w-[60%] p-14 ml-14'>
                 <div className='max-w-[400px]'>
@@ -134,6 +141,7 @@ const LoginAdmin = () => {
                 <img src={imgLogin} alt='FastLab' className='w-full h-full object-cover rounded-xl' />
             </div>
         </div>
+        </>
     )
 }
 
