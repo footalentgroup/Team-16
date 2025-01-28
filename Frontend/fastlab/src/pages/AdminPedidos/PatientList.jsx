@@ -13,7 +13,7 @@ const PatientList = ({ patients, onSelectPatient }) => {
   };
 
   return (
-    <div className="bg-white shadow rounded-md max-h-[350px] overflow-hidden">
+    <div className="bg-white shadow rounded-md h-[70vh] overflow-y-scroll"> 
       {patients.map((patient, index) => (
         <div
           key={patient.id}

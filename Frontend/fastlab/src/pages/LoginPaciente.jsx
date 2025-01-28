@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { login } from '../features/user/userSlice'
 import { setError } from '../features/ui/uiSlice'
 import LoginInput from '../components/LoginInput/LoginInput'
+import { toast, ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 import imgLogin from '../assets/login.png'
 
 const BACKEND_URL = import.meta.env.VITE_API_URL
@@ -62,6 +64,15 @@ const LoginPaciente = () => {
                 navigate('/paciente/inicio')
             } else {
                 dispatch(setError(result.message || 'Error al iniciar sesión'))
+                toast.error(`${result.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         } catch (error) {
             dispatch(setError('Error de conexión con el servidor.'))
@@ -71,91 +82,98 @@ const LoginPaciente = () => {
     }
 
     return (
-        <div className='flex justify-around items-center min-h-screen'>
-            <div className='w-[60%] p-14 ml-14'>
-                <div className='max-w-[400px]'>
-                    <h1 className='text-2xl font-bold text-gray-800 mb-4'>Ingresar a fastLab</h1>
-                    <p className='text-gray-500 mb-6'>Estás por ingresar como paciente</p>
-                    <div className='w-full h-[2px] bg-gray-300 mb-6'></div>
-                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                        <div className='mb-4'>
-                            <label htmlFor='tipoDocumento' className='block text-gray-700 text-sm mb-1'>
-                                Tipo de documento
-                            </label>
-                            <select
-                                id='tipoDocumento'
+        <>
+            <ToastContainer/>
+            <div className='flex justify-around items-center min-h-screen'>
+                <div className='w-[60%] p-14 ml-14'>
+                    <div className='max-w-[400px]'>
+                        <h1 className='text-2xl font-bold text-gray-800 mb-4'>Ingresar a fastLab</h1>
+                        <p className='text-gray-500 mb-6'>Estás por ingresar como paciente</p>
+                        <div className='w-full h-[2px] bg-gray-300 mb-6'></div>
+                        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                            <div className='mb-4'>
+                                <label htmlFor='tipoDocumento' className='block text-gray-700 text-sm mb-1'>
+                                    Tipo de documento
+                                </label>
+                                <select
+                                    id='tipoDocumento'
+                                    disabled={isFormSubmitted}
+                                    {...register('tipoDocumento', { required: 'Selecciona un tipo de documento' })}
+                                    className={`w-full px-4 py-2 border rounded-md focus:outline-none ${
+                                        errors.tipoDocumento
+                                            ? 'border-red-500 text-red-500 placeholder-red-500'
+                                            : 'border-gray-300 focus:ring-teal-500'
+                                    }`}
+                                >
+                                    <option value='' hidden>
+                                        Seleccionar tipo de documento
+                                    </option>
+                                    <option value='DNI'>DNI</option>
+                                    <option value='Pasaporte'>Pasaporte</option>
+                                </select>
+                                {errors.tipoDocumento && <p className='text-red-500 text-sm mt-1'>{errors.tipoDocumento.message}</p>}
+                            </div>
+
+                            <LoginInput
+                                label='Documento'
+                                id='documento'
+                                name='documento'
+                                placeholder={placeholder}
+                                register={register}
+                                rules={{
+                                    required: 'Este campo es obligatorio.',
+                                    pattern: {
+                                        value: tipoDocumento === 'Pasaporte' ? /^[A-Z]{3}\d{6}$/ : /^\d{8}$/,
+                                        message:
+                                            tipoDocumento === 'Pasaporte'
+                                                ? 'Formato: 3 letras seguidas de 6 números (ej. AAF532592)'
+                                                : 'Formato: 8 dígitos (ej. 12345678)',
+                                    },
+                                }}
                                 disabled={isFormSubmitted}
-                                {...register('tipoDocumento', { required: 'Selecciona un tipo de documento' })}
-                                className={`w-full px-4 py-2 border rounded-md focus:outline-none ${
-                                    errors.tipoDocumento ? 'border-red-500 text-red-500 placeholder-red-500' : 'border-gray-300 focus:ring-teal-500'
+                                error={errors.documento}
+                                errorClass='placeholder-red-500 border-red-500'
+                            />
+
+                            <LoginInput
+                                label='Contraseña'
+                                id='password'
+                                name='password'
+                                type='password'
+                                placeholder='*******'
+                                register={register}
+                                rules={{
+                                    required: 'La contraseña es obligatoria.',
+                                    minLength: { value: 8, message: 'La contraseña debe tener mínimo 8 caracteres.' },
+                                }}
+                                disabled={isFormSubmitted}
+                                error={errors.password}
+                                errorClass='placeholder-red-500 border-red-500'
+                            />
+                            <label htmlFor='remember' className='text-sm text-gray-500 inline-block mb-4'>
+                                <input type='checkbox' id='remember' name='remember' className='mr-2' />
+                                Recordar contraseña
+                            </label>
+                            <button
+                                type='submit'
+                                disabled={isFormSubmitted}
+                                className={`w-full text-white font-semibold py-2 px-4 rounded-md focus:outline-none ${
+                                    isFormSubmitted
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-[#02807D] hover:bg-teal-600 focus:ring-2 focus:ring-teal-500'
                                 }`}
                             >
-                                <option value='' hidden>
-                                    Seleccionar tipo de documento
-                                </option>
-                                <option value='DNI'>DNI</option>
-                                <option value='Pasaporte'>Pasaporte</option>
-                            </select>
-                            {errors.tipoDocumento && <p className='text-red-500 text-sm mt-1'>{errors.tipoDocumento.message}</p>}
-                        </div>
+                                {isFormSubmitted ? 'Cargando...' : 'Ingresar'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
-                        <LoginInput
-                            label='Documento'
-                            id='documento'
-                            name='documento'
-                            placeholder={placeholder}
-                            register={register}
-                            rules={{
-                                required: 'Este campo es obligatorio.',
-                                pattern: {
-                                    value: tipoDocumento === 'Pasaporte' ? /^[A-Z]{3}\d{6}$/ : /^\d{8}$/,
-                                    message:
-                                        tipoDocumento === 'Pasaporte'
-                                            ? 'Formato: 3 letras seguidas de 6 números (ej. AAF532592)'
-                                            : 'Formato: 8 dígitos (ej. 12345678)',
-                                },
-                            }}
-                            disabled={isFormSubmitted}
-                            error={errors.documento}
-                            errorClass='placeholder-red-500 border-red-500'
-                        />
-
-                        <LoginInput
-                            label='Contraseña'
-                            id='password'
-                            name='password'
-                            type='password'
-                            placeholder='*******'
-                            register={register}
-                            rules={{
-                                required: 'La contraseña es obligatoria.',
-                                minLength: { value: 8, message: 'La contraseña debe tener mínimo 8 caracteres.' },
-                            }}
-                            disabled={isFormSubmitted}
-                            error={errors.password}
-                            errorClass='placeholder-red-500 border-red-500'
-                        />
-                        <label htmlFor="remember" className="text-sm text-gray-500 inline-block mb-4">
-                          <input type="checkbox" id="remember" name="remember" className="mr-2" />
-                          Recordar contraseña
-                        </label>
-                        <button
-                            type='submit'
-                            disabled={isFormSubmitted}
-                            className={`w-full text-white font-semibold py-2 px-4 rounded-md focus:outline-none ${
-                                isFormSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#02807D] hover:bg-teal-600 focus:ring-2 focus:ring-teal-500'
-                            }`}
-                        >
-                            {isFormSubmitted ? 'Cargando...' : 'Ingresar'}
-                        </button>
-                    </form>
+                <div className='relative h-[95vh] my-4 mr-8'>
+                    <img src={imgLogin} alt='Fastlab' className='w-full h-full object-cover rounded-xl' />
                 </div>
             </div>
-
-            <div className='relative h-[95vh] my-4 mr-8'>
-                <img src={imgLogin} alt='Fastlab' className='w-full h-full object-cover rounded-xl' />
-            </div>
-        </div>
+        </>
     )
 }
 
