@@ -37,7 +37,7 @@ const ReportMethod = () => {
       return;
     }
 
-    console.log("previousData:", previousData);
+  
 
     const isoDate = previousData.fechaReceta
       ? new Date(previousData.fechaReceta).toISOString()
@@ -53,7 +53,6 @@ const ReportMethod = () => {
       examIds: previousData.examIds || [],
     };
 
-    console.log("Payload completo a enviar:", payload);
 
     try {
       const response = await fetch(`${BACKEND_URL}/results/orders/create`, {
@@ -67,7 +66,7 @@ const ReportMethod = () => {
       }
 
       const data = await response.json();
-      console.log("Respuesta del servidor:", data);
+     
 
       // 1) Mostrar alerta inmediatamente
       setShowAlert(true);

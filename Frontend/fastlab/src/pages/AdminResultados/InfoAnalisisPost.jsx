@@ -116,7 +116,7 @@ const CargaResultados = () => {
       selectedExams,
     };
   
-    console.log("Datos enviados al siguiente componente:", formDataWithExams);
+   
   
     navigate("/admin/resultados/carga-de-resultados/parametros", {
       state: { ...formDataWithExams, reportId },

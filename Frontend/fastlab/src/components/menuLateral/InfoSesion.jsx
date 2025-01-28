@@ -1,25 +1,27 @@
 import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import OverlayInfoSesion from "./OverlayInfoSesion";
+
+
 const InfoSesion = ({ nameUser, email, imgProfile ,lastName}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleButtonRef = useRef(null); // Referencia al botón de alternar
+  const toggleButtonRef = useRef(null); 
 
   const overlayRef = useRef(null);
 
   const handleToggle = () => {
-    setIsOpen(!isOpen); // Abre/cierra el overlay al hacer clic en el nombre del usuario
+    setIsOpen(!isOpen);
   };
 
   const handleClickOutside = (event) => {
-    // Si el clic no es en el overlay 
+  
     if (
       overlayRef.current &&
       !overlayRef.current.contains(event.target) &&
       toggleButtonRef.current &&
       !toggleButtonRef.current.contains(event.target)
     ) {
-      setIsOpen(false); // Cerrar el overlay
+      setIsOpen(false); 
     }
   };
 
@@ -37,7 +39,7 @@ const InfoSesion = ({ nameUser, email, imgProfile ,lastName}) => {
 
   return (
     <div className="w-full cursor-pointer relative"         
-    ref={toggleButtonRef} // Referencia al botón
+    ref={toggleButtonRef} 
     onClick={handleToggle}>
       <article className="flex justify-center items-center">
         <header className="w-5/6 flex justify-start items-center gap-3">

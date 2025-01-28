@@ -5,26 +5,7 @@ import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
 import { ChevronRight, SearchIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const doctores = [
-    {
-        id: 1,
-        name: 'Pedro Martines',
-        specialty: 'Dr. Dermatología',
-        registrationNumber: 'Matrícula: N°33659',
-    },
-    {
-        id: 2,
-        name: 'Arturo Dias',
-        specialty: 'Dr. Genética',
-        registrationNumber: 'Matrícula: N°47774',
-    },
-    {
-        id: 3,
-        name: 'Arturo Sánchez',
-        specialty: 'Dr. Neurología',
-        registrationNumber: 'Matrícula: N°47454',
-    },
-]
+
 
 const AdminConfiguracionBioquimicos = () => {
     const [query, setQuery] = useState('')
@@ -119,16 +100,7 @@ const AdminConfiguracionBioquimicos = () => {
                                     ))}
                                 </div>
 
-                                {/* <div className='flex justify-center gap-2 mt-8'>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>← Anterior</button>
-                                    <button className='px-3 py-1 border rounded text-sm bg-teal-50'>1</button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>2</button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>3</button>
-                                    <button className='px-3 py-1 border rounded text-sm text-gray-400' disabled>
-                                        ...
-                                    </button>
-                                    <button className='px-3 py-1 border rounded text-sm hover:bg-gray-50'>Siguiente →</button>
-                                </div> */}
+                               
                             </div>
                         </div>
                     </main>

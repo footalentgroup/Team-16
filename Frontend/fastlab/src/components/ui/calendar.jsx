@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../ui/calendar.css";
 
-// Componente personalizado para el input de react-datepicker
 const InputCalendar = forwardRef(({ value, onClick, placeholder, hasError }, ref) => (
   <div className="relative">
     <input
@@ -35,7 +34,7 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
     <div className="mb-4">
       <label
         htmlFor={name}
-        className={`block mb-1 ${labelClassName || "text-sm text-gray-700"}`} // Clase por defecto o personalizada
+        className={`block mb-1 ${labelClassName || "text-sm text-gray-700"}`} 
       >
         {label }
       </label>
@@ -44,6 +43,7 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
         onChange={(date) => onChange(date)}
         onBlur={onBlur}
         minDate={minDate ? minDate : null}
+        maxDate={new Date()} 
         dateFormat="dd/MM/yyyy"
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
@@ -57,5 +57,6 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
     </div>
   );
 };
+
 
 export default Calendar;

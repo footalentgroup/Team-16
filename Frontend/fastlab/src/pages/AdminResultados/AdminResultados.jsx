@@ -10,7 +10,7 @@ import { setAllPacientes } from "../../features/pacientes/pacientesSlice";
 import { Progress } from "@/components/ui/progress";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import { ChevronLeft } from "lucide-react";
-import Avatar from "../../assets/ellipse.svg"; // Asegúrate de tener este asset si quieres mostrar el avatar
+import Avatar from "../../assets/ellipse.svg"; 
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -23,7 +23,8 @@ const AdminResultados = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Nuevo estado para manejar el paciente seleccionado (popup)
+  // Nuevo estado para manejar el paciente seleccionado 
+
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const token = useSelector((state) => state.user.token);
@@ -45,9 +46,8 @@ const AdminResultados = () => {
         if (response.ok) {
           const result = await response.json();
           setAllPatients(result.data || []);
-          setFilteredPatients(result.data || []); // Mostrar todos al inicio.
-          console.log(result);
-
+          setFilteredPatients(result.data || []); 
+    
           dispatch(setAllPacientes(result.data));
         } else {
           setError("Error al cargar los pacientes.");
@@ -63,7 +63,7 @@ const AdminResultados = () => {
     fetchPatients();
   }, [token, dispatch]);
 
-  // Nueva función para buscar por nombre/apellido.
+  // Función para buscar por nombre/apellido.
   const handleSearch = (query) => {
     const { fullname } = query;
 
@@ -117,7 +117,7 @@ const AdminResultados = () => {
             ) : error ? (
               <p className="text-red-500">{error}</p>
             ) : filteredPatients.length > 0 ? (
-              // Pasamos onSelectPatient al PatientList
+             
               <PatientList
                 patients={filteredPatients}
                 onSelectPatient={(patient) => setSelectedPatient(patient)}
@@ -127,15 +127,15 @@ const AdminResultados = () => {
             )}
           </div>
 
-          {/* Si existe un paciente seleccionado, mostramos el popup */}
+        
           {selectedPatient && (
             <>
-              {/* Fondo sombreado */}
+           
               <div
                 className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center"
                 onClick={() => setSelectedPatient(null)}
               />
-              {/* Pop-up centrado */}
+            
               <div className="fixed inset-0 flex items-center justify-center z-20">
                 <div className="bg-white shadow-lg p-6 rounded-md max-w-md w-full">
                   <div className="text-center">
@@ -164,8 +164,7 @@ const AdminResultados = () => {
                     <button
                       className="w-1/3 bg-teal-500 text-white py-2 rounded"
                       onClick={() => {
-                        // Aquí puedes navegar a donde necesites, 
-                        // o pasar el "selectedPatient" a otra ruta
+                     
                         navigate("/admin/resultados/carga-de-resultados/info-analisis", {
                           state: {
                             patientId: selectedPatient.id,
