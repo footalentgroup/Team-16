@@ -38,7 +38,7 @@ const LoginAdmin = () => {
 
             if (response.ok) {
                 const result = await response.json()
-                console.log('Login exitoso:', result.data)
+               
 
                 dispatch(
                     login({

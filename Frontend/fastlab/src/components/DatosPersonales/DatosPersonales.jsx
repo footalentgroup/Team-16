@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux"; // Importar useSelector
+import { useSelector } from "react-redux"; 
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,12 +18,12 @@ const DatosPersonales = () => {
     formState: { errors },
   } = useForm();
 
-  // Obtén los datos del usuario desde el store
+  
   const user = useSelector((state) => state.user);
-  console.log("Datos del usuario desde Redux:", user);
+  
 
   useEffect(() => {
-    // Rellenar el formulario con los datos del usuario desde Redux
+   
     if (user) {
       setValue("nombres", user.name || "");
       setValue("apellidos", user.lastName || "");
@@ -44,7 +44,6 @@ const DatosPersonales = () => {
       draggable: true,
       progress: undefined,
     });
-    console.log("Formulario enviado:", data);
 
   };
 
@@ -73,14 +72,14 @@ const DatosPersonales = () => {
               </p>
 
               <form onSubmit={handleSubmit(onSubmit)}>
-                {/* Nombres */}
+               
                 <LoginInput
                   label="Nombres"
                   id="nombres"
                   name="nombres"
                   placeholder="Ejemplo: Juan José"
                   register={register}
-                  defaultValue={user.name} // Agregar defaultValue por seguridad
+                  defaultValue={user.name} 
                   rules={{
                     required: "Este campo es obligatorio.",
                     minLength: {
@@ -97,7 +96,7 @@ const DatosPersonales = () => {
                   name="apellidos"
                   placeholder="Ejemplo: Campos Estrada"
                   register={register}
-                  defaultValue={user.lastName} // Agregar defaultValue por seguridad
+                  defaultValue={user.lastName} 
                   rules={{
                     required: "Este campo es obligatorio.",
                     minLength: {
@@ -111,7 +110,7 @@ const DatosPersonales = () => {
 
 
 
-                {/* Fecha de nacimiento */}
+             
                 <Calendario
                   control={control}
                   name="fechaNacimiento"

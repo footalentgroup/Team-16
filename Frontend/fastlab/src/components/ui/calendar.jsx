@@ -44,6 +44,7 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
         onChange={(date) => onChange(date)}
         onBlur={onBlur}
         minDate={minDate ? minDate : null}
+        maxDate={new Date()} // Limita la fecha máxima a la fecha actual
         dateFormat="dd/MM/yyyy"
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
@@ -57,5 +58,6 @@ const Calendar = ({ control, name, placeholder, label, labelClassName, minDate }
     </div>
   );
 };
+
 
 export default Calendar;

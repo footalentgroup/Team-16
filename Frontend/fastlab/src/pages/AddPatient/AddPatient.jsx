@@ -22,7 +22,7 @@ const AddPatient = () => {
     
   const onSubmit = (data) => {
     addOnePaciente(data)
-    console.log("Datos del formulario:", data);
+   
     navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis");
 
   };

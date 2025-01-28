@@ -36,8 +36,7 @@ const Parameters = () => {
       return;
     }
 
-    console.log("ID de la orden recibido:", state.reportId);
-    console.log("Exámenes seleccionados:", state.selectedExams);
+    
     const fetchParameters = async () => {
       try {
         const fetchedParameters = [];
@@ -91,7 +90,7 @@ const Parameters = () => {
       dateResult: new Date().toISOString(),
     }));
 
-    console.log("Cuerpo enviado al backend:", resultsToPost);
+   
 
     try {
       const response = await fetch(`${BACKEND_URL}/results/create-many`, {
@@ -108,7 +107,7 @@ const Parameters = () => {
         throw new Error("Error al enviar los resultados");
       }
 
-      console.log("Resultados enviados correctamente");
+     
       navigate("/admin/resultados", { state: { results: resultsToPost } });
     } catch (error) {
       console.error("Error al generar resultados:", error);

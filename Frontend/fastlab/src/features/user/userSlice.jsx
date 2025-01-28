@@ -3,10 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   id: null,
   name: '',
-  lastName: '', // Asegúrate de incluir este campo
+  lastName: '', 
   email: '',
   phone: '',
-  birth: '',  // Asegúrate de incluir este campo
+  birth: '',  
   token: null,
   isAuthenticated: false,
 };
@@ -19,9 +19,9 @@ const userSlice = createSlice({
       const { id, name, lastName, email, phone,birth, token } = action.payload;
       state.id = id;
       state.name = name;
-      state.lastName = lastName; // Guarda el apellido
+      state.lastName = lastName; 
       state.email = email;
-      state.phone = phone; // Guarda el teléfono
+      state.phone = phone; 
       state.birth = birth;
       state.token = token;
       state.isAuthenticated = true;
@@ -29,9 +29,9 @@ const userSlice = createSlice({
     logout: (state) => {
       state.id = null;
       state.name = '';
-      state.lastName = ''; // Guarda el apellido
+      state.lastName = ''; 
       state.email = '';
-      state.phone = ''; // Guarda el teléfono
+      state.phone = ''; 
       state.birth = '';
       state.token = '';
       state.isAuthenticated = false;
@@ -39,9 +39,9 @@ const userSlice = createSlice({
     updateData:(state, action)=>{
       const { firstName, lastName, birth, email, phone } = action.payload;
       state.name = firstName;
-      state.lastName = lastName; // Guarda el apellido
+      state.lastName = lastName; 
       state.email = email;
-      state.phone = phone; // Guarda el teléfono
+      state.phone = phone; 
       state.birth = birth;
     }
 

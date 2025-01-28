@@ -39,7 +39,8 @@ const PacienteInicio = () => {
     if (loading) {
         return <div className='text-center mt-10'>Cargando resultados...</div>
     }
-    console.log(data)
+    
+    
     return (
         <div className='relative h-screen bg-gray-50'>
             <div className='fixed top-0 left-0 min-w-[266px] h-full'>
