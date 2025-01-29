@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { ChevronRightIcon } from './icons';
+import { Link } from 'react-router-dom'
+import { ChevronRightIcon } from './icons'
 
 export default function Breadcrumb({ items = [] }) {
     return (
@@ -7,14 +7,11 @@ export default function Breadcrumb({ items = [] }) {
             {items.map((item, index) => (
                 <div key={index} className='flex items-center'>
                     {item.to ? (
-                        <Link
-                            to={item.to}
-                            className='hover:text-gray-700'
-                        >
+                        <Link to={item.to} className='hover:text-[#02807D]'>
                             {item.title}
                         </Link>
                     ) : (
-                        <span className='text-gray-700'>{item.title}</span>
+                        <span className='text-[#02807D]'>{item.title}</span>
                     )}
                     {index < items.length - 1 && (
                         <span className='mx-2'>
@@ -24,5 +21,5 @@ export default function Breadcrumb({ items = [] }) {
                 </div>
             ))}
         </div>
-    );
+    )
 }
