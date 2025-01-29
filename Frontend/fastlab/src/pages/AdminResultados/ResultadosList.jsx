@@ -37,7 +37,7 @@ const ResultadosList = () => {
   }
 
   return (
-    <div className="relative h-screen bg-gray-50">
+    <div className="relative h-screen bg-white">
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
@@ -63,12 +63,12 @@ const ResultadosList = () => {
                 <p className="text-gray-500">Actualmente no hay órdenes registradas en el sistema.</p>
               </div>
             ) : (
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
                 {adminOrders.map((order) => (
                   <AdminAnalisisCard
                     key={`order-${order.id}`}
                     title={`Orden N° ${order.id}`}
-                    type={`${order.patient.firstName} ${order.patient.lastName}`}
+                    type={`${order.patient?.firstName} ${order.patient?.lastName}`}
                     date={new Date(order.dateExam).toLocaleDateString("es-ES")}
                     id={order.id}
                   />

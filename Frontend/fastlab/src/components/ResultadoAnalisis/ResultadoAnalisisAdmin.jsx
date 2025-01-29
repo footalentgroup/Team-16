@@ -61,7 +61,7 @@ const ResultadoAnalisisAdmin = () => {
 
   return (
     <>
-    <div className="relative h-screen bg-gray-50">
+    <div className="relative h-screen bg-white">
       {/* Menú lateral del administrador */}
       <div className="fixed top-0 left-0 w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
