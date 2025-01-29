@@ -31,7 +31,7 @@ const PacienteInicio = () => {
       const sortedResults = results.data.sort(
         (a, b) => new Date(b.dateExam) - new Date(a.dateExam)
       );
-
+    console.log(results.data)
       setData(sortedResults);
     } catch (error) {
       console.error("Error al cargar los exámenes:", error);
@@ -50,9 +50,9 @@ const PacienteInicio = () => {
         <MenuLateral items={arrayItemsMenuPaciente} />
       </div>
       <div className="ml-[266px] overflow-y-auto h-full">
-      <section className="flex min-h-screen bg-gray-50">
-        <div className="flex-1">
-        <div className="flex-1 p-8">
+        <section className="flex min-h-screen bg-gray-50">
+          <div className="flex-1">
+            <div className="flex-1 p-8">
               <Breadcrumb
                 items={[
                   { title: "Paciente", to: "/" },
@@ -63,41 +63,42 @@ const PacienteInicio = () => {
                 Nuevos resultados
               </h1>
             </div>
-        {loading ? (
-          <div className="text-center mt-10">Cargando resultados...</div>
-        ) : data.length === 0 ? (
-          <header className="w-full h-40 flex flex-col justify-center items-center gap-3">
-            <h2 className="font-semibold text-2xl text-[#0E1B27]">
-              No hay resultados nuevos
-            </h2>
-            <p className="font-normal text-base text-[#737373]">
-              Actualmente no tienes ningún resultado asociado a esta cuenta
-            </p>
-          </header>
-        ) : (
-            
-          <div className="flex flex-col justify-center gap-6">
-            
-            <div className="flex justify-center ">
-                <div className="w-[70%] flex flex-col gap-y-6 ">
-                  {data.slice(0, 5).map((item) => (
-                    <AnalisisCard
-                      key={`new-results-${item.id}`}
-                      title={"Orden N° " + item.id}
-                      type={item.patient.firstName + " " + item.patient.lastName}
-                      date={new Date(item.dateExam).toLocaleDateString("es-ES")}
-                      id={item.id}
-                    />
-                  ))}
+            {loading ? (
+              <div className="text-center mt-10">Cargando resultados...</div>
+            ) : data.length === 0 ? (
+              <header className="w-full h-40 flex flex-col justify-center items-center gap-3">
+                <h2 className="font-semibold text-2xl text-[#0E1B27]">
+                  No hay resultados nuevos
+                </h2>
+                <p className="font-normal text-base text-[#737373]">
+                  Actualmente no tienes ningún resultado asociado a esta cuenta
+                </p>
+              </header>
+            ) : (
+              <div className="flex flex-col justify-center gap-6">
+                <div className="flex justify-center ">
+                  <div className="w-[70%] flex flex-col gap-y-6 ">
+                    {data.slice(0, 5).map((item) => (
+                      <AnalisisCard
+                        key={`new-results-${item.id}`}
+                        title={"Orden N° " + item.id}
+                        type={
+                          item.patient?.firstName + " " + item.patient?.lastName
+                        }
+                        date={new Date(item.dateExam).toLocaleDateString(
+                          "es-ES"
+                        )}
+                        id={item.id}
+                      />
+                    ))}
+                  </div>
                 </div>
-            </div>
+              </div>
+            )}
           </div>
-        )}
-        </div>
         </section>
       </div>
     </div>
-    
   );
 };
 

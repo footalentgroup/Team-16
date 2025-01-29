@@ -124,7 +124,7 @@ const Historial = () => {
                     key={`new-results-${item.id}`}
                     id={item.id}
                     title={"Orden N° " + item.id}
-                    type={item.patient.firstName + " " + item.patient.lastName}
+                    type={item.patient?.firstName + " " + item.patient?.lastName}
                     date={new Date(item.dateExam).toLocaleDateString("es-ES")}
                   />
                 ))}

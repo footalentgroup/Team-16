@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
-import { TestTubeIcon } from "../navigation/icons";
 import { ChevronRight } from "lucide-react";
 import iconResults from "../../assets/icon-results.png";
-export default function analisisCard({ id, title, type, date }) {
+export default function AnalisisCard({ id, title, type, date }) {
   return (
-    <div className="p-4 border rounded-lg bg-white hover:shadow-md transition-shadow">
-      <div className="flex items-start gap-4">
+    <Link
+          to={`/paciente/historial/${id}`}
+          className="  text-teal-600 hover:text-teal-700"
+        >
+    <div className="p-4 border rounded-lg bg-white hover:shadow-md transition-shadow cursor-pointer">
+      <div className="flex justify-center items-center gap-4">
         <div className="flex-shrink-0">
           <div className="w-10 h-10 overflow-hidden rounded-[50%]">
             <img
@@ -16,10 +19,11 @@ export default function analisisCard({ id, title, type, date }) {
           </div>
         </div>
         <div className="flex-grow">
+
           <h3 className="font-medium text-gray-900">{title}</h3>
-          <div className="flex justify-center">
+          <div className="flex justify-start items-center gap-4">
               <p className="text-sm text-gray-600">Paciente: {type}</p>
-              <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+              <div className="flex justify-center items-center gap-1 text-sm text-gray-500">
                 <svg
                   width="16"
                   height="16"
@@ -38,14 +42,14 @@ export default function analisisCard({ id, title, type, date }) {
               </div>
           </div>
         </div>
-        <Link
-          to={`/paciente/historial/${id}`}
-          className="flex items-center gap-2 px-3 py-1 text-sm text-teal-600 hover:text-teal-700"
-        >
-          Ver resultados
-          <ChevronRight size={16} color={"#02807D"} />
-        </Link>
+        
+          <div className="flex text-sm justify-center items-center">
+            Ver resultados
+            <ChevronRight size={16} color={"#02807D"} />
+          </div>
+        
       </div>
     </div>
+    </Link>
   );
 }
