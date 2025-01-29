@@ -52,6 +52,17 @@ const PacienteInicio = () => {
       <div className="ml-[266px] overflow-y-auto h-full">
       <section className="flex min-h-screen bg-gray-50">
         <div className="flex-1">
+        <div className="flex-1 p-8">
+              <Breadcrumb
+                items={[
+                  { title: "Paciente", to: "/" },
+                  { title: "Inicio", to: "/paciente/inicio" },
+                ]}
+              />
+              <h1 className="text-2xl font-semibold text-gray-900 ">
+                Nuevos resultados
+              </h1>
+            </div>
         {loading ? (
           <div className="text-center mt-10">Cargando resultados...</div>
         ) : data.length === 0 ? (
@@ -66,17 +77,7 @@ const PacienteInicio = () => {
         ) : (
             
           <div className="flex flex-col justify-center gap-6">
-            <div className="flex-1 p-8">
-              <Breadcrumb
-                items={[
-                  { title: "Paciente", to: "/" },
-                  { title: "Inicio", to: "/paciente/inicio" },
-                ]}
-              />
-              <h1 className="text-2xl font-semibold text-gray-900 ">
-                Nuevos resultados
-              </h1>
-            </div>
+            
             <div className="flex justify-center ">
                 <div className="w-[70%] flex flex-col gap-y-6 ">
                   {data.slice(0, 5).map((item) => (
