@@ -13,7 +13,6 @@ const accountItems = [{ title: 'Mi cuenta', href: '/admin/configuracion/mi-cuent
 const menuConfiguracion = () => {
     return (
         <>
-            {/* Main Content */}
             <main className='flex-1 p-8'>
                 <div className='mx-auto'>
                     <Breadcrumb items={[{ title: 'Admin', to: '/' }, { title: 'Configuración' }]} />

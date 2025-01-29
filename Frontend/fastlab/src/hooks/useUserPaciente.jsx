@@ -23,7 +23,6 @@ export const useUserPaciente = () => {
             "phone": user?.telefono
           }
         try {
-            console.log(JSON.stringify(dataUser))
             const response = await fetch(`${BACKEND_URL}/patient`, {
                 method: "PUT",
                 headers: config.headers,
@@ -33,16 +32,13 @@ export const useUserPaciente = () => {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log(result)
-                //Actualizar el store
+
                 dispatch(updateData(dataUser));
                 
             } else {
-                console.log("Error al actualizar el usuario.", response.json());
+
             }
         } catch (error) {
-            console.log("Error de conexión con el servidor.");
-            console.error(error);
         };
     };
 

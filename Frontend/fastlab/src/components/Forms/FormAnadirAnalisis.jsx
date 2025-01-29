@@ -31,7 +31,6 @@ function FormAnadirAnalisis() {
 
     const onSubmit = async data => {
         setIsFormSubmitted(true)
-        console.log(data)
 
         try {
             const response = await fetch(`${BACKEND_URL}/exams`, {

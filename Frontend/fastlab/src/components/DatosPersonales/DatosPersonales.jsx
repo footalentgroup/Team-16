@@ -58,7 +58,7 @@ const DatosPersonales = () => {
               {title: "Mis Datos"}
             ]} />
 
-          <h1 className="text-2xl font-bold text-gray-800 w-1/4 flex justify-center mt-14">
+          <h1 className="text-2xl font-bold text-gray-800 flex justify-center mt-14">
             Mis datos
           </h1>
 
@@ -123,7 +123,7 @@ const DatosPersonales = () => {
                   name="telefono"
                   placeholder="Ejemplo: +54 999 999 999"
                   register={register}
-                  defaultValue={user.phone || ""} // Asignar el valor desde Redux
+                  defaultValue={user.phone || ""}
                   rules={{
                     required: "Formato incorrecto.",
                     pattern: {
@@ -140,7 +140,7 @@ const DatosPersonales = () => {
                   name="email"
                   placeholder="Ejemplo: email@email.com"
                   register={register}
-                  defaultValue={user.email || ""} // Asignar el valor desde Redux
+                  defaultValue={user.email || ""}
                   rules={{
                     required: "Ingrese tu correo electrónico.",
                     pattern: {

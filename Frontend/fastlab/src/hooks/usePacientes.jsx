@@ -19,15 +19,11 @@ export const usePacientes = () => {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log(result.data)
 
                 dispatch(setAllPacientes(result.data));
             } else {
-                console.log("Error al cargar los pacientes.");
             }
         } catch (error) {
-            console.log("Error de conexión con el servidor.");
-            console.error(error);
         };
     }
     
@@ -59,7 +55,6 @@ export const usePacientes = () => {
             email: paciente?.email
         }
         try {
-            console.log(JSON.stringify(pacienteAEnviar))
             const response = await fetch(`${BACKEND_URL}/patient`, {
                 method: "POST",
                 headers: config.headers,
@@ -69,16 +64,12 @@ export const usePacientes = () => {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log(result)
                 pacienteAEnviar.id=result.data.personalID;
                 dispatch(addPaciente(pacienteAEnviar));
                 
             } else {
-                console.log("Error añadir el paciente.", response.json());
             }
         } catch (error) {
-            console.log("Error de conexión con el servidor.");
-            console.error(error);
         };
     };
 

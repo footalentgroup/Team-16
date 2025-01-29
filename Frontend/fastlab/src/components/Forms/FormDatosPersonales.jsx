@@ -37,8 +37,7 @@ function FormDatosPersonales() {
 
     const handleSubmit = e => {
         e.preventDefault()
-        if (validateForm()) {
-        }
+        if (validateForm()) {}
     }
 
     return (

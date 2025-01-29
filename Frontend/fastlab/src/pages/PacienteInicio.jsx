@@ -64,7 +64,7 @@ const PacienteInicio = () => {
                             <h1 className='text-2xl font-semibold text-gray-900 '>Nuevos resultados</h1>
                         </div>
 
-                        {data.slice(0, 3).map(item => (
+                        {data.slice(0, 5).map(item => (
                             <AnalisisCard
                                 key={`new-results-${item.id}`}
                                 title={'Orden N° ' + item.id}
