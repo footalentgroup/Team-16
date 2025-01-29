@@ -261,7 +261,7 @@ const CargaResultados = () => {
             <div className="flex justify-end w-full ml-20 mb-8">
               <button
                 type="submit"
-                className="bg-teal-500 text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
+                className="bg-[#02807D] text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
               >
                 Siguiente
                 <FaAngleRight className="ml-2" />
