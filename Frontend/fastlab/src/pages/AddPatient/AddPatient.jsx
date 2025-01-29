@@ -21,6 +21,7 @@ const AddPatient = () => {
     const navigate = useNavigate()
 
     const onSubmit = data => {
+        console.log(data)
         addOnePaciente(data)
 
         navigate('/admin/ingresar-orden/paciente-registrado/orden-de-analisis')
