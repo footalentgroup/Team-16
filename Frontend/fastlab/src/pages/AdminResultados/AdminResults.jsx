@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom' // Importación añadida
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
@@ -11,12 +10,12 @@ const AdminResults = () => {
     const navigate = useNavigate()
 
     return (
-        <div className='relative max-h-screen h-screen bg-gray-50'>
+        <div className='relative max-h-screen h-screen'>
             <div className='fixed top-0 left-0 min-w-[266px] h-full'>
                 <MenuLateral items={arrayItemsMenuAdmin} />
             </div>
 
-            <div className='ml-[266px] overflow-y-auto h-full'>
+            <div className='ml-[266px] overflow-y-auto h-full bg-white'>
                 <main className='flex-1 p-8'>
                     <div className='mx-auto'>
                         <Breadcrumb items={[{ title: 'Admin', to: '/admin/ingresar-orden' }, { title: 'Resultados' }]} />

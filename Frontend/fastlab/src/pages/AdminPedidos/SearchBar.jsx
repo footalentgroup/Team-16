@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }) => {
       <div className="flex items-center w-1/2 border rounded-md overflow-hidden">
         <input
           type="text"
-          placeholder="Buscar por nombre o apellido"
+          placeholder="Ingresa el nombre del paciente"
           value={fullname}
           onChange={(e) => setFullname(e.target.value)}
           className="flex-grow px-4 py-2 border-none outline-none"

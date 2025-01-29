@@ -115,21 +115,23 @@ const CargaResultados = () => {
   };
 
   return (
-    <div className="relative max-h-screen h-screen bg-gray-50">
+    <div className="relative max-h-screen h-screen bg-white">
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
 
-      <div className="bg-gray-50 ml-[266px] overflow-y-auto h-full">
-        <div className="my-4 mx-4">
-          <Breadcrumb
-            items={[
-              { title: "Admin", to: "/admin/ingresar-orden" },
-              { title: "Resultados", to: "/admin/resultados" },
-              { title: "Carga de resultados" },
-            ]}
-          />
-        </div>
+      <div className="ml-[266px] overflow-y-auto h-full bg-white">
+
+        <div className="flex-1 p-8">
+          <div className='mx-auto'>
+              
+              <Breadcrumb
+                items={[
+                  { title: "Admin", to: "/admin/ingresar-orden" },
+                  { title: "Resultados", to: "/admin/resultados" },
+                  { title: "Carga de resultados" },
+                ]}
+              />
 
         <div className="flex mb-4 items-center gap-1">
           <ChevronLeft size={18} />
@@ -294,6 +296,8 @@ const CargaResultados = () => {
           </form>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 };
