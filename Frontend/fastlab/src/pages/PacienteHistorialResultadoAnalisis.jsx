@@ -33,7 +33,7 @@ const PacienteHistorialResultadoAnalisis = () => {
                     <MenuLateral items={arrayItemsMenuPaciente} />
                 </div>
                 <div className='ml-[266px] overflow-y-auto'>
-                    <div className='flex bg-gray-50'>
+                    <div className='flex '>
                         <div className='flex-1 p-8'>
                             <Breadcrumb
                                 items={[{ title: 'Paciente', to: '/' }, { title: 'Mi Historial', to: '/paciente/historial' }, 

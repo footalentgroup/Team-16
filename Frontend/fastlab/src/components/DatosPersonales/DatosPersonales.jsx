@@ -49,7 +49,7 @@ const DatosPersonales = () => {
 
   return (
     <>
-      <section className="flex min-h-screen bg-gray-50">
+      <section className="flex min-h-screen ">
         <div className="flex-1 p-8">
           <ToastContainer />
           <Breadcrumb 
@@ -63,7 +63,7 @@ const DatosPersonales = () => {
           </h1>
 
           <div className="flex flex-col items-center justify-center mt-10">
-            <div className="w-full max-w-lg bg-gray-50">
+            <div className="w-full max-w-lg">
               <h1 className="text-lg font-bold text-gray-800 mb-4">
                 Datos Personales
               </h1>

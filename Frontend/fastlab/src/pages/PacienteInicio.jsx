@@ -50,7 +50,7 @@ const PacienteInicio = () => {
         <MenuLateral items={arrayItemsMenuPaciente} />
       </div>
       <div className="ml-[266px] overflow-y-auto h-full">
-        <section className="flex min-h-screen bg-gray-50">
+        <section className="flex min-h-screen">
           <div className="flex-1">
             <div className="flex-1 p-8">
               <Breadcrumb

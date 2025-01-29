@@ -60,7 +60,7 @@ const Historial = () => {
   }, []);
 
   return (
-    <div className="flex  min-h-screen bg-gray-50">
+    <div className="flex  min-h-screen ">
       <main className="flex-1 p-8">
         <Breadcrumb
           items={[{ title: "Paciente", to: "/" }, { title: "Mi Historial" }]}
