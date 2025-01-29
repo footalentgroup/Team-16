@@ -41,37 +41,42 @@ const ResultadosList = () => {
       <div className="fixed top-0 left-0 min-w-[266px] h-full">
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
-      <div className="ml-[266px] overflow-y-auto h-full p-6">
-        <Breadcrumb
-          items={[
-            { title: "Admin", to: "/admin" },
-            { title: "Resultados", to: "/admin/resultados" },
-          ]}
-        />
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-          Lista de Órdenes
-        </h1>
+      <div className="ml-[266px] overflow-y-auto h-full">
+        <main className="flex-1 p-8">
+          <div className='mx-auto'>
+            <Breadcrumb
+              items={[
+                { title: "Admin", to: "/admin" },
+                { title: "Resultados", to: "/admin/resultados" },
+                { title: "Lista de resultados" },
+              ]}
+            />
+            <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+              Lista de Resultados
+            </h1>
 
-        {adminOrders.length === 0 ? (
-          <div className="text-center">
-            <h2 className="font-semibold text-xl text-[#0E1B27]">
-              No hay órdenes disponibles
-            </h2>
-            <p className="text-gray-500">Actualmente no hay órdenes registradas en el sistema.</p>
+            {adminOrders.length === 0 ? (
+              <div className="text-center">
+                <h2 className="font-semibold text-xl text-[#0E1B27]">
+                  No hay órdenes disponibles
+                </h2>
+                <p className="text-gray-500">Actualmente no hay órdenes registradas en el sistema.</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6">
+                {adminOrders.map((order) => (
+                  <AdminAnalisisCard
+                    key={`order-${order.id}`}
+                    title={`Orden N° ${order.id}`}
+                    type={`${order.patient.firstName} ${order.patient.lastName}`}
+                    date={new Date(order.dateExam).toLocaleDateString("es-ES")}
+                    id={order.id}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            {adminOrders.map((order) => (
-              <AdminAnalisisCard
-                key={`order-${order.id}`}
-                title={`Orden N° ${order.id}`}
-                type={`${order.patient.firstName} ${order.patient.lastName}`}
-                date={new Date(order.dateExam).toLocaleDateString("es-ES")}
-                id={order.id}
-              />
-            ))}
-          </div>
-        )}
+        </main>
       </div>
     </div>
   );

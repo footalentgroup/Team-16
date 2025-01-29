@@ -31,6 +31,20 @@ const Calendario = ({ control, name, placeholder, label, labelClassName }) => {
     rules: { required: "Selecciona una opción." },
   });
 
+  const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
+  const locale = {
+    localize: {
+      day: n => days[n],
+      month: n => months[n]
+    },
+    formatLong: {
+      date: () => 'dd/MM/yyyy'
+    }
+  }
+
+
   return (
     <div className="mb-4">
       <label
@@ -44,6 +58,8 @@ const Calendario = ({ control, name, placeholder, label, labelClassName }) => {
         onChange={(date) => onChange(date)}
         onBlur={onBlur}
         dateFormat="dd/MM/yyyy"
+        maxDate={new Date()} 
+        locale={locale}
         placeholderText={placeholder || "Selecciona una opción"}
         customInput={
           <InputCalendar
