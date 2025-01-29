@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/navigation/breadcrumb'
 import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
 import { ChevronRight, SearchIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import iconResults from '../../assets/icon-results.png'
 const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const AdminConfiguracionAnalisis = () => {
@@ -112,7 +113,7 @@ const AdminConfiguracionAnalisis = () => {
                                         <div key={analisis.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
                                             <div className='flex justify-between items-center'>
                                                 <div className='flex align-middle'>
-                                                    <img src='/ellipse.png' alt='Icon' className='w-[40px] h-[40px] mr-[16px]' />
+                                                    <img src={iconResults} alt='Icon' className='w-[40px] h-[40px] mr-[16px]' />
                                                     <div>
                                                         <h3 className='font-semibold text-sm'>{analisis.name}</h3>
                                                         <div className='text-sm text-gray-600 space-x-4'>

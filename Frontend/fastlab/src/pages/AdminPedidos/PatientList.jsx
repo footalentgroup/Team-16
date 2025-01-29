@@ -1,5 +1,5 @@
-import React from "react";
 import Avatar from "../../assets/ellipse.svg";
+import { ChevronRight } from 'lucide-react';
 
 const PatientList = ({ patients, onSelectPatient }) => {
   const formatDate = (dateString) => {
@@ -13,7 +13,7 @@ const PatientList = ({ patients, onSelectPatient }) => {
   };
 
   return (
-    <div className="bg-white shadow rounded-md h-[70vh] overflow-y-scroll"> 
+    <div className="w-full bg-white shadow rounded-md h-[70vh] overflow-y-scroll"> 
       {patients.map((patient, index) => (
         <div
           key={patient.id}
@@ -35,10 +35,13 @@ const PatientList = ({ patients, onSelectPatient }) => {
             </div>
           </div>
           <button
-            className="text-teal-500 font-semibold hover:underline"
+            className="text-teal-500 text-sm w-1/6 flex justify-center items-center font-semibold
+             hover:underline"
             onClick={() => onSelectPatient(patient)}
           >
             Ver detalles
+            <ChevronRight size={16}  />
+
           </button>
         </div>
       ))}
