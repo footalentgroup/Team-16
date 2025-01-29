@@ -207,7 +207,7 @@ const AddAnalisis = () => {
                     control={control}
                     name="fechaReceta"
                     placeholder="Selecciona la fecha"
-                    minDate={new Date(state.patientBirth)}
+                    minDate={new Date(state?.patientBirth)}
                   />
                   {errors.fechaReceta && (
                     <p className="text-red-500 text-sm mt-1">

@@ -46,21 +46,22 @@ export const usePacientes = () => {
     
     const addOnePaciente = async (paciente) => {
         const pacienteAEnviar = {
-            firstname: paciente?.nombres,
-            lastname: paciente?.apellidos,
+            firstName: paciente?.nombres,
+            lastName: paciente?.apellidos,
             phone: paciente?.telefono,
             birth: paciente?.fechaNacimiento?.toISOString(),
             personalIDType: paciente?.tipoDocumento=='DNI'? 0:1,
             personalID: paciente?.documento, 
             email: paciente?.email
         }
+        console.log(pacienteAEnviar);
+        
         try {
             const response = await fetch(`${BACKEND_URL}/patient`, {
                 method: "POST",
                 headers: config.headers,
                 body: JSON.stringify(pacienteAEnviar),
-            }
-            );
+            });
 
             if (response.ok) {
                 const result = await response.json();
