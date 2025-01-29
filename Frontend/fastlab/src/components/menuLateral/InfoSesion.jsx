@@ -41,7 +41,7 @@ const InfoSesion = ({ nameUser, email, imgProfile ,lastName}) => {
     <div className="w-full cursor-pointer relative"         
     ref={toggleButtonRef} 
     onClick={handleToggle}>
-      <article className="flex justify-center items-center">
+      <article className="w-full flex justify-center items-center">
         <header className="w-5/6 flex justify-start items-center gap-3">
           <div className="w-[25px] h-[25px] overflow-hidden rounded-[50%] flex justify-center items-center">
             <img
@@ -50,7 +50,8 @@ const InfoSesion = ({ nameUser, email, imgProfile ,lastName}) => {
               alt="img profile"
             />
           </div>
-          <h2 className="text-[#0E1B27] font-medium text-[1rem]">{nameUser}</h2>
+          <h2 className="text-[#0E1B27] w-[135px]
+          break-words whitespace-normal font-medium text-[1rem]">{nameUser}</h2>
         </header>
         <ChevronsUpDown size={16} color={"#737373"} />
       </article>
