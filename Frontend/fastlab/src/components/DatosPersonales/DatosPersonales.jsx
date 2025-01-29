@@ -58,12 +58,12 @@ const DatosPersonales = () => {
               {title: "Mis Datos"}
             ]} />
 
-          <h1 className="text-2xl font-bold text-gray-800 flex justify-center mt-14">
+          <h1 className="text-2xl font-bold text-gray-800 ">
             Mis datos
           </h1>
 
-          <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className="w-full max-w-lg bg-gray-50 p-8">
+          <div className="flex flex-col items-center justify-center mt-10">
+            <div className="w-full max-w-lg bg-gray-50">
               <h1 className="text-lg font-bold text-gray-800 mb-4">
                 Datos Personales
               </h1>
