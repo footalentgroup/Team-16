@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import MenuLateral from '../components/menuLateral/MenuLateral'
-
 import arrayItemsMenuPaciente from '../utils/itemsMenuPaciente'
 import AnalisisCard from '../components/Cards/AnalisisCard'
 import { useSelector } from 'react-redux'
@@ -10,9 +9,10 @@ const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const PacienteInicio = () => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true) // Mantener el estado de carga como true al principio
 
     const user = useSelector(state => state.user)
+
     const fetchExams = async () => {
         try {
             const response = await fetch(`${BACKEND_URL}/results/orders/get-by-patient-id?id=${user.id}`, {
@@ -25,29 +25,30 @@ const PacienteInicio = () => {
 
             const results = await response.json()
 
-            setData(results.data)
+            // Ordena los resultados por la fecha del examen, de más nuevo a más antiguo
+            const sortedResults = results.data.sort((a, b) => new Date(b.dateExam) - new Date(a.dateExam))
+
+            setData(sortedResults)
         } catch (error) {
             console.error('Error al cargar los exámenes:', error)
         } finally {
-            setLoading(false)
+            setLoading(false) // Cambiar el estado a false cuando los resultados se hayan cargado
         }
     }
+
     useEffect(() => {
         fetchExams()
     }, [])
 
-    if (loading) {
-        return <div className='text-center mt-10'>Cargando resultados...</div>
-    }
-    
-    
     return (
         <div className='relative h-screen bg-gray-50'>
             <div className='fixed top-0 left-0 min-w-[266px] h-full'>
                 <MenuLateral items={arrayItemsMenuPaciente} />
             </div>
             <div className='ml-[266px] overflow-y-auto h-full p-6'>
-                {data.length == 0 ? (
+                {loading ? ( // Mostrar el mensaje de carga si loading es true
+                    <div className='text-center mt-10'>Cargando resultados...</div>
+                ) : data.length === 0 ? (
                     <header className='w-full h-40 flex flex-col justify-center items-center gap-3'>
                         <h2 className='font-semibold text-2xl text-[#0E1B27]'>No hay resultados nuevos</h2>
                         <p className='font-normal text-base text-[#737373]'>Actualmente no tienes ningún resultado asociado a esta cuenta</p>
