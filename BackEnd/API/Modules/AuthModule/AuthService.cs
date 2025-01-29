@@ -30,6 +30,7 @@ namespace API.Modules.AuthModule
 
             return ServiceResult<AuthAdminResponseDto>.SuccessResult(new AuthAdminResponseDto()
             {
+                Id =admin.Id,
                 Email = admin.Email,
                 LastName = admin.LastName,
                 FirstName = admin.Name,
