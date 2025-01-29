@@ -112,11 +112,24 @@ const AdminResultados = () => {
 
         <div className="mt-6 flex relative">
          
-
+          <div className="flex-1">
+            {loading ? (
+              <p className="text-gray-500">Cargando pacientes...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : filteredPatients.length > 0 ? (
+             
+              <PatientList
+                patients={filteredPatients}
+                onSelectPatient={(patient) => setSelectedPatient(patient)}
+              />
+            ) : (
+              <p className="text-gray-500">No se han encontrado pacientes.</p>
+            )}
+          </div>
         
           {selectedPatient && (
             <>
-           
               <div
                 className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center"
                 onClick={() => setSelectedPatient(null)}
