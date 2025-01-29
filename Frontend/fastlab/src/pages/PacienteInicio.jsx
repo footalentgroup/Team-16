@@ -9,7 +9,7 @@ const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const PacienteInicio = () => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(true) // Mantener el estado de carga como true al principio
+    const [loading, setLoading] = useState(true) 
 
     const user = useSelector(state => state.user)
 
@@ -25,14 +25,14 @@ const PacienteInicio = () => {
 
             const results = await response.json()
 
-            // Ordena los resultados por la fecha del examen, de más nuevo a más antiguo
+         
             const sortedResults = results.data.sort((a, b) => new Date(b.dateExam) - new Date(a.dateExam))
 
             setData(sortedResults)
         } catch (error) {
             console.error('Error al cargar los exámenes:', error)
         } finally {
-            setLoading(false) // Cambiar el estado a false cuando los resultados se hayan cargado
+            setLoading(false) 
         }
     }
 
@@ -46,7 +46,7 @@ const PacienteInicio = () => {
                 <MenuLateral items={arrayItemsMenuPaciente} />
             </div>
             <div className='ml-[266px] overflow-y-auto h-full p-6'>
-                {loading ? ( // Mostrar el mensaje de carga si loading es true
+                {loading ? ( 
                     <div className='text-center mt-10'>Cargando resultados...</div>
                 ) : data.length === 0 ? (
                     <header className='w-full h-40 flex flex-col justify-center items-center gap-3'>
