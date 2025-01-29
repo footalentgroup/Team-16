@@ -2,9 +2,7 @@ import { useNavigate } from 'react-router-dom' // Importación añadida
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
 import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
-import { Progress } from '@/components/ui/progress'
 
-import { usePacientes } from '../../hooks/usePacientes'
 
 const AdminResults = () => {
     const navigate = useNavigate()
@@ -19,7 +17,7 @@ const AdminResults = () => {
                 <main className='flex-1 p-8'>
                     <div className='mx-auto'>
                         <Breadcrumb items={[{ title: 'Admin', to: '/admin/ingresar-orden' }, { title: 'Resultados' }]} />
-                        <Progress className='[&>*]:bg-[#02807D] mb-6' value={66.6} />
+               
                         <h1 className='text-2xl text-center font-bold mb-8'>Resultados</h1>
 
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto'>

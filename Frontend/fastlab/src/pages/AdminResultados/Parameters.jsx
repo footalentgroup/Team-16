@@ -6,6 +6,8 @@ import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert.jsx";
+import { Terminal, Check } from "lucide-react";
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -15,31 +17,23 @@ const Parameters = () => {
 
   const [parameters, setParameters] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success"); // "success" o "error"
   const { state } = location;
 
   const unitOptions = [
-    "mm3",
-    "mg/dL",
-    "gr/dL",
-    "mm3",
-    "IU/L",
-    "fl",
-    "mmHg",
-    "mL/min",
-    "g/L",
-    "%",
+    "mm3", "mg/dL", "gr/dL", "mm3", "IU/L", "fl", "mmHg", "mL/min", "g/L", "%"
   ];
+
   useEffect(() => {
     if (!state?.reportId || !state?.selectedExams) {
       console.error("Falta el reportId o los exámenes seleccionados.");
       return;
     }
 
-    
     const fetchParameters = async () => {
       try {
         const fetchedParameters = [];
-
         for (const examId of state.selectedExams) {
           const response = await fetch(`${BACKEND_URL}/exams/${examId}`);
           if (!response.ok) {
@@ -59,7 +53,6 @@ const Parameters = () => {
             );
           }
         }
-
         setParameters(fetchedParameters);
       } catch (error) {
         console.error("Error al cargar los parámetros:", error);
@@ -89,8 +82,6 @@ const Parameters = () => {
       dateResult: new Date().toISOString(),
     }));
 
-   
-
     try {
       const response = await fetch(`${BACKEND_URL}/results/create-many`, {
         method: "POST",
@@ -106,22 +97,26 @@ const Parameters = () => {
         throw new Error("Error al enviar los resultados");
       }
 
-     
-      navigate("/admin/resultados", { state: { results: resultsToPost } });
+      // Mostrar la alerta de éxito
+      setAlertType("success");
+      setShowAlert(true);
+
+      // Esperar 2 segundos, luego navegar a la siguiente página
+      setTimeout(() => {
+        navigate("/admin/resultados/lista-de-resultados", { state: { results: resultsToPost } });
+      }, 4000);
+
     } catch (error) {
       console.error("Error al generar resultados:", error);
+      // Mostrar la alerta de error
+      setAlertType("error");
+      setShowAlert(true);
     }
   };
 
   const columns = [
-    {
-      accessorKey: "parameterName",
-      header: "Nombre del Parámetro",
-    },
-    {
-      accessorKey: "reference",
-      header: "Rango de Referencia",
-    },
+    { accessorKey: "parameterName", header: "Nombre del Parámetro" },
+    { accessorKey: "reference", header: "Rango de Referencia" },
     {
       accessorKey: "resultValue",
       header: "Resultado Obtenido",
@@ -168,11 +163,8 @@ const Parameters = () => {
           ]}
         />
 
-        <h1 className="text-2xl text-center font-bold mb-4">
-          Información de los Parámetros
-        </h1>
-
-        <Progress className="[&>*]:bg-[#02807D] mb-6" value={66} />
+        <h1 className="text-2xl text-center font-bold mb-4">Información de los Parámetros</h1>
+        <Progress className="[&>*]:bg-[#02807D] mb-6" value={100} />
 
         {loading ? (
           <div className="text-center">Cargando parámetros...</div>
@@ -182,12 +174,29 @@ const Parameters = () => {
 
         <div className="flex justify-end mt-6">
           <Button
-            className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600"
+            className="bg-[#02807D] text-white py-2 px-4 rounded-md hover:bg-teal-600"
             onClick={handleGenerateResults}
           >
             Generar Resultados
           </Button>
         </div>
+
+        {/* Alerta de éxito o fallo */}
+        {showAlert && (
+          <Alert className={`opacity-100 ${alertType === "success" ? "bg-[#02807D]" : "bg-red-500"}`}>
+            {alertType === "success" ? (
+              <Check className="h-4 w-4 text-white" />
+            ) : (
+              <Terminal className="h-4 w-4 text-white" />
+            )}
+            <div>
+              <AlertTitle>{alertType === "success" ? "Resultado cargado" : "Carga de resultados fallida."}</AlertTitle>
+              <AlertDescription>
+                {alertType === "success" ? "Se cargaron los resultados correctamente." : "Hubo un error en la carga de resultados, intenta nuevamente.  "}
+              </AlertDescription>
+            </div>
+          </Alert>
+        )}
       </div>
     </div>
   );
