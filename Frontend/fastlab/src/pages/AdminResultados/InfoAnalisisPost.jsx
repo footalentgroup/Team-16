@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronLeft } from "lucide-react";
 import { FancyMultiSelect } from "../../components/craft/fancy-multi-select";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; 
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const CargaResultados = () => {
   const { state } = useLocation();
@@ -27,7 +27,7 @@ const CargaResultados = () => {
   const [orderOptions, setOrderOptions] = useState([]);
   const [examOptions, setExamOptions] = useState([]);
   const [ordersData, setOrdersData] = useState([]);
-  const [allExams, setAllExams] = useState([]); 
+  const [allExams, setAllExams] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
 
   const estadoOptions = [
@@ -73,7 +73,7 @@ const CargaResultados = () => {
           throw new Error(`Error al obtener los exámenes: ${response.status}`);
         }
         const data = await response.json();
-        setAllExams(data); 
+        setAllExams(data);
       } catch (error) {
         console.error("Error al cargar los exámenes:", error);
       }
@@ -88,26 +88,24 @@ const CargaResultados = () => {
 
     if (selectedOrder) {
       const formattedExams = selectedOrder.examIds.map((exam) => ({
-        value: exam.id, 
-        label: exam.name, 
+        value: exam.id,
+        label: exam.name,
       }));
 
       setExamOptions(formattedExams);
-      setValue("examIds", formattedExams); 
+      setValue("examIds", formattedExams);
     } else {
       setExamOptions([]);
-      setValue("examIds", []); 
+      setValue("examIds", []);
     }
   };
 
   const onSubmit = (data) => {
-    const selectedExams = data.examIds.map((item) => item.value); 
+    const selectedExams = data.examIds.map((item) => item.value);
     const formDataWithExams = {
-      reportId: data.numeroOrden[0]?.value, 
-      selectedExams, 
+      reportId: data.numeroOrden[0]?.value,
+      selectedExams,
     };
-
-    
 
     navigate("/admin/resultados/carga-de-resultados/parametros", {
       state: formDataWithExams,
@@ -179,9 +177,7 @@ const CargaResultados = () => {
                         single
                       />
                       {error && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {error.message}
-                        </p>
+                        <p className="text-red-500 text-sm mt-1">{error.message}</p>
                       )}
                     </>
                   )}
@@ -196,17 +192,8 @@ const CargaResultados = () => {
               >
                 Fecha de la toma de muestra
               </label>
-              <Calendar
-                control={control}
-                name="fechaToma"
-                placeholder="Selecciona la fecha"
-                label="Fecha de la toma"
-              />
-              {errors.fechaToma && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.fechaToma.message}
-                </p>
-              )}
+              <Calendar control={control} name="fechaToma" placeholder="Selecciona la fecha" />
+           
             </div>
 
             <div>
@@ -216,17 +203,8 @@ const CargaResultados = () => {
               >
                 Fecha del análisis
               </label>
-              <Calendar
-                control={control}
-                name="fechaAnalisis"
-                placeholder="Selecciona la fecha"
-                label="Fecha del análisis"
-              />
-              {errors.fechaAnalisis && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.fechaAnalisis.message}
-                </p>
-              )}
+              <Calendar control={control} name="fechaAnalisis" placeholder="Selecciona la fecha" />
+             
             </div>
 
             <div>
@@ -276,16 +254,14 @@ const CargaResultados = () => {
                 ))}
               </select>
               {errors.estadoAnalisis && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.estadoAnalisis.message}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.estadoAnalisis.message}</p>
               )}
             </div>
 
             <div className="flex justify-end w-full ml-20 mb-8">
               <button
                 type="submit"
-                className="bg-teal-500 text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
+                className="bg-[#02807D] text-white mb-8 mt-10 py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center"
               >
                 Siguiente
                 <FaAngleRight className="ml-2" />
