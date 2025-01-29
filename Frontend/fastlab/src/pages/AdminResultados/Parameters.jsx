@@ -28,8 +28,7 @@ const Parameters = () => {
     "mL/min",
     "g/L",
     "%",
-  ]; // Opciones de unidades de medida
-
+  ];
   useEffect(() => {
     if (!state?.reportId || !state?.selectedExams) {
       console.error("Falta el reportId o los exámenes seleccionados.");

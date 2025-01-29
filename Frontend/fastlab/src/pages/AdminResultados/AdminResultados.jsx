@@ -10,7 +10,7 @@ import { setAllPacientes } from "../../features/pacientes/pacientesSlice";
 import { Progress } from "@/components/ui/progress";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import { ChevronLeft } from "lucide-react";
-import Avatar from "../../assets/ellipse.svg"; 
+import Avatar from "../../assets/ellipse.svg"; // Asegúrate de tener este asset si quieres mostrar el avatar
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -23,8 +23,7 @@ const AdminResultados = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Nuevo estado para manejar el paciente seleccionado 
-
+  // Nuevo estado para manejar el paciente seleccionado (popup)
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const token = useSelector((state) => state.user.token);
@@ -46,8 +45,9 @@ const AdminResultados = () => {
         if (response.ok) {
           const result = await response.json();
           setAllPatients(result.data || []);
-          setFilteredPatients(result.data || []); 
-    
+          setFilteredPatients(result.data || []); // Mostrar todos al inicio.
+          console.log(result);
+
           dispatch(setAllPacientes(result.data));
         } else {
           setError("Error al cargar los pacientes.");
@@ -63,7 +63,7 @@ const AdminResultados = () => {
     fetchPatients();
   }, [token, dispatch]);
 
-  // Función para buscar por nombre/apellido.
+  // Nueva función para buscar por nombre/apellido.
   const handleSearch = (query) => {
     const { fullname } = query;
 
@@ -111,7 +111,6 @@ const AdminResultados = () => {
         <SearchBar onSearch={handleSearch} />
 
         <div className="mt-6 flex relative">
-         
           <div className="flex-1">
             {loading ? (
               <p className="text-gray-500">Cargando pacientes...</p>
@@ -127,14 +126,16 @@ const AdminResultados = () => {
               <p className="text-gray-500">No se han encontrado pacientes.</p>
             )}
           </div>
-        
+
+         
           {selectedPatient && (
             <>
+            
               <div
                 className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center"
                 onClick={() => setSelectedPatient(null)}
               />
-            
+             
               <div className="fixed inset-0 flex items-center justify-center z-20">
                 <div className="bg-white shadow-lg p-6 rounded-md max-w-md w-full">
                   <div className="text-center">
@@ -163,7 +164,7 @@ const AdminResultados = () => {
                     <button
                       className="w-1/3 bg-teal-500 text-white py-2 rounded"
                       onClick={() => {
-                     
+                      
                         navigate("/admin/resultados/carga-de-resultados/info-analisis", {
                           state: {
                             patientId: selectedPatient.id,
