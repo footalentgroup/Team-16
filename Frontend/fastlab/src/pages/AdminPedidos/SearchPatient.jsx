@@ -12,7 +12,6 @@ import SearchBar from "./SearchBar";
 import PatientList from "./PatientList";
 import Avatar from "../../assets/ellipse.svg";
 
-// Asegúrate de tener esta variable definida en tu .env (VITE_API_URL)
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const SearchPatient = () => {
@@ -58,7 +57,6 @@ const SearchPatient = () => {
     fetchPatients();
   }, [token]);
 
-  // Lógica de búsqueda
   const handleSearch = (query) => {
     const { fullname } = query;
     if (!fullname) {
@@ -78,89 +76,86 @@ const SearchPatient = () => {
         <MenuLateral items={arrayItemsMenuAdmin} />
       </div>
 
-      <div className="ml-[266px] h-full p-6">
-        <Breadcrumb
-          items={[
-            { title: "Admin", to: "/admin/ingresar-orden" },
-            { title: "Pacientes", to: "/admin/ingresar-orden" },
-          ]}
-        />
-        <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3} />
+      <div className="ml-[266px] overflow-y-auto h-full">
+        <main className="flex-1 p-8">
+          <div className="mx-auto">
+            <Breadcrumb items={[{ title: "Admin", to: "/admin/ingresar-orden" }, { title: "Ingresar orden", to: "/admin/ingresar-orden" }, { title: "Paciente registrado"}]} />
+            <Progress className="[&>*]:bg-[#02807D] mb-6" value={33.3} />
 
-        <h1 className="text-2xl text-center font-bold mb-6">Buscar pacientes</h1>
+            <h1 className="text-2xl text-center font-bold mb-6">Buscar pacientes</h1>
 
-        <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} />
 
-        <div className="mt-6 flex relative">
-          <div className="flex-1">
-            {loading ? (
-              <p className="text-gray-500">Cargando pacientes...</p>
-            ) : error ? (
-              <p className="text-red-500">{error}</p>
-            ) : filteredPatients.length > 0 ? (
-              <PatientList
-                patients={filteredPatients}
-                onSelectPatient={(patient) => setSelectedPatient(patient)}
-              />
-            ) : (
-              <p className="text-gray-500">No se han encontrado pacientes.</p>
-            )}
-          </div>
-
-          {selectedPatient && (
-            <>
-              {/* Fondo sombreado */}
-              <div
-                className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center"
-                onClick={() => setSelectedPatient(null)}
-              />
-              {/* Pop-up centrado */}
-              <div className="fixed inset-0 flex items-center justify-center z-20">
-                <div className="bg-white shadow-lg p-6 rounded-md max-w-md w-full">
-                  <div className="text-center">
-                    <img
-                      src={Avatar}
-                      alt="Avatar"
-                      className="mx-auto w-24 h-24 rounded-full"
-                    />
-                    <h2 className="text-xl font-bold mt-4">
-                      {selectedPatient.firstName} {selectedPatient.lastName}
-                    </h2>
-                    <p className="text-gray-500">{selectedPatient.email}</p>
-                    <p className="text-gray-500">{selectedPatient.phone}</p>
-                    <p className="text-gray-500">
-                      Fecha de nacimiento:{" "}
-                      {new Date(selectedPatient.birth).toLocaleDateString("es-ES")}
-                    </p>
-                  </div>
-                  <div className="flex justify-between mt-6">
-                    <button
-                      className="w-1/3 bg-gray-500 text-white py-2 rounded"
-                      onClick={() => setSelectedPatient(null)}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      className="w-1/3 bg-teal-500 text-white py-2 rounded"
-                      onClick={() => {
-                        // Navegamos a AddAnalisis con el ID real del paciente
-                        navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis", {
-                          state: {
-                            patientId: selectedPatient.id,
-                            patientName: `${selectedPatient.firstName} ${selectedPatient.lastName}`,
-                            patientBirth: selectedPatient.birth,
-                          },
-                        });
-                      }}
-                    >
-                      Seleccionar
-                    </button>
-                  </div>
-                </div>
+            <div className="mt-6 flex relative">
+              <div className="flex-1">
+                {loading ? (
+                  <p className="text-gray-500">Cargando pacientes...</p>
+                ) : error ? (
+                  <p className="text-red-500">{error}</p>
+                ) : filteredPatients.length > 0 ? (
+                  <PatientList
+                    patients={filteredPatients}
+                    onSelectPatient={(patient) => setSelectedPatient(patient)}
+                  />
+                ) : (
+                  <p className="text-gray-500">No se han encontrado pacientes.</p>
+                )}
               </div>
-            </>
-          )}
-        </div>
+
+              {selectedPatient && (
+                <>
+                  <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center"
+                    onClick={() => setSelectedPatient(null)}
+                  />
+
+                  <div className="fixed inset-0 flex items-center justify-center z-20">
+                    <div className="bg-white shadow-lg p-6 rounded-md max-w-md w-full">
+                      <div className="text-center">
+                        <img
+                          src={Avatar}
+                          alt="Avatar"
+                          className="mx-auto w-24 h-24 rounded-full"
+                        />
+                        <h2 className="text-xl font-bold mt-4">
+                          {selectedPatient.firstName} {selectedPatient.lastName}
+                        </h2>
+                        <p className="text-gray-500">{selectedPatient.email}</p>
+                        <p className="text-gray-500">{selectedPatient.phone}</p>
+                        <p className="text-gray-500">
+                          Fecha de nacimiento:{" "}
+                          {new Date(selectedPatient.birth).toLocaleDateString("es-ES")}
+                        </p>
+                      </div>
+                      <div className="flex justify-between mt-6">
+                        <button
+                          className="w-1/3 bg-gray-500 text-white py-2 rounded"
+                          onClick={() => setSelectedPatient(null)}
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          className="w-1/3 bg-teal-500 text-white py-2 rounded"
+                          onClick={() => {
+                            navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis", {
+                              state: {
+                                patientId: selectedPatient.id,
+                                patientName: `${selectedPatient.firstName} ${selectedPatient.lastName}`,
+                                patientBirth: selectedPatient.birth,
+                              },
+                            });
+                          }}
+                        >
+                          Seleccionar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

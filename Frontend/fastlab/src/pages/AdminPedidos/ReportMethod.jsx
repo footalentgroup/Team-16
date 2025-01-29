@@ -1,149 +1,142 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import MenuLateral from "../../components/menuLateral/MenuLateral";
-import Breadcrumb from "../../components/navigation/breadcrumb";
-import arrayItemsMenuAdmin from "../../utils/itemsMenuAdmin";
-import { Button } from "@/components/ui/button";
-import { Check, Terminal } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import MenuLateral from '../../components/menuLateral/MenuLateral'
+import Breadcrumb from '../../components/navigation/breadcrumb'
+import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'
+import { Button } from '@/components/ui/button'
+import { Check, Terminal } from 'lucide-react'
+import { Progress } from '@/components/ui/progress'
 
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from "@/components/ui/alert";
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_API_URL
 
 const ReportMethod = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+    const location = useLocation()
+    const navigate = useNavigate()
 
-  const previousData = location.state || {};
+    const previousData = location.state || {}
 
-  const [selected, setSelected] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
+    const [selected, setSelected] = useState(null)
+    const [showAlert, setShowAlert] = useState(false)
 
-  const options = [
-    { id: 1, label: "Retiro en laboratorio" },
-    { id: 2, label: "Entrega a domicilio" },
-    { id: 3, label: "Enviar por correo" },
-  ];
+    const options = [
+        { id: 1, label: 'Retiro en laboratorio' },
+        { id: 2, label: 'Entrega a domicilio' },
+        { id: 3, label: 'Enviar por correo' },
+    ]
 
-  const handleEmitOrder = async () => {
-    if (!selected) {
-      alert("Debes seleccionar un método de entrega");
-      return;
+    const handleEmitOrder = async () => {
+        if (!selected) {
+            alert('Debes seleccionar un método de entrega')
+            return
+        }
+
+        const isoDate = previousData.fechaReceta ? new Date(previousData.fechaReceta).toISOString() : new Date().toISOString()
+
+        const payload = {
+            status: previousData.prioridad || 'PENDING',
+            dateExam: isoDate,
+            priority: previousData.prioridad || '',
+            observations: previousData.observaciones || '',
+            patientId: previousData.patientId || 0,
+            doctorId: previousData.doctorId || 0,
+            examIds: previousData.examIds || [],
+        }
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/results/orders/create`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            })
+
+            if (!response.ok) {
+                throw new Error(`Error al emitir la orden. Código: ${response.status}`)
+            }
+
+            const data = await response.json()
+
+            // 1) Mostrar alerta inmediatamente
+            setShowAlert(true)
+
+            // 2) Esperar 2 segundos, luego navegar a la siguiente página
+            setTimeout(() => {
+                navigate('/admin/ingresar-orden', { state: data })
+            }, 4000)
+        } catch (error) {
+            console.error('Error al emitir la orden:', error)
+            alert('Hubo un error al emitir la orden.')
+        }
     }
 
-  
+    return (
+        <div className='relative max-h-screen h-screen bg-gray-50'>
+            <div className='fixed top-0 left-0 min-w-[266px] h-full'>
+                <MenuLateral items={arrayItemsMenuAdmin} />
+            </div>
 
-    const isoDate = previousData.fechaReceta
-      ? new Date(previousData.fechaReceta).toISOString()
-      : new Date().toISOString();
+            <div className='ml-[266px] overflow-y-auto h-full'>
+                <main className='flex-1 p-8'>
+                    <div className='mx-auto'>
+                        <Breadcrumb
+                            items={[
+                                { title: 'Admin', to: '/admin/pedidos' },
+                                { title: 'Ingresar orden', to: '/admin/ingresar-orden' },
+                                { title: 'Orden de analisis', to: '/admin/ingresar-orden/paciente-registrado/orden-de-analisis' },
+                                { title: 'Método de envio' },
+                            ]}
+                        />
 
-    const payload = {
-      status: previousData.prioridad || "PENDING",
-      dateExam: isoDate,
-      priority: previousData.prioridad || "",
-      observations: previousData.observaciones || "",
-      patientId: previousData.patientId || 0,
-      doctorId: previousData.doctorId || 0,
-      examIds: previousData.examIds || [],
-    };
+                        <h1 className='text-2xl text-center font-bold mb-8'>Método de entrega</h1>
+                        <Progress className='[&>*]:bg-[#02807D] mb-6' value={100} />
 
+                        <div className='flex justify-center space-x-4 mb-8'>
+                            {options.map(option => (
+                                <Button
+                                    key={option.id}
+                                    variant={selected === option.id ? 'default' : 'outline'}
+                                    size='default'
+                                    className={`flex items-center ${
+                                        selected === option.id
+                                            ? 'bg-white text-[#02807D] border-[#02807D] hover:bg-[#02807D]/10'
+                                            : 'hover:bg-gray-500 hover:text-primary-foreground'
+                                    }`}
+                                    onClick={() => setSelected(option.id)}
+                                >
+                                    {selected === option.id && <Check className='mr-2 h-4 w-4' />}
+                                    {option.label}
+                                </Button>
+                            ))}
+                        </div>
 
-    try {
-      const response = await fetch(`${BACKEND_URL}/results/orders/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+                        <div className='flex justify-end'>
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                className='bg-[#02807D] text-white border-[#02807D] hover:bg-[#02807D]/10'
+                                onClick={handleEmitOrder}
+                            >
+                                Emitir orden
+                            </Button>
+                        </div>
 
-      if (!response.ok) {
-        throw new Error(`Error al emitir la orden. Código: ${response.status}`);
-      }
-
-      const data = await response.json();
-     
-
-      // 1) Mostrar alerta inmediatamente
-      setShowAlert(true);
-
-      // 2) Esperar 2 segundos, luego navegar a la siguiente página
-      setTimeout(() => {
-        navigate("/admin/ingresar-orden", { state: data });
-      }, 4000);
-
-    } catch (error) {
-      console.error("Error al emitir la orden:", error);
-      alert("Hubo un error al emitir la orden.");
-    }
-  };
-
-  return (
-    <div className="relative max-h-screen h-screen bg-gray-50">
-      <div className="fixed top-0 left-0 min-w-[266px] h-full">
-        <MenuLateral items={arrayItemsMenuAdmin} />
-      </div>
-
-      <div className="ml-[266px] h-full p-6">
-        <Breadcrumb
-          items={[
-            { title: "Admin", to: "/admin/pedidos" },
-            { title: "Ingresar orden", to: "/admin/ingresar-orden" },
-          ]}
-        />
-
-        <h1 className="text-2xl text-center font-bold mb-8">Método de entrega</h1>
-        <Progress className="[&>*]:bg-[#02807D] mb-6" value={100} />
-
-        <div className="flex justify-center space-x-4 mb-8">
-          {options.map((option) => (
-            <Button
-              key={option.id}
-              variant={selected === option.id ? "default" : "outline"}
-              size="default"
-              className={`flex items-center ${
-                selected === option.id
-                  ? "bg-white text-[#02807D] border-[#02807D] hover:bg-[#02807D]/10"
-                  : "hover:bg-gray-500 hover:text-primary-foreground"
-              }`}
-              onClick={() => setSelected(option.id)}
-            >
-              {selected === option.id && <Check className="mr-2 h-4 w-4" />}
-              {option.label}
-            </Button>
-          ))}
+                        {/* Alert sólo se muestra si showAlert === true */}
+                        {showAlert && (
+                            <Alert className='opacity-100'>
+                                <Terminal className='h-4 w-4 text-white' />
+                                <div>
+                                    <AlertTitle>Emisión completa</AlertTitle>
+                                    <AlertDescription>Tu orden se guardo.</AlertDescription>
+                                </div>
+                            </Alert>
+                        )}
+                    </div>
+                </main>
+            </div>
         </div>
+    )
+}
 
-        <div className="flex justify-end">
-          <Button
-            variant="outline"
-            size="sm"
-            className="bg-[#02807D] text-white border-[#02807D] hover:bg-[#02807D]/10"
-            onClick={handleEmitOrder}
-          >
-            Emitir orden
-          </Button>
-        </div>
-
-        {/* Alert sólo se muestra si showAlert === true */}
-        {showAlert && (
-          <Alert className="opacity-100">
-      <Terminal className="h-4 w-4 text-white" />
-      <div>
-        <AlertTitle>Emisión completa</AlertTitle>
-        <AlertDescription>
-          Tu orden se guardo.
-        </AlertDescription>
-      </div>
-    </Alert>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default ReportMethod;
+export default ReportMethod
