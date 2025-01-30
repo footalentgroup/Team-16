@@ -10,7 +10,7 @@ import { setAllPacientes } from "../../features/pacientes/pacientesSlice";
 import { Progress } from "@/components/ui/progress";
 import Breadcrumb from "../../components/navigation/breadcrumb";
 import { ChevronLeft } from "lucide-react";
-import Avatar from "../../assets/ellipse.svg"; // Asegúrate de tener este asset si quieres mostrar el avatar
+import Avatar from "../../assets/ellipse.svg"; 
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -23,7 +23,6 @@ const AdminResultados = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Nuevo estado para manejar el paciente seleccionado (popup)
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const token = useSelector((state) => state.user.token);
@@ -45,7 +44,7 @@ const AdminResultados = () => {
         if (response.ok) {
           const result = await response.json();
           setAllPatients(result.data || []);
-          setFilteredPatients(result.data || []); // Mostrar todos al inicio.
+          setFilteredPatients(result.data || []); 
           console.log(result);
 
           dispatch(setAllPacientes(result.data));
@@ -63,7 +62,6 @@ const AdminResultados = () => {
     fetchPatients();
   }, [token, dispatch]);
 
-  // Nueva función para buscar por nombre/apellido.
   const handleSearch = (query) => {
     const { fullname } = query;
 

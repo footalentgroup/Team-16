@@ -1,27 +1,24 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import iconResults from "../../assets/icon-results.png";
+
 export default function AnalisisCard({ id, title, type, date }) {
   return (
-    <Link
-          to={`/paciente/historial/${id}`}
-          className="  text-teal-600 hover:text-teal-700"
-        >
-    <div className="p-4 border rounded-lg bg-white hover:shadow-md transition-shadow cursor-pointer">
-      <div className="flex justify-center items-center gap-4">
-        <div className="flex-shrink-0">
-          <div className="w-10 h-10 overflow-hidden rounded-[50%]">
-            <img
-              className="w-full h-full object-cover object-center"
-              src={iconResults}
-              alt="icon de resultados"
-            />
+    <Link to={`/paciente/historial/${id}`} className="text-teal-600 hover:text-teal-700">
+      <div className="p-4 border rounded-lg bg-white hover:shadow-md transition-shadow cursor-pointer">
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex-shrink-0">
+            <div className="w-10 h-10 overflow-hidden rounded-[50%]">
+              <img
+                className="w-full h-full object-cover object-center"
+                src={iconResults}
+                alt="icon de resultados"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex-grow">
-
-          <h3 className="font-medium text-gray-900">{title}</h3>
-          <div className="flex justify-start items-center gap-4">
+          <div className="flex-grow">
+            <h3 className="font-medium text-gray-900">{title}</h3>
+            <div className="flex justify-start items-center gap-4">
               <p className="text-sm text-gray-600">Paciente: {type}</p>
               <div className="flex justify-center items-center gap-1 text-sm text-gray-500">
                 <svg
@@ -40,16 +37,14 @@ export default function AnalisisCard({ id, title, type, date }) {
                 </svg>
                 <span>Ingresado {date}</span>
               </div>
+            </div>
           </div>
-        </div>
-        
-          <div className="flex text-sm justify-center items-center">
-            Ver resultados
+          <div className="flex items-center justify-start text-sm gap-2">
+            <span>Ver resultados</span>
             <ChevronRight size={16} color={"#02807D"} />
           </div>
-        
+        </div>
       </div>
-    </div>
     </Link>
   );
 }

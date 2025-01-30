@@ -6,10 +6,10 @@ import arrayItemsMenuPaciente from '../utils/itemsMenuPaciente'
 import { useParams } from 'react-router-dom';
 
 const PacienteHistorialResultadoAnalisis = () => {
-    const [patientName] = useState('Juan González Martínez') // Sacar del state
+    const [patientName] = useState('Juan González Martínez') 
     const { id } = useParams();
 
-    // Array of result data
+  
     const resultData = [
         { label: 'GLUCEMIA:', value: '69 mg/dl', reference: '70 - 110 mg/dl' },
         { label: 'HDL COLESTEROL:', value: '34 mg/dl', reference: 'mayor 35 mg/dl' },

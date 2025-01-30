@@ -58,13 +58,12 @@ const ReportMethod = () => {
 
             const data = await response.json()
 
-            // 1) Mostrar alerta inmediatamente
+           
             setShowAlert(true)
 
-            // 2) Esperar 2 segundos, luego navegar a la siguiente página
             setTimeout(() => {
                 navigate('/admin/ingresar-orden', { state: data })
-            }, 4000)
+            }, 2000)
         } catch (error) {
             console.error('Error al emitir la orden:', error)
             alert('Hubo un error al emitir la orden.')
@@ -122,7 +121,6 @@ const ReportMethod = () => {
                             </Button>
                         </div>
 
-                        {/* Alert sólo se muestra si showAlert === true */}
                         {showAlert && (
                             <Alert className='opacity-100'>
                                 <Terminal className='h-4 w-4 text-white' />

@@ -18,7 +18,7 @@ const Parameters = () => {
   const [parameters, setParameters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState("success"); // "success" o "error"
+  const [alertType, setAlertType] = useState("success"); 
   const { state } = location;
 
   const unitOptions = [
@@ -73,7 +73,7 @@ const Parameters = () => {
   };
 
   const handleGenerateResults = async () => {
-    const reportId = state.reportId; // ID de la orden
+    const reportId = state.reportId; 
     const resultsToPost = parameters.map((param) => ({
       parameterId: param.parameterId,
       reportId: reportId,
@@ -97,18 +97,18 @@ const Parameters = () => {
         throw new Error("Error al enviar los resultados");
       }
 
-      // Mostrar la alerta de éxito
+     
       setAlertType("success");
       setShowAlert(true);
 
-      // Esperar 2 segundos, luego navegar a la siguiente página
+      
       setTimeout(() => {
         navigate("/admin/resultados/lista-de-resultados", { state: { results: resultsToPost } });
-      }, 4000);
+      }, 2000);
 
     } catch (error) {
       console.error("Error al generar resultados:", error);
-      // Mostrar la alerta de error
+   
       setAlertType("error");
       setShowAlert(true);
     }

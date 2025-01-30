@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom' // Importación añadida
+import { useNavigate } from 'react-router-dom' 
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
 import arrayItemsMenuAdmin from '../../utils/itemsMenuAdmin'

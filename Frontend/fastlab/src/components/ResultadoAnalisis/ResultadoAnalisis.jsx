@@ -4,6 +4,7 @@ import { pdf } from '@react-pdf/renderer';
 import MenuLateral from '../../components/menuLateral/MenuLateral';
 import arrayItemsMenuPaciente from '../../utils/itemsMenuPaciente';
 import { PDFTemplate } from './pdfTemplate';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'; // Importar alert
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +12,7 @@ const ResultadoAnalisis = () => {
   const { id } = useParams();
   const [examen, setExamen] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState(false); // Estado para la alerta
 
   useEffect(() => {
     const fetchExamen = async () => {
@@ -45,6 +47,14 @@ const ResultadoAnalisis = () => {
     link.download = `examen_${id}.pdf`;
     link.click();
     URL.revokeObjectURL(url);
+
+    // Mostrar alerta después de descargar el PDF
+    setShowAlert(true);
+
+    // Ocultar la alerta después de 2 segundos
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
   };
 
   if (loading) {
@@ -64,17 +74,27 @@ const ResultadoAnalisis = () => {
 
       {/* Contenido principal */}
       <div className="flex-1 p-6">
-        {/* Botón para descargar PDF */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={generatePDF}
-            className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
-          >
-            Descargar PDF
-          </button>
-        </div>
+        {/* Mostrar alerta solo si se activó */}
+        {showAlert && (
+          <Alert className="opacity-100 mb-4">
+            <div>
+              <AlertTitle>¡Éxito!</AlertTitle>
+              <AlertDescription>El PDF se ha descargado correctamente.</AlertDescription>
+            </div>
+          </Alert>
+        )}
 
         <div className="bg-white p-6 rounded-lg shadow-md mt-6 max-w-4xl mx-auto">
+          {/* Botón para descargar PDF alineado a la derecha */}
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={generatePDF}
+              className="px-4 py-2 bg-[#02807D] text-white rounded-md hover:bg-gray-500"
+            >
+              Descargar
+            </button>
+          </div>
+
           {/* Encabezado */}
           <div className="text-center mb-6">
             <h2 className="text-lg font-bold">Mariano Boedo 23 - Tel.(0387)-4215440 - 4400 Salta</h2>

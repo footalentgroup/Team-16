@@ -9,6 +9,64 @@ const Historial = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const searchInputRef = useRef();
+  const token = useSelector((state) => state.user.token);
+  const user = useSelector((state) => state.user);
+
+  
+  const getOrderDetails = async (orderId) => {
+    const response = await fetch(
+      `${BACKEND_URL}/results/orders/get-by-id?id=${orderId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const orderData = await response.json();
+      return orderData.data; 
+    } else {
+      console.error("Error al obtener los detalles de la orden.");
+      return null;
+    }
+  };
+
+
+  const getResults = async () => {
+    const response = await fetch(
+      `${BACKEND_URL}/results/orders/get-by-patient-id?id=${user.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const result = await response.json();
+      const ordersWithPatientDetails = await Promise.all(
+        result.data.map(async (order) => {
+          
+          const orderDetails = await getOrderDetails(order.id);
+          return orderDetails;
+        })
+      );
+      setItems(ordersWithPatientDetails); 
+      setFilteredItems(ordersWithPatientDetails);
+    } else {
+      console.error("Error al obtener los resultados.");
+    }
+  };
+
+  useEffect(() => {
+    getResults();
+  }, []);
+
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -25,51 +83,22 @@ const Historial = () => {
     }
   };
 
+
   const handleClear = () => {
     searchInputRef.current.value = "";
     setFilteredItems(items);
   };
 
-  const token = useSelector((state) => state.user.token);
-
-  const getResults = async () => {
-    const response = await fetch(
-      `${BACKEND_URL}/results/orders/get-by-patient-id?id=${user.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (response.ok) {
-      const result = await response.json();
-      setItems(result.data);
-      setFilteredItems(result.data);
-    } else {
-      console.error("Error al obtener los resultados.");
-    }
-  };
-
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    getResults();
-  }, []);
-
   return (
-    <div className="flex  min-h-screen ">
+    <div className="flex min-h-screen">
       <main className="flex-1 p-8">
         <Breadcrumb
           items={[{ title: "Paciente", to: "/" }, { title: "Mi Historial" }]}
         />
-        <h1 className="text-2xl  font-semibold text-gray-900 mb-6">
+        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
           Mi historial de resultados
         </h1>
-        <div className="flex justify-center  mb-8">
-          {/* <SearchBar onSearch={handleSearch} /> */}
+        <div className="flex justify-center mb-8">
           <form onSubmit={handleSearch} className="relative">
             <input
               type="text"
@@ -113,21 +142,26 @@ const Historial = () => {
                 Resultados para "{searchInputRef.current.value}"
               </h2>
             ) : (
-              <h2 className="text-2xl text-center font-semibold  my-10 text-gray-900">
+              <h2 className="text-2xl text-center font-semibold my-10 text-gray-900">
                 Resultados encontrados
               </h2>
             )}
             <div className="flex justify-center">
-              <div className="w-[70%] flex flex-col gap-y-6 ">
-                {filteredItems.map((item) => (
-                  <AnalisisCard
-                    key={`new-results-${item.id}`}
-                    id={item.id}
-                    title={"Orden N° " + item.id}
-                    type={item.patient?.firstName + " " + item.patient?.lastName}
-                    date={new Date(item.dateExam).toLocaleDateString("es-ES")}
-                  />
-                ))}
+              <div className="w-[70%] flex flex-col gap-y-6">
+                {filteredItems.map((item) => {
+                  const patientName = item.patient
+                    ? `${item.patient.firstName} ${item.patient.lastName}`
+                    : "Paciente no encontrado"; 
+                  return (
+                    <AnalisisCard
+                      key={`new-results-${item.id}`}
+                      id={item.id}
+                      title={`Orden N° ${item.id}`}
+                      type={patientName}
+                      date={new Date(item.dateExam).toLocaleDateString("es-ES")}
+                    />
+                  );
+                })}
               </div>
             </div>
           </div>
