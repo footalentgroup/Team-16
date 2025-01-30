@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
@@ -15,8 +15,11 @@ const AddPatient = () => {
         register,
         handleSubmit,
         control,
+        watch,
         formState: { errors },
     } = useForm()
+
+    const tipoDocumento = watch('tipoDocumento')
 
     const navigate = useNavigate()
 
@@ -105,7 +108,7 @@ const AddPatient = () => {
 
                                         <Calendario control={control} name='fechaNacimiento' placeholder='Selecciona la fecha de nacimiento' />
 
-                                        <div>
+                                        <div className='mb-4'>
                                             <label htmlFor='tipoDocumento' className='block text-sm font-medium text-[#0E1B27]'>
                                                 Tipo de documento
                                             </label>
