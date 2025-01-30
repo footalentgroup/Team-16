@@ -153,9 +153,9 @@ const AdminConfiguracionAnalisis = () => {
                           </div>
                         </div>
                        
-                          <div className="w-[200px] flex justify-center items-center">
+                          <div className="w-[200px] flex justify-center items-center hover:underline">
                               <p>Ver detalles </p>
-                              <ChevronRight size={16} />
+                              <ChevronRight size={16} /> 
                           </div>
                       </div>
                       </Link>
