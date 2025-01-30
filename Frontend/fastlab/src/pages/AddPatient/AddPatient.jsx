@@ -116,9 +116,9 @@ const AddPatient = () => {
                                                     required: 'Seleccione un tipo de documento.',
                                                 })}
                                             >
-                                                <option value=''>Seleccionar tipo de documento</option>
-                                                <option value='DNI'>DNI</option>
-                                                <option value='Pasaporte'>Pasaporte</option>
+                                                <option disabled selected>Seleccionar tipo de documento</option>
+                                                <option value='0'>DNI</option>
+                                                <option value='1'>Pasaporte</option>
                                             </select>
                                             {errors.tipoDocumento && <p className='text-red-500 text-sm mt-1'>{errors.tipoDocumento.message}</p>}
                                         </div>
@@ -132,8 +132,11 @@ const AddPatient = () => {
                                             rules={{
                                                 required: 'Este campo es obligatorio.',
                                                 pattern: {
-                                                    value: /^\d{7,10}$/,
-                                                    message: 'Ingrese un número de documento válido.',
+                                                    value: tipoDocumento === '1' ? /^[A-Z]{3}\d{6}$/ : /^\d{8}$/,
+                                                    message:
+                                                        tipoDocumento === '1'
+                                                            ? 'Formato: 3 letras seguidas de 6 números (ej. AAF532592)'
+                                                            : 'Formato: 8 dígitos (ej. 12345678)',
                                                 },
                                             }}
                                             error={errors.documento}

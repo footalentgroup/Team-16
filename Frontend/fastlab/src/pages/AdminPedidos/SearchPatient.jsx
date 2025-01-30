@@ -127,15 +127,15 @@ const SearchPatient = () => {
                           {new Date(selectedPatient.birth).toLocaleDateString("es-ES")}
                         </p>
                       </div>
-                      <div className="flex justify-between mt-6">
+                      <div className="flex justify-around mt-6">
                         <button
-                          className="w-1/3 bg-gray-500 text-white py-2 rounded"
+                          className="w-1/3 border-1 border text-[#0E1B27] border-[#D4D4D4]  py-2 rounded hover:text-[#02807D]"
                           onClick={() => setSelectedPatient(null)}
                         >
                           Cancelar
                         </button>
                         <button
-                          className="w-1/3 bg-teal-500 text-white py-2 rounded"
+                          className="w-1/3 bg-[#02807D] hover:bg-[#049B97] text-white py-2 rounded"
                           onClick={() => {
                             navigate("/admin/ingresar-orden/paciente-registrado/orden-de-analisis", {
                               state: {
