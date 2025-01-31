@@ -37,9 +37,9 @@ const userSlice = createSlice({
             state.isAuthenticated = false
         },
         updateData: (state, action) => {
-            const { id, name, lastName, email } = action.payload
+            const { id, firstName, lastName, email } = action.payload
             state.id = id
-            state.name = name
+            state.name = firstName
             state.lastName = lastName
             state.email = email
         },
