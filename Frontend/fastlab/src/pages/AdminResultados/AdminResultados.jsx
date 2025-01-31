@@ -127,7 +127,7 @@ const AdminResultados = () => {
                         type='text'
                         onChange={handleSearch}
                         ref={searchInputRef}
-                        placeholder='Buscar análisis'
+                        placeholder='Buscar el nombre del paciente'
                         className='w-full px-4 py-2 border rounded-lg pr-20 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
                     />
                     {searchInputRef.current && searchInputRef.current.value && (
