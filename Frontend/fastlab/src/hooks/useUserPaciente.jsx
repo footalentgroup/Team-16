@@ -17,7 +17,7 @@ export const useUserPaciente = () => {
         const dataUser = {
             "id": id,
             "firstName": user?.nombres,
-            "lastName": user.apellidos,
+            "lastName": user?.apellidos,
             "birth": user?.fechaNacimiento.toISOString(),
             "email": user?.email,
             "phone": user?.telefono

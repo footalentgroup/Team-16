@@ -81,7 +81,7 @@ function FormDatosDoctor({ doctor }) {
                                 placeholder='Ejemplo: Juan José'
                                 disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                {...register('name', { required: 'Este campo es requerido', pattern: { value: /^[A-Za-z\s]+$/, message: 'El nombre solo puede contener letras y espacios.' } })}
+                                {...register('name', { required: 'Este campo es requerido', pattern: { value:  /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ , message: 'El nombre solo puede contener letras y espacios.' } })}
                             />
                             {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name.message}</p>}
                         </div>
@@ -97,7 +97,7 @@ function FormDatosDoctor({ doctor }) {
                                 placeholder='Ejemplo: Campos Estrada'
                                 disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                {...register('lastname', { required: 'Este campo es requerido', pattern: { value: /^[A-Za-z\s]+$/, message: 'El apellido solo puede contener letras y espacios.' } })}
+                                {...register('lastname', { required: 'Este campo es requerido', pattern: { value:  /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ , message: 'El apellido solo puede contener letras y espacios.' } })}
                             />
                             {errors.lastname && <p className='text-red-500 text-sm mt-1'>{errors.lastname.message}</p>}
                         </div>

@@ -56,8 +56,13 @@ function FormDatosPersonales() {
                 })
 
                 console.log(result)
-
-                dispatch(updateData(result))
+                const userAdminUpdated={
+                    email: result?.email,
+                    id: user?.id,
+                    firstName: result?.name,
+                    lastName: result?.lastName
+                }
+                dispatch(updateData(userAdminUpdated))
 
                 setTimeout(() => {
                     navigate('/admin/configuracion')
@@ -102,7 +107,7 @@ function FormDatosPersonales() {
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
                                 {...register('nombre', {
                                     required: 'Este campo es requerido',
-                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'El nombre solo puede contener letras y espacios.' },
+                                    pattern: { value:  /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ , message: 'El nombre solo puede contener letras y espacios.' },
                                 })}
                             />
                             {errors.nombre && <p className='text-red-500 text-sm mt-1'>{errors.nombre.message}</p>}
@@ -121,7 +126,7 @@ function FormDatosPersonales() {
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
                                 {...register('apellido', {
                                     required: 'Este campo es requerido',
-                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'El apellido solo puede contener letras y espacios.' },
+                                    pattern: { value:  /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ , message: 'El apellido solo puede contener letras y espacios.' },
                                 })}
                             />
                             {errors.apellido && <p className='text-red-500 text-sm mt-1'>{errors.apellido.message}</p>}
