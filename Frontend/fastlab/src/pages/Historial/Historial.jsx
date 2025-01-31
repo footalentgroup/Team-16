@@ -12,6 +12,26 @@ const Historial = () => {
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchQuery = searchInputRef.current.value;
+
+    if (searchQuery === "") {
+      setFilteredItems(items);
+    } else {
+      const filtered = items.filter((item) => {
+        const fullData = `${item.patient.firstName} ${item.patient.lastName} ${item.id} ${item.status} ${new Date(item.dateExam).toLocaleDateString('es-ES')}`;
+        return fullData.toLowerCase().includes(searchQuery.toLowerCase());
+      });
+      setFilteredItems(filtered);
+    }
+  };
+
+  const handleClear = () => {
+    searchInputRef.current.value = "";
+    setFilteredItems(items);
+  }
+
   
   const getOrderDetails = async (orderId) => {
     const response = await fetch(
@@ -26,7 +46,7 @@ const Historial = () => {
     );
 
     if (response.ok) {
-      const orderData = await response.json();
+      const orderData = await response.json();      
       return orderData.data; 
     } else {
       console.error("Error al obtener los detalles de la orden.");
@@ -66,28 +86,6 @@ const Historial = () => {
   useEffect(() => {
     getResults();
   }, []);
-
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const searchQuery = searchInputRef.current.value;
-
-    if (searchQuery === "") {
-      setFilteredItems(items);
-    } else {
-      const filtered = items.filter((item) => {
-        const fullData = `${item.patient.firstName} ${item.patient.lastName} ${item.id} ${item.status}`;
-        return fullData.toLowerCase().includes(searchQuery.toLowerCase());
-      });
-      setFilteredItems(filtered);
-    }
-  };
-
-
-  const handleClear = () => {
-    searchInputRef.current.value = "";
-    setFilteredItems(items);
-  };
 
   return (
     <div className="flex min-h-screen">
