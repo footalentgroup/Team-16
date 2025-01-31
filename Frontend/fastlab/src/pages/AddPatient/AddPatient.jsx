@@ -17,7 +17,7 @@ const AddPatient = () => {
         control,
         watch,
         formState: { errors },
-    } = useForm()
+    } = useForm({mode: 'onBlur'})
 
     const tipoDocumento = watch('tipoDocumento')
 
@@ -66,6 +66,10 @@ const AddPatient = () => {
                                             register={register}
                                             rules={{
                                                 required: 'Este campo es obligatorio.',
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: 'El nombre solo puede contener letras y espacios.',
+                                                },
                                                 minLength: {
                                                     value: 2,
                                                     message: 'El nombre debe tener al menos 2 caracteres.',
@@ -86,6 +90,10 @@ const AddPatient = () => {
                                                     value: 2,
                                                     message: 'El apellido debe tener al menos 2 caracteres.',
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: 'El apellido solo puede contener letras y espacios.',
+                                                }
                                             }}
                                             error={errors.apellidos}
                                         />
@@ -154,7 +162,7 @@ const AddPatient = () => {
                                             rules={{
                                                 required: 'Este campo es obligatorio.',
                                                 pattern: {
-                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
                                                     message: 'Ingrese un correo válido.',
                                                 },
                                             }}

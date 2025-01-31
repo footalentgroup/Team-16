@@ -41,7 +41,7 @@ const LoginAdmin = () => {
 
                 dispatch(
                     login({
-                        id: '',
+                        id: result.data.id,
                         phone: '',
                         birth: '',
                         name: result.data.firstName,

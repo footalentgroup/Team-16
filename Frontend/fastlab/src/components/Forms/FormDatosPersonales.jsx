@@ -1,48 +1,89 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import { updateData } from '../../features/user/userSlice'
+const BACKEND_URL = import.meta.env.VITE_API_URL
 
 function FormDatosPersonales() {
     const user = useSelector(state => state.user)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        watch,
+    } = useForm({ mode: 'onBlur' })
 
-    const [formData, setFormData] = useState({
-        nombre: user.name,
-        apellido: user.lastName,
-        telefono: user.phone,
-        email: user.email,
-        password: '',
-        confirmPassword: '',
-    })
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const [errors, setErrors] = useState({})
+    const [isFormSubmitted, setisFormSubmitted] = useState(false)
 
-    const handleChange = e => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
+    useEffect(() => {
+        setValue('nombre', user?.name || '')
+        setValue('apellido', user?.lastName || '')
+        setValue('telefono', user?.phone || '')
+        setValue('email', user?.email || '')
+    }, [user])
 
-    const validateForm = () => {
-        const newErrors = {}
-        if (!formData.nombre.trim()) newErrors.nombre = 'El nombre es requerido.'
-        if (!formData.apellido.trim()) newErrors.apellido = 'El apellido es requerido.'
-        if (!/^\+?\d{10,15}$/.test(formData.telefono)) newErrors.telefono = 'El teléfono debe tener un formato válido.'
-        if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'El correo electrónico no es válido.'
-        if (formData.password.length < 8) newErrors.password = 'La contraseña debe tener al menos 8 caracteres.'
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden.'
+    const password = watch('password')
+    const confirmPassword = watch('confirmPassword')
 
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
-    }
+    const onSubmit = async data => {
+        setisFormSubmitted(true)
+        try {
+            const response = await fetch(`${BACKEND_URL}/admin`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: user?.id || '',
+                    name: data.nombre,
+                    lastName: data.apellido,
+                    email: data.email,
+                    password: data.password,
+                }),
+            })
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        if (validateForm()) {}
+            const result = await response.json()
+
+            if (response.ok) {
+                toast.success('Se actualizaron los datos correctamente', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                })
+
+                console.log(result)
+
+                dispatch(updateData(result))
+
+                setTimeout(() => {
+                    navigate('/admin/configuracion')
+                }, 3000)
+            } else {
+                toast.error(`${result.message}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            }
+        } catch (error) {
+            toast.error(error.message)
+        } finally {
+            setisFormSubmitted(false)
+        }
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit} className='space-y-8'>
+            <ToastContainer />
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-8'>
                 <section>
                     <h2 className='text-lg font-medium mb-2'>Datos personales</h2>
                     <p className='text-sm text-gray-600 mb-6'>Puedes ver tus datos y modificar los que creas necesarios</p>
@@ -57,10 +98,14 @@ function FormDatosPersonales() {
                                 id='nombre'
                                 name='nombre'
                                 placeholder='Ejemplo: Juan José'
+                                disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.nombre}
-                                onChange={e => setFormData({ ...formData, nombre: e.target.value })}
+                                {...register('nombre', {
+                                    required: 'Este campo es requerido',
+                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'El nombre solo puede contener letras y espacios.' },
+                                })}
                             />
+                            {errors.nombre && <p className='text-red-500 text-sm mt-1'>{errors.nombre.message}</p>}
                         </div>
 
                         <div>
@@ -72,25 +117,14 @@ function FormDatosPersonales() {
                                 id='apellido'
                                 name='apellido'
                                 placeholder='Ejemplo: Campos Estrada'
+                                disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.apellido}
-                                onChange={e => setFormData({ ...formData, apellido: e.target.value })}
+                                {...register('apellido', {
+                                    required: 'Este campo es requerido',
+                                    pattern: { value: /^[A-Za-z\s]+$/, message: 'El apellido solo puede contener letras y espacios.' },
+                                })}
                             />
-                        </div>
-
-                        <div>
-                            <label htmlFor='telefono' className='block text-sm font-medium text-gray-700 mb-1'>
-                                Teléfono
-                            </label>
-                            <input
-                                type='tel'
-                                id='telefono'
-                                name='telefono'
-                                placeholder='Ejemplo: +54 999 999 999'
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.telefono}
-                                onChange={e => setFormData({ ...formData, telefono: e.target.value })}
-                            />
+                            {errors.apellido && <p className='text-red-500 text-sm mt-1'>{errors.apellido.message}</p>}
                         </div>
 
                         <div>
@@ -102,21 +136,68 @@ function FormDatosPersonales() {
                                 id='correo'
                                 name='correo'
                                 placeholder='Ejemplo: email@email.com'
+                                disabled={isFormSubmitted}
                                 className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
-                                value={formData.email}
-                                onChange={e => setFormData({ ...formData, correo: e.target.value })}
+                                {...register('email', {
+                                    required: 'Este campo es requerido',
+                                    pattern: { value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, message: 'Ingrese un correo válido.' },
+                                })}
                             />
+                            {errors.email && <p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor='password' className='block text-sm font-medium text-gray-700 mb-1'>
+                                Contraseña
+                            </label>
+                            <input
+                                type='password'
+                                id='password'
+                                name='password'
+                                placeholder='Contraseña'
+                                disabled={isFormSubmitted}
+                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
+                                {...register('password', {
+                                    required: 'Este campo es requerido',
+                                    minLength: { value: 8, message: 'La contraseña debe tener mínimo 8 caracteres.' },
+                                })}
+                            />
+                            {errors.password && <p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor='password2' className='block text-sm font-medium text-gray-700 mb-1'>
+                                Confirmar contraseña
+                            </label>
+                            <input
+                                type='password'
+                                id='password2'
+                                name='password2'
+                                placeholder='Confirmar contraseña'
+                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent'
+                                disabled={isFormSubmitted}
+                                {...register('confirmPassword', {
+                                    required: 'Este campo es requerido',
+                                    validate: value => {
+                                        if (password !== value) {
+                                            return 'Las contraseñas no coinciden'
+                                        }
+                                    },
+                                })}
+                            />
+                            {errors.confirmPassword && <p className='text-red-500 text-sm mt-1'>{errors.confirmPassword.message}</p>}
                         </div>
                     </div>
                 </section>
 
                 <div>
-                    {/* <button
+                    <button
                         type='submit'
                         className='px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
+                        disabled={isFormSubmitted}
                     >
                         Guardar
-                    </button> */}
+                    </button>
                 </div>
             </form>
         </>
