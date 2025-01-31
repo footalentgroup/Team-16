@@ -34,7 +34,6 @@ const DatosPersonales = () => {
   }, [user, setValue]);
 
   const onSubmit = (data) => {
-    console.log(data);
     updateUser(data);
     toast.success("Se actualizaron los datos correctamente", {
       position: "top-right",

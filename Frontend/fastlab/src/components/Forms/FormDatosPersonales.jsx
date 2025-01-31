@@ -55,7 +55,6 @@ function FormDatosPersonales() {
                     hideProgressBar: false,
                 })
 
-                console.log(result)
                 const userAdminUpdated={
                     email: result?.email,
                     id: user?.id,

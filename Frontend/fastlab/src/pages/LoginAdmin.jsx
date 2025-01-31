@@ -62,8 +62,11 @@ const LoginAdmin = () => {
                 })
             }
         } catch (error) {
-            console.error('Error de conexión:', error)
-            alert('Error de conexión con el servidor.')
+            toast.error(`${error.message}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+            })
         } finally {
             setIsFormSubmitted(false)
         }

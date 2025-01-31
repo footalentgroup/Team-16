@@ -54,7 +54,6 @@ export const usePacientes = () => {
             personalID: paciente?.documento, 
             email: paciente?.email
         }
-        console.log(pacienteAEnviar);
         
         try {
             const response = await fetch(`${BACKEND_URL}/patient`, {

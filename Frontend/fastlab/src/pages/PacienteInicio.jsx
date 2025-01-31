@@ -31,7 +31,6 @@ const PacienteInicio = () => {
       const sortedResults = results.data.sort(
         (a, b) => new Date(b.dateExam) - new Date(a.dateExam)
       );
-    console.log(results.data)
       setData(sortedResults);
     } catch (error) {
       console.error("Error al cargar los exámenes:", error);

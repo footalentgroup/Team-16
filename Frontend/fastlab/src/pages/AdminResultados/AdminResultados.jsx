@@ -65,7 +65,6 @@ const AdminResultados = () => {
                     const result = await response.json()
                     setAllPatients(result.data || [])
                     setFilteredPatients(result.data || [])
-                    console.log(result)
 
                     dispatch(setAllPacientes(result.data))
                 } else {
