@@ -107,28 +107,29 @@ const AdminConfiguracionDoctores = () => {
                                     <div className='mb-4 text-sm text-gray-600'>Resultados para "{searchInputRef.current.value}":</div>
                                 )}
 
-                                <div className='rounded-md border overflow-hidden'>
+                                <div className='rounded-md border overflow-hidden flex flex-col'>
                                     {filteredDoctors.length > 0 ? (
                                         filteredDoctors.map(doctor => (
-                                            <div key={doctor.id} className='odd:bg-white even:bg-[rgba(249, 250, 251, 1)] p-4'>
-                                                <div className='flex justify-between items-center'>
+                                            <Link
+                                                to={`/admin/configuracion/doctores/${doctor.id}`}
+                                                key={doctor.id}
+                                                className='odd:bg-white even:bg-[#F9FAFB]'
+                                            >
+                                                <div className='flex justify-between items-center p-4'>
                                                     <div className='space-y-2'>
                                                         <h3 className='font-semibold text-sm'>
                                                             {doctor.name} {doctor.lastName}
                                                         </h3>
                                                         <div className='text-sm text-gray-600 space-x-4'>
-                                                            <span>{doctor.title}</span>
+                                                            {/* <span>{doctor.title}</span> */}
                                                             <span>Matricula: {doctor.registration}</span>
                                                         </div>
                                                     </div>
-                                                    <Link
-                                                        to={`/admin/configuracion/doctores/${doctor.id}`}
-                                                        className='text-teal-600 inline-flex hover:text-teal-800'
-                                                    >
+                                                    <p className='text-teal-600 inline-flex hover:text-teal-800'>
                                                         Ver detalles <ChevronRight />
-                                                    </Link>
+                                                    </p>
                                                 </div>
-                                            </div>
+                                            </Link>
                                         ))
                                     ) : (
                                         <div className='p-4 text-sm text-gray-500'>No se encontraron resultados.</div>

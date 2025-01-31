@@ -127,7 +127,8 @@ const CargaResultados = () => {
                 items={[
                   { title: "Admin", to: "/admin/ingresar-orden" },
                   { title: "Resultados", to: "/admin/resultados" },
-                  { title: "Carga de resultados" },
+                  { title: "Carga de resultados", to: "/admin/resultados/carga-de-resultados" },
+                  { title: "Información de análisis" },
                 ]}
               />
 
