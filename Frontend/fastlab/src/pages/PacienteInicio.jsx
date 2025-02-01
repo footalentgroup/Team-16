@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import MenuLateral from "../components/menuLateral/MenuLateral";
 import arrayItemsMenuPaciente from "../utils/itemsMenuPaciente";
 import AnalisisCard from "../components/Cards/AnalisisCard";
@@ -10,12 +10,11 @@ const BACKEND_URL = import.meta.env.VITE_API_URL;
 const PacienteInicio = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const searchInputRef = useRef();
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
 
- 
   const getOrderDetails = async (orderId) => {
     const response = await fetch(
       `${BACKEND_URL}/results/orders/get-by-id?id=${orderId}`,
@@ -30,15 +29,14 @@ const PacienteInicio = () => {
 
     if (response.ok) {
       const orderData = await response.json();
-      return orderData.data; 
+      return orderData.data;
     } else {
-     
       return null;
     }
   };
 
   const getResults = async () => {
-    setLoading(true); 
+    setLoading(true);
 
     const response = await fetch(
       `${BACKEND_URL}/results/orders/get-by-patient-id?id=${user.id}`,
@@ -55,18 +53,24 @@ const PacienteInicio = () => {
       const result = await response.json();
       const ordersWithPatientDetails = await Promise.all(
         result.data.map(async (order) => {
-         
           const orderDetails = await getOrderDetails(order.id);
-          return orderDetails; 
+          return orderDetails;
         })
       );
-      setItems(ordersWithPatientDetails); 
-      setFilteredItems(ordersWithPatientDetails); 
+
+      
+      const sortedOrders = ordersWithPatientDetails.sort(
+        (a, b) => new Date(b.dateExam) - new Date(a.dateExam)
+      );
+
+      // Solo mostrar la última orden
+      setItems([sortedOrders[0]]);
+      setFilteredItems([sortedOrders[0]]);
     } else {
-  
+      console.error("Error al obtener los resultados.");
     }
 
-    setLoading(false); 
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -75,7 +79,7 @@ const PacienteInicio = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const searchQuery = searchInputRef.current?.value || ""; 
+    const searchQuery = searchInputRef.current?.value || "";
 
     if (searchQuery === "") {
       setFilteredItems(items);
@@ -88,10 +92,9 @@ const PacienteInicio = () => {
     }
   };
 
-
   const handleClear = () => {
     if (searchInputRef.current) {
-      searchInputRef.current.value = ""; 
+      searchInputRef.current.value = "";
     }
     setFilteredItems(items);
   };
@@ -108,14 +111,12 @@ const PacienteInicio = () => {
               <Breadcrumb
                 items={[{ title: "Paciente", to: "/" }, { title: "Inicio", to: "/paciente/inicio" }]}
               />
-              <h1 className="text-2xl font-semibold text-gray-900 ">Nuevos resultados</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 ">Últimos resultados</h1>
             </div>
 
-            {loading ? ( 
+            {loading ? (
               <div className="text-center py-12">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Cargando resultados...
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">Cargando resultados...</h2>
               </div>
             ) : filteredItems.length > 0 ? (
               <div>
@@ -125,13 +126,13 @@ const PacienteInicio = () => {
                       const patientName =
                         item.patient && item.patient.firstName && item.patient.lastName
                           ? `${item.patient.firstName} ${item.patient.lastName}`
-                          : "Paciente no encontrado"; 
+                          : "Paciente no encontrado";
                       return (
                         <AnalisisCard
                           key={`new-results-${item.id}`}
                           id={item.id}
                           title={`Orden N° ${item.id}`}
-                          type={patientName} 
+                          type={patientName}
                           date={new Date(item.dateExam).toLocaleDateString("es-ES")}
                         />
                       );
@@ -141,9 +142,7 @@ const PacienteInicio = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  No se han encontrado resultados
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">No se han encontrado resultados</h2>
                 <p className="text-gray-500">
                   Parece que no podemos encontrar ningún resultado basado en su búsqueda.
                 </p>
