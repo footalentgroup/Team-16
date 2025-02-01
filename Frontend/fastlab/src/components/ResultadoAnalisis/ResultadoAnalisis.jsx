@@ -29,7 +29,7 @@ const ResultadoAnalisis = () => {
         const data = await response.json();
         setExamen(data.data);
       } catch (error) {
-        console.error('Error al cargar el examen:', error);
+       
       } finally {
         setLoading(false);
       }
