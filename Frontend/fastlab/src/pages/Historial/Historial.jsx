@@ -89,9 +89,9 @@ const Historial = () => {
   }, []);
 
   return (
-    <div className="relative h-screen bg-white">
+   
      
-      
+    
         <section className="flex min-h-screen">
           <div className="flex-1">
             <div className="flex-1 p-8">
@@ -189,7 +189,7 @@ const Historial = () => {
           </div>
         </section>
       
-    </div>
+
   );
 };
 
