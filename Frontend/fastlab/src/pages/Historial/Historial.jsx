@@ -8,6 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_API_URL;
 const Historial = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const searchInputRef = useRef();
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
@@ -54,7 +55,6 @@ const Historial = () => {
     }
   };
 
-
   const getResults = async () => {
     const response = await fetch(
       `${BACKEND_URL}/results/orders/get-by-patient-id?id=${user.id}`,
@@ -71,21 +71,48 @@ const Historial = () => {
       const result = await response.json();
       const ordersWithPatientDetails = await Promise.all(
         result.data.map(async (order) => {
-          
+       
           const orderDetails = await getOrderDetails(order.id);
-          return orderDetails;
+          return orderDetails; 
         })
       );
       setItems(ordersWithPatientDetails); 
-      setFilteredItems(ordersWithPatientDetails);
+      setFilteredItems(ordersWithPatientDetails); 
     } else {
       console.error("Error al obtener los resultados.");
     }
+
+    setLoading(false); 
   };
 
   useEffect(() => {
     getResults();
   }, []);
+
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchQuery = searchInputRef.current?.value || ""; 
+
+    if (searchQuery === "") {
+      setFilteredItems(items);
+    } else {
+      const filtered = items.filter((item) => {
+        const fullData = `${item.patient.firstName} ${item.patient.lastName} ${item.id} ${item.status}`;
+        return fullData.toLowerCase().includes(searchQuery.toLowerCase());
+      });
+      setFilteredItems(filtered);
+    }
+  };
+
+  
+  const handleClear = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.value = ""; 
+    }
+    setFilteredItems(items);
+  };
+
 
   return (
     <div className="flex min-h-screen">
@@ -103,8 +130,9 @@ const Historial = () => {
               ref={searchInputRef}
               onChange={handleSearch}
               placeholder="Buscar orden"
-              className="w-full px-4 py-2 border rounded-lg pr-20 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              className="w-[500px] px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             />
+
             {searchInputRef.current && searchInputRef.current.value && (
               <button
                 type="button"
@@ -126,36 +154,35 @@ const Historial = () => {
             )}
             <button
               type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-teal-600 rounded-lg text-white"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-teal-600 rounded text-white"
             >
               <SearchIcon />
             </button>
           </form>
         </div>
 
-        {filteredItems.length > 0 ? (
+        {/* Carga de resultados */}
+        {loading ? (
+          <div className="text-center py-12">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Cargando resultados...
+            </h2>
+          </div>
+        ) : filteredItems.length > 0 ? (
           <div>
-            {searchInputRef.current.value ? (
-              <h2 className="text-2xl text-center font-semibold my-10 text-gray-900">
-                Resultados para "{searchInputRef.current.value}"
-              </h2>
-            ) : (
-              <h2 className="text-2xl text-center font-semibold my-10 text-gray-900">
-                Resultados encontrados
-              </h2>
-            )}
             <div className="flex justify-center">
               <div className="w-[70%] flex flex-col gap-y-6">
                 {filteredItems.map((item) => {
-                  const patientName = item.patient
-                    ? `${item.patient.firstName} ${item.patient.lastName}`
-                    : "Paciente no encontrado"; 
+                  const patientName =
+                    item.patient && item.patient.firstName && item.patient.lastName
+                      ? `${item.patient.firstName} ${item.patient.lastName}`
+                      : "Paciente no encontrado"; 
                   return (
                     <AnalisisCard
                       key={`new-results-${item.id}`}
                       id={item.id}
                       title={`Orden N° ${item.id}`}
-                      type={patientName}
+                      type={patientName} 
                       date={new Date(item.dateExam).toLocaleDateString("es-ES")}
                     />
                   );
@@ -169,8 +196,7 @@ const Historial = () => {
               No se han encontrado resultados
             </h2>
             <p className="text-gray-500">
-              Parece que no podemos encontrar ningún resultado basado en su
-              búsqueda.
+              Parece que no podemos encontrar ningún resultado basado en su búsqueda.
             </p>
           </div>
         )}
