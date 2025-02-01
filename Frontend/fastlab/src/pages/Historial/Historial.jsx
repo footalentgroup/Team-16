@@ -8,7 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_API_URL;
 const Historial = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const searchInputRef = useRef();
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
@@ -33,7 +33,7 @@ const Historial = () => {
     setFilteredItems(items);
   }
 
-  
+
   const getOrderDetails = async (orderId) => {
     const response = await fetch(
       `${BACKEND_URL}/results/orders/get-by-id?id=${orderId}`,
@@ -47,8 +47,8 @@ const Historial = () => {
     );
 
     if (response.ok) {
-      const orderData = await response.json();      
-      return orderData.data; 
+      const orderData = await response.json();
+      return orderData.data;
     } else {
       console.error("Error al obtener los detalles de la orden.");
       return null;
@@ -71,18 +71,18 @@ const Historial = () => {
       const result = await response.json();
       const ordersWithPatientDetails = await Promise.all(
         result.data.map(async (order) => {
-       
+
           const orderDetails = await getOrderDetails(order.id);
-          return orderDetails; 
+          return orderDetails;
         })
       );
-      setItems(ordersWithPatientDetails); 
-      setFilteredItems(ordersWithPatientDetails); 
+      setItems(ordersWithPatientDetails);
+      setFilteredItems(ordersWithPatientDetails);
     } else {
       console.error("Error al obtener los resultados.");
     }
 
-    setLoading(false); 
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -90,28 +90,6 @@ const Historial = () => {
   }, []);
 
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const searchQuery = searchInputRef.current?.value || ""; 
-
-    if (searchQuery === "") {
-      setFilteredItems(items);
-    } else {
-      const filtered = items.filter((item) => {
-        const fullData = `${item.patient.firstName} ${item.patient.lastName} ${item.id} ${item.status}`;
-        return fullData.toLowerCase().includes(searchQuery.toLowerCase());
-      });
-      setFilteredItems(filtered);
-    }
-  };
-
-  
-  const handleClear = () => {
-    if (searchInputRef.current) {
-      searchInputRef.current.value = ""; 
-    }
-    setFilteredItems(items);
-  };
 
 
   return (
@@ -172,17 +150,22 @@ const Historial = () => {
           <div>
             <div className="flex justify-center">
               <div className="w-[70%] flex flex-col gap-y-6">
+                <div className="flex justify-center">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                   Resultados encontrados
+                  </h2>
+                </div>
                 {filteredItems.map((item) => {
                   const patientName =
                     item.patient && item.patient.firstName && item.patient.lastName
                       ? `${item.patient.firstName} ${item.patient.lastName}`
-                      : "Paciente no encontrado"; 
+                      : "Paciente no encontrado";
                   return (
                     <AnalisisCard
                       key={`new-results-${item.id}`}
                       id={item.id}
                       title={`Orden N° ${item.id}`}
-                      type={patientName} 
+                      type={patientName}
                       date={new Date(item.dateExam).toLocaleDateString("es-ES")}
                     />
                   );
