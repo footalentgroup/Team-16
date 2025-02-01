@@ -50,7 +50,7 @@ const Historial = () => {
       const orderData = await response.json();
       return orderData.data;
     } else {
-      console.error("Error al obtener los detalles de la orden.");
+     
       return null;
     }
   };
@@ -79,7 +79,7 @@ const Historial = () => {
       setItems(ordersWithPatientDetails);
       setFilteredItems(ordersWithPatientDetails);
     } else {
-      console.error("Error al obtener los resultados.");
+      
     }
 
     setLoading(false);

@@ -67,7 +67,7 @@ const PacienteInicio = () => {
       setItems([sortedOrders[0]]);
       setFilteredItems([sortedOrders[0]]);
     } else {
-      console.error("Error al obtener los resultados.");
+     
     }
 
     setLoading(false);
@@ -111,7 +111,7 @@ const PacienteInicio = () => {
               <Breadcrumb
                 items={[{ title: "Paciente", to: "/" }, { title: "Inicio", to: "/paciente/inicio" }]}
               />
-              <h1 className="text-2xl font-semibold text-gray-900 ">Últimos resultados</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 ">Nuevos resultados</h1>
             </div>
 
             {loading ? (
