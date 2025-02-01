@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import MenuLateral from '../../components/menuLateral/MenuLateral'
 import Breadcrumb from '../../components/navigation/breadcrumb'
@@ -17,12 +17,14 @@ const Parameters = () => {
     const navigate = useNavigate()
 
     const [parameters, setParameters] = useState([])
+    const [filteredItems, setFilteredItems] = useState([])
     const [loading, setLoading] = useState(true)
     const [showAlert, setShowAlert] = useState(false)
     const [alertType, setAlertType] = useState('success')
+    const [observations, setObservations] = useState('') // State for observations
     const { state } = location
 
-    const unitOptions = ['mm3', 'mg/dL', 'gr/dL', 'mm3', 'IU/L', 'fl', 'mmHg', 'mL/min', 'g/L', '%']
+    const unitOptions = ['mm3', 'mg/dL', 'gr/dL', 'mm3', 'IU/L', 'fl', 'mmHg', 'mL/min', 'g/L', '%','seg']
 
     useEffect(() => {
         if (!state?.reportId || !state?.selectedExams) {
@@ -71,6 +73,10 @@ const Parameters = () => {
         })
     }
 
+    const handleObservationsChange = (e) => {
+        setObservations(e.target.value) // Update observations state
+    }
+
     const handleGenerateResults = async () => {
         const reportId = state.reportId
         const resultsToPost = parameters.map(param => ({
@@ -79,6 +85,7 @@ const Parameters = () => {
             type: 'Manual',
             resultValue: param.resultValue,
             dateResult: new Date().toISOString(),
+            observations: observations,  // Include observations here
         }))
 
         try {
@@ -166,7 +173,41 @@ const Parameters = () => {
                 <Progress className='[&>*]:bg-[#02807D] mb-6' value={100} />
 
                 {loading ? <div className='text-center'>Cargando parámetros...</div> : <DataTable columns={columns} data={parameters} />}
+                <div className="mt-6">
+                    <label
+                        htmlFor="bioquimico"
+                        className="block font-medium mb-1 text-sm text-[#0E1B27]"
+                    >
+                        Nombre del Bioquímico
+                    </label>
+                    <select
+                        id="bioquimico"
+                        className="w-full border bg-gray-50 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                    >
+                        <option value="" disabled>
+                            Seleccione una opción
+                        </option>
+                        <option value="bioquimico_1">Bioquímico 1</option>
+                        <option value="bioquimico_2">Bioquímico 2</option>
+                    </select>
+                </div>
 
+                <div className="mt-6">
+                    <label
+                        htmlFor="observaciones"
+                        className="block font-medium mb-1 text-sm text-[#0E1B27]"
+                    >
+                        Observaciones
+                    </label>
+                    <textarea
+                        id="observaciones"
+                        className="w-full border bg-gray-50 rounded-md px-3 py-2"
+                        rows="4"
+                        value={observations}  // Display the observations state
+                        onChange={handleObservationsChange}  // Handle the input change
+                        placeholder="Escribe tus observaciones aquí"
+                    />
+                </div>
                 <div className='flex justify-end mt-6'>
                     <Button className='bg-[#02807D] text-white py-2 px-4 rounded-md hover:bg-teal-600' onClick={handleGenerateResults}>
                         Generar Resultados
